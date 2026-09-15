@@ -22,8 +22,9 @@
     "backup": "node scripts/backup.mjs",
     "context:sync": "node scripts/sync-agent-context.mjs",
     "context:check": "node scripts/check-agent-context.mjs",
+    "contribution:check": "node scripts/check-contribution-policy.mjs",
     "privacy:check": "node scripts/check-no-private-data.mjs",
-    "verify": "npm run env:check && npm run format:check && npm run lint && npm run test && npm run build && npm run context:check && npm run privacy:check"
+    "verify": "npm run env:check && npm run format:check && npm run lint && npm run test && npm run build && npm run context:check && npm run contribution:check && npm run privacy:check"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
