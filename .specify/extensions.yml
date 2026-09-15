@@ -1,0 +1,40 @@
+spec_kit_version: 1.0.6
+default_agent: codex
+extensions:
+  agent-context:
+    canonical: .agent-context/shared.md
+    managed_files:
+      - AGENTS.md
+      - CLAUDE.md
+      - .github/copilot-instructions.md
+    sync_command: npm run context:sync
+    check_command: npm run context:check
+integrations:
+  codex: skill
+  claude: official-skill
+  copilot:
+    mode: reviewed-skill
+    overlap_guard: npm run context:check
+hooks:
+  after_specify:
+    - extension: agent-context
+      command: speckit.agent-context.update
+      enabled: true
+      optional: true
+      priority: 10
+      prompt: Execute speckit.agent-context.update?
+      description: Refresh agent context after specification
+      condition: null
+  after_plan:
+    - extension: agent-context
+      command: speckit.agent-context.update
+      enabled: true
+      optional: true
+      priority: 10
+      prompt: Execute speckit.agent-context.update?
+      description: Refresh agent context after planning
+      condition: null
+installed:
+  - agent-context
+settings:
+  auto_execute_hooks: true

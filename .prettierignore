@@ -1,0 +1,15 @@
+node_modules
+dist
+playwright-report
+test-results
+coverage
+docs
+backups
+package-lock.json
+.specify/scripts
+.specify/templates
+.specify/workflows
+.specify/extensions
+.agents/skills/speckit-*
+.claude/skills/speckit-*
+.github/skills/speckit-*

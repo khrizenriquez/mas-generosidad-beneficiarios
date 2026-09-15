@@ -1,0 +1,20 @@
+node_modules/
+__pycache__/
+*.pyc
+dist/
+playwright-report/
+test-results/
+coverage/
+.env
+.env.*
+!.env.example
+.vercel/
+.DS_Store
+
+# Datos personales y medios de la ONG: nunca deben entrar a Git.
+docs/*.docx
+docs/*.zip
+docs/holaestassonlasfotos/
+private-import/
+backups/
+*.backup.enc

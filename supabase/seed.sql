@@ -1,0 +1,4 @@
+-- Este archivo solo contiene datos ficticios y no se ejecuta en producción.
+-- Los perfiles reales se importan desde el Word ignorado por Git con:
+-- npm run import:beneficiaries -- --dry-run
+-- npm run import:beneficiaries
