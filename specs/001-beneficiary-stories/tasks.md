@@ -10,4 +10,4 @@
 - [x] T008 Añadir noindex, variables, CI, Dependabot y controles de secretos/privacidad.
 - [x] T009 Añadir Spec Kit 1.0.6 y contexto sincronizado para Codex, Claude y Copilot.
 - [x] T010 Ejecutar unitarias, DB contract, e2e móvil/escritorio, build y QA visual.
-- [ ] T011 Inicializar Git, verificar exclusiones privadas y publicar en el repositorio remoto.
+- [x] T011 Inicializar Git, verificar exclusiones privadas y publicar en el repositorio remoto.
