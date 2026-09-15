@@ -16,7 +16,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "db:test": "node scripts/db-test.mjs",
+    "db:contract": "node scripts/db-test.mjs",
+    "db:test": "supabase test db",
     "env:check": "node scripts/check-env.mjs",
     "import:beneficiaries": "node scripts/import-beneficiaries.mjs",
     "backup": "node scripts/backup.mjs",
@@ -24,7 +25,7 @@
     "context:check": "node scripts/check-agent-context.mjs",
     "contribution:check": "node scripts/check-contribution-policy.mjs",
     "privacy:check": "node scripts/check-no-private-data.mjs",
-    "verify": "npm run env:check && npm run format:check && npm run lint && npm run test && npm run build && npm run context:check && npm run contribution:check && npm run privacy:check"
+    "verify": "npm run env:check && npm run format:check && npm run lint && npm run test && npm run build && npm run context:check && npm run contribution:check && npm run privacy:check && npm run db:contract"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",

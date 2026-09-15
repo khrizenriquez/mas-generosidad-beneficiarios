@@ -6,7 +6,7 @@ Catálogo público y editor administrativo de beneficiarios para [Más Generosid
 
 - Node 24 LTS
 - Un proyecto Supabase y, para publicar, una cuenta Vercel
-- Supabase CLI solo si deseas ejecutar la pila PostgreSQL local
+- Supabase CLI 2.117.0 y Docker solo si deseas ejecutar PostgreSQL y las pruebas RLS localmente
 
 ## Desarrollo
 
@@ -44,13 +44,24 @@ Después define `SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` solo en tu terminal
 
 ## Verificación
 
+El comando general incluye el contrato estático de base y no requiere Docker:
+
 ```bash
 npm run verify
-npm run db:test
 npm run test:e2e
 ```
 
-`npm run context:sync` actualiza los bloques compartidos para Codex, Claude y Copilot; `context:check` impide que diverjan. Spec Kit está fijado en `.specify/VERSION`, con feature activa en `specs/001-beneficiary-stories/`.
+Para ejecutar las migraciones y políticas contra PostgreSQL real:
+
+```bash
+supabase db start
+npm run db:test
+supabase stop
+```
+
+`npm run db:contract` ejecuta únicamente el chequeo estructural rápido incluido en `verify`; no reemplaza pgTAP. GitHub Actions instala la versión fijada de Supabase CLI, levanta una base desechable y ejecuta `db:test` en cada Pull Request sin secretos ni conexión al proyecto remoto.
+
+`npm run context:sync` actualiza los bloques compartidos para Codex, Claude y Copilot; `context:check` impide que diverjan. Spec Kit está fijado en `.specify/VERSION`, con feature activa en `specs/003-executable-rls-tests/`.
 
 El scaffold oficial de Spec Kit 1.0.6 instala los skills `$speckit-specify`, `$speckit-plan`, `$speckit-tasks`, `$speckit-implement` y auxiliares para los tres agentes. Codex es la integración predeterminada. La extensión oficial `agent-context` mantiene en los tres archivos el puntero al plan activo; las reglas privadas del proyecto se sincronizan desde `.agent-context/shared.md`.
 

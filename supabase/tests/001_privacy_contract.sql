@@ -1,31 +1,113 @@
 begin;
 
-select plan(8);
+create extension if not exists pgtap with schema extensions;
+set local search_path = public, extensions;
+
+select plan(18);
 
 select has_table('public', 'beneficiaries', 'Existe beneficiaries');
 select has_table('public', 'beneficiary_images', 'Existe beneficiary_images');
 select has_table('public', 'admin_users', 'Existe admin_users');
+
+select ok(
+  (select relrowsecurity from pg_class where oid = 'public.beneficiaries'::regclass),
+  'RLS está habilitado en beneficiaries'
+);
+select ok(
+  (select relrowsecurity from pg_class where oid = 'public.beneficiary_images'::regclass),
+  'RLS está habilitado en beneficiary_images'
+);
+select ok(
+  (select relrowsecurity from pg_class where oid = 'public.admin_users'::regclass),
+  'RLS está habilitado en admin_users'
+);
+
 select policies_are(
   'public',
   'beneficiaries',
-  array['admins create beneficiaries', 'admins read beneficiaries', 'admins update beneficiaries'],
-  'Beneficiaries no expone una política pública ni borrado'
+  array[
+    'admins create beneficiaries',
+    'admins read beneficiaries',
+    'admins update beneficiaries'
+  ],
+  'Beneficiaries no expone política pública ni borrado'
 );
-select isnt_empty(
-  $$select 1 from pg_proc where proname = 'get_public_beneficiaries'$$,
-  'Existe la proyección pública segura'
+
+select ok(
+  not has_table_privilege('anon', 'public.beneficiaries', 'SELECT'),
+  'Anon no tiene SELECT directo en beneficiaries'
 );
-select is_empty(
-  $$select 1 from information_schema.routine_columns where specific_name like 'get_public_beneficiaries%' and column_name = 'date_of_birth'$$,
-  'La fecha de nacimiento no forma parte del contrato público'
+select ok(
+  not has_table_privilege('anon', 'public.beneficiary_images', 'SELECT'),
+  'Anon no tiene SELECT directo en beneficiary_images'
 );
-select isnt_empty(
-  $$select 1 from pg_trigger where tgname = 'beneficiary_images_limit'$$,
+select ok(
+  not has_table_privilege('anon', 'public.admin_users', 'SELECT'),
+  'Anon no tiene SELECT directo en admin_users'
+);
+select ok(
+  not has_table_privilege('authenticated', 'public.beneficiaries', 'DELETE'),
+  'Authenticated no tiene DELETE en beneficiaries'
+);
+
+select has_function(
+  'public',
+  'get_public_beneficiaries',
+  array[]::text[],
+  'Existe la colección pública segura'
+);
+select has_function(
+  'public',
+  'get_public_beneficiary',
+  array['text'],
+  'Existe el detalle público seguro'
+);
+
+select results_eq(
+  $$select column_name::text
+    from information_schema.routine_columns
+    where specific_schema = 'public'
+      and routine_name = 'get_public_beneficiaries'
+    order by ordinal_position$$,
+  $$values
+    ('id'::text),
+    ('code'::text),
+    ('full_name'::text),
+    ('age'::text),
+    ('gender'::text),
+    ('school_grade'::text),
+    ('favorite_subject'::text),
+    ('hobby'::text),
+    ('future_goal'::text),
+    ('public_story'::text),
+    ('images'::text)$$,
+  'La RPC pública expone exactamente las columnas aprobadas'
+);
+
+select ok(
+  has_function_privilege('anon', 'public.get_public_beneficiaries()', 'EXECUTE'),
+  'Anon puede ejecutar la colección pública'
+);
+select ok(
+  has_function_privilege('anon', 'public.get_public_beneficiary(text)', 'EXECUTE'),
+  'Anon puede ejecutar el detalle público'
+);
+
+select has_trigger(
+  'public',
+  'beneficiary_images',
+  'beneficiary_images_limit',
   'Existe el límite de imágenes en base'
+);
+select has_trigger(
+  'public',
+  'beneficiaries',
+  'beneficiaries_validate_status',
+  'Existe la validación de publicación en base'
 );
 select isnt_empty(
   $$select 1 from storage.buckets where id = 'beneficiary-media' and public = false$$,
-  'El bucket es privado'
+  'El bucket de fotografías es privado'
 );
 
 select * from finish();

@@ -46,5 +46,5 @@ Codex es la integración predeterminada. Usa los skills locales de `.agents/skil
 
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/002-trunk-based-workflow/plan.md
+at specs/003-executable-rls-tests/plan.md
 <!-- SPECKIT END -->
