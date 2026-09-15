@@ -54,6 +54,10 @@ npm run test:e2e
 
 El scaffold oficial de Spec Kit 1.0.6 instala los skills `$speckit-specify`, `$speckit-plan`, `$speckit-tasks`, `$speckit-implement` y auxiliares para los tres agentes. Codex es la integración predeterminada. La extensión oficial `agent-context` mantiene en los tres archivos el puntero al plan activo; las reglas privadas del proyecto se sincronizan desde `.agent-context/shared.md`.
 
+## Contribución
+
+El repositorio usa trunk-based development: `main` permanece estable y cada cambio llega desde una rama corta mediante un Pull Request. Solo `@khrizenriquez` aprueba y fusiona; los agentes no usan auto-merge ni añaden trailers `Co-authored-by`. Consulta [CONTRIBUTING.md](CONTRIBUTING.md) para nombres de rama, verificaciones y checklist.
+
 ## Backup y reactivación
 
 El nivel gratuito no se considera una estrategia de backup. Define `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` y una frase de al menos 16 caracteres en `BACKUP_ENCRYPTION_PASSWORD`; luego ejecuta `npm run backup`. Se crea un archivo AES-256-GCM en `backups/`, ignorado por Git. Copia ese archivo fuera del equipo y conserva la frase por separado.

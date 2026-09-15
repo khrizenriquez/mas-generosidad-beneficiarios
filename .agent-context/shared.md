@@ -13,14 +13,18 @@ Este repositorio implementa **Historias de Más Generosidad**, un catálogo púb
 - No habilites registro público. Un usuario autenticado también debe existir en `admin_users`.
 - Publicar exige revisión humana y confirmación externa de consentimiento; la app no lo registra ni lo infiere.
 - Conserva el límite de tres imágenes en interfaz y base de datos, y nunca almacenes el archivo original.
+- Nunca añadas trailers `Co-authored-by`, alteres la identidad Git configurada ni presentes a un agente como coautor.
+- Nunca hagas commits o pushes directos a `main`, apruebes/fusiones PRs ni actives auto-merge. `@khrizenriquez` es quien revisa, aprueba y fusiona.
 
 ## Flujo de trabajo
 
-1. Lee `specs/001-beneficiary-stories/spec.md`, `plan.md` y `tasks.md`.
-2. Cambios de alcance empiezan en la spec; decisiones técnicas relevantes se reflejan en el plan.
-3. Implementa una tarea acotada y actualiza `tasks.md`.
-4. Ejecuta `npm run verify`. Si cambias RLS o almacenamiento, ejecuta también `npm run db:test`; para flujos visibles, `npm run test:e2e`.
-5. Antes de un commit, confirma que `npm run privacy:check` pasa.
+1. Lee la constitución y la feature activa bajo `specs/`.
+2. Actualiza `main` con `git pull --ff-only` y crea una rama corta con un prefijo permitido; cada rama contiene un solo cambio.
+3. Cambios de alcance empiezan en la spec; decisiones técnicas relevantes se reflejan en el plan.
+4. Implementa una tarea acotada y actualiza `tasks.md`.
+5. Ejecuta `npm run verify`. Si cambias RLS o almacenamiento, ejecuta también `npm run db:test`; para flujos visibles, `npm run test:e2e`.
+6. Antes de un commit, confirma que `npm run privacy:check` pasa y que el mensaje no incluye `Co-authored-by`.
+7. Sube la rama, abre un PR hacia `main` y déjalo sin fusionar para revisión de `@khrizenriquez`.
 
 ## Convenciones
 

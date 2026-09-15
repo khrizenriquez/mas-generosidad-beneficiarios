@@ -24,4 +24,8 @@ Todo cambio debe pasar `npm run verify`. Los cambios de datos requieren `npm run
 
 La experiencia es móvil primero, navegable por teclado y WCAG AA. El lenguaje y la presentación muestran a cada persona con dignidad, sin sensacionalismo, etiquetas reductoras ni exposición innecesaria.
 
-**Versión**: 1.0.0 · **Ratificada**: 2026-09-14
+## VII. Integración mediante revisión humana
+
+`main` es la única rama principal y debe permanecer estable. Cada cambio se desarrolla en una rama corta y se entrega mediante un Pull Request hacia `main`. Los agentes nunca hacen commits o pushes directos a `main`, no aprueban ni fusionan PRs y no activan auto-merge; `@khrizenriquez` revisa, aprueba y fusiona. Ningún agente añade trailers `Co-authored-by`, altera la identidad Git configurada o se presenta como coautor.
+
+**Versión**: 1.1.0 · **Ratificada**: 2026-09-14 · **Enmendada**: 2026-09-15
