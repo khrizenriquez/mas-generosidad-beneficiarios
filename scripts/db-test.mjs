@@ -1,12 +1,16 @@
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 
-const migration = await readFile(
-  new URL(
-    '../supabase/migrations/202609140001_initial_schema.sql',
-    import.meta.url,
-  ),
-  'utf8',
-);
+const migrationsDirectory = new URL('../supabase/migrations/', import.meta.url);
+const migrationNames = (await readdir(migrationsDirectory))
+  .filter((name) => name.endsWith('.sql'))
+  .sort();
+const migration = (
+  await Promise.all(
+    migrationNames.map((name) =>
+      readFile(new URL(name, migrationsDirectory), 'utf8'),
+    ),
+  )
+).join('\n');
 
 const assertions = [
   [
@@ -24,6 +28,14 @@ const assertions = [
   ],
   ['límite de tres fotos', /trigger beneficiary_images_limit/i],
   ['bucket privado', /'beneficiary-media',[\s\S]*?false,/i],
+  [
+    'sin privilegio de borrado para authenticated',
+    /revoke delete on table public\.beneficiaries from authenticated/i,
+  ],
+  [
+    'lectura pública de medios encapsulada',
+    /function public\.can_read_beneficiary_media\(object_name text\)[\s\S]*?security definer/i,
+  ],
   [
     'sin borrado de beneficiarios',
     !/create policy\s+"[^"]*delete[^"]*"\s+on public\.beneficiaries/i.test(

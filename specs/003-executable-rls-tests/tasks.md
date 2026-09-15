@@ -37,7 +37,7 @@
 
 ### Tests for User Story 2
 
-- [x] T004 [US2] Crear fixtures de Auth transaccionales y pruebas de allowlist, CRUD permitido, ausencia de borrado, publicación y máximo de tres imágenes en `supabase/tests/003_admin_authorization_behavior.sql`.
+- [x] T004 [US2] Crear fixtures de Auth y pruebas de allowlist, publicación y máximo de imágenes en `supabase/tests/003_admin_authorization_behavior.sql`; revocar borrado y encapsular la autorización de Storage en `supabase/migrations/202609150001_harden_media_access.sql`.
 
 **Checkpoint**: El contrato administrativo diferencia ambos usuarios y prueba todas las reglas editoriales sin datos persistentes.
 

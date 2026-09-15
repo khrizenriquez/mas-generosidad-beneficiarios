@@ -45,3 +45,15 @@
 
 - Eliminar el chequeo estático: perdería una señal rápida para errores obvios.
 - Hacer que `db:test` omita silenciosamente sin Docker: produciría falsos positivos.
+
+## Decisión 5: autorización de Storage encapsulada
+
+**Decision**: Resolver la pertenencia de una ruta a un perfil publicado mediante una función booleana `security definer` con `search_path` fijo y usarla desde las políticas de Storage.
+
+**Rationale**: Una política de `storage.objects` ejecutada por `anon` no puede consultar directamente `beneficiary_images` sin concederle lectura a la tabla privada. La función encapsula el join, devuelve solo verdadero o falso y conserva cerradas las tablas base.
+
+**Alternatives considered**:
+
+- Conceder `SELECT` anónimo a `beneficiary_images`: rechazado porque expondría rutas y metadatos de borradores y archivados.
+- Hacer público el bucket: rechazado porque permitiría acceso por URL sin comprobar el estado del perfil.
+- Crear URLs en un servidor adicional: seguro, pero añade infraestructura innecesaria y se aleja del presupuesto $0.

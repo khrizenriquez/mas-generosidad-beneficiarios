@@ -6,7 +6,7 @@
 
 ## Summary
 
-Sustituir la confianza en búsquedas de texto SQL por un contrato pgTAP que aplica las migraciones a una base Supabase local, simula los roles `anon` y `authenticated`, y prueba privacidad, allowlist, publicación y límite de fotografías. GitHub Actions levantará una base desechable en cada Pull Request con Supabase CLI 2.117.0; no usará secretos ni conectará un proyecto remoto. El chequeo estático actual se conservará como `npm run db:contract` para retroalimentación rápida.
+Sustituir la confianza en búsquedas de texto SQL por un contrato pgTAP que aplica las migraciones a una base Supabase local, simula los roles `anon` y `authenticated`, y prueba privacidad, allowlist, publicación y límite de fotografías. Una migración incremental revoca el borrado definitivo y encapsula la autorización de fotografías en una función `security definer`, evitando conceder lectura anónima a tablas privadas. GitHub Actions levantará una base desechable en cada Pull Request con Supabase CLI 2.117.0; no usará secretos ni conectará un proyecto remoto. El chequeo estático actual se conservará como `npm run db:contract` para retroalimentación rápida.
 
 ## Technical Context
 
@@ -66,12 +66,13 @@ scripts/db-test.mjs
 supabase/
 ├── config.toml
 ├── migrations/
+│   └── 202609150001_harden_media_access.sql
 └── tests/
     ├── 001_privacy_contract.sql
     └── 002_rls_behavior.sql
 ```
 
-**Structure Decision**: Conservar la estructura Supabase existente. El nuevo archivo separa las pruebas de comportamiento con fixtures y roles de las aserciones estructurales actuales. Los scripts y CI solo orquestan esas pruebas; nunca duplican el esquema.
+**Structure Decision**: Conservar la estructura Supabase existente. La migración incremental modifica privilegios y políticas sin reescribir la migración aplicada. Los nuevos archivos separan las pruebas de comportamiento con fixtures y roles de las aserciones estructurales actuales. Los scripts y CI solo orquestan esas pruebas; nunca duplican el esquema.
 
 ## Complexity Tracking
 

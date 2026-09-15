@@ -64,11 +64,9 @@ select has_function(
 );
 
 select results_eq(
-  $$select column_name::text
-    from information_schema.routine_columns
-    where specific_schema = 'public'
-      and routine_name = 'get_public_beneficiaries'
-    order by ordinal_position$$,
+  $$select unnest(proallargnames)::text
+    from pg_proc
+    where oid = 'public.get_public_beneficiaries()'::regprocedure$$,
   $$values
     ('id'::text),
     ('code'::text),

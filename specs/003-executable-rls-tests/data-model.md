@@ -1,8 +1,8 @@
 # Data Model: Contrato RLS ejecutable
 
-## Cambios al modelo
+## Cambios al modelo y autorización
 
-Esta feature no crea tablas, columnas, relaciones ni estados de producción. La migración existente continúa siendo la única definición del modelo.
+Esta feature no crea tablas, columnas, relaciones ni estados de producción. Añade una migración de seguridad que revoca `DELETE` a `authenticated` sobre beneficiarios y reemplaza las políticas de lectura de Storage por una función `security definer` de respuesta booleana. Las tablas privadas siguen sin conceder lectura a `anon`.
 
 ## Fixtures transaccionales
 
