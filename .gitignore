@@ -5,6 +5,10 @@ dist/
 playwright-report/
 test-results/
 coverage/
+*.log
+.vscode/
+.idea/
+*.swp
 .env
 .env.*
 !.env.example

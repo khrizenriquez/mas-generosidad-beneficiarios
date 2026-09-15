@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="title description">
+  <title id="title">Ilustración demo de aprendizaje</title>
+  <desc id="description">Formas abstractas inspiradas en libros y naturaleza.</desc>
+  <rect width="800" height="1000" fill="#20322E"/>
+  <circle cx="160" cy="175" r="105" fill="#E8B44A"/>
+  <path d="M110 780C250 635 350 635 402 735C478 600 585 640 690 780V930H110Z" fill="#FFFDF8"/>
+  <path d="M400 730V330" stroke="#A9D6CF" stroke-width="28" stroke-linecap="round"/>
+  <path d="M398 465C285 450 235 375 250 275C355 295 408 355 398 465Z" fill="#2E6A58"/>
+  <path d="M402 565C530 548 600 455 578 350C465 375 405 440 402 565Z" fill="#C96C4A"/>
+  <rect x="238" y="748" width="324" height="45" rx="22" fill="#A9D6CF"/>
+  <rect x="205" y="815" width="390" height="45" rx="22" fill="#E8B44A"/>
+</svg>

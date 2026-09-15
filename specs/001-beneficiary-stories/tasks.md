@@ -11,3 +11,7 @@
 - [x] T009 Añadir Spec Kit 1.0.6 y contexto sincronizado para Codex, Claude y Copilot.
 - [x] T010 Ejecutar unitarias, DB contract, e2e móvil/escritorio, build y QA visual.
 - [x] T011 Inicializar Git, verificar exclusiones privadas y publicar en el repositorio remoto.
+
+## Phase 1: Convergence
+
+- [x] T012 Mostrar en el detalle público una galería accesible con las 1–3 fotografías autorizadas por perfil según P1 “Conocer historias publicadas” y FR-005 (partial).

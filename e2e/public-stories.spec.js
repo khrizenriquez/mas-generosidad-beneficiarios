@@ -19,6 +19,23 @@ test('busca por nombre y abre una historia', async ({ page }) => {
   await expect(page.getByText(/fecha de nacimiento/i)).toHaveCount(0);
 });
 
+test('muestra las tres fotografías autorizadas en el detalle', async ({
+  page,
+}) => {
+  await page.goto('/historias/DEMO-001');
+
+  const gallery = page.getByRole('region', {
+    name: 'Galería de fotografías de Perfil de muestra Uno',
+  });
+  await expect(gallery).toBeVisible();
+  await expect(gallery.getByRole('img')).toHaveCount(3);
+  await expect(
+    gallery.getByRole('img', {
+      name: 'Ilustración ficticia de una actividad creativa',
+    }),
+  ).toBeVisible();
+});
+
 test('muestra un estado vacío y permite limpiar la búsqueda', async ({
   page,
 }) => {
