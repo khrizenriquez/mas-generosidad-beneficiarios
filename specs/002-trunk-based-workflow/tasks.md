@@ -7,4 +7,4 @@
 - [x] T005 Implementar y probar el validador de política de contribución.
 - [x] T006 Integrar el validador en GitHub Actions.
 - [x] T007 Ejecutar verificación completa y comprobar ausencia de coautoría.
-- [ ] T008 Subir la rama y crear un PR sin fusionarlo.
+- [x] T008 Subir la rama y crear un PR sin fusionarlo.
