@@ -64,7 +64,7 @@ select has_function(
 );
 
 select results_eq(
-  $$select unnest(proallargnames)::text
+  $$select unnest(proargnames)::text
     from pg_proc
     where oid = 'public.get_public_beneficiaries()'::regprocedure$$,
   $$values
