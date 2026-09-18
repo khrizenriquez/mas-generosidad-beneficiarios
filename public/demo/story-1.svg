@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="title description">
+  <title id="title">Ilustración demo de una actividad creativa</title>
+  <desc id="description">Formas abstractas inspiradas en una mesa de dibujo.</desc>
+  <rect width="800" height="1000" fill="#E9E1D2"/>
+  <circle cx="650" cy="155" r="120" fill="#E8B44A"/>
+  <path d="M0 720C170 615 305 650 430 745C545 835 650 830 800 720V1000H0Z" fill="#A9D6CF"/>
+  <rect x="132" y="288" width="536" height="382" rx="28" fill="#FFFDF8" transform="rotate(-4 400 479)"/>
+  <path d="M240 510L330 410L425 535L505 450L580 565" fill="none" stroke="#2E6A58" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="255" cy="395" r="36" fill="#C96C4A"/>
+  <path d="M118 190C190 120 265 115 340 168" fill="none" stroke="#20322E" stroke-width="20" stroke-linecap="round"/>
+</svg>

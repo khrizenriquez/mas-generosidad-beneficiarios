@@ -1,0 +1,75 @@
+import { Box } from '@mui/material';
+import { StoryImagePlaceholder } from './StoryImagePlaceholder.jsx';
+
+const emptyImages = [];
+
+export function StoryGallery({ images = emptyImages, beneficiaryName }) {
+  const galleryImages = images
+    .filter((image) => Boolean(image.detail_url))
+    .sort(
+      (first, second) =>
+        Number(second.is_primary) - Number(first.is_primary) ||
+        first.sort_order - second.sort_order,
+    );
+
+  if (galleryImages.length === 0) return <StoryImagePlaceholder />;
+
+  const [primaryImage, ...supportingImages] = galleryImages;
+
+  return (
+    <Box
+      component="section"
+      aria-label={`Galería de fotografías de ${beneficiaryName}`}
+      sx={{ display: 'grid', gap: 1.5 }}
+    >
+      <GalleryImage
+        image={primaryImage}
+        beneficiaryName={beneficiaryName}
+        position={1}
+        featured
+      />
+      {supportingImages.length > 0 ? (
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: `repeat(${supportingImages.length}, minmax(0, 1fr))`,
+            gap: 1.5,
+          }}
+        >
+          {supportingImages.map((image, index) => (
+            <GalleryImage
+              key={image.id}
+              image={image}
+              beneficiaryName={beneficiaryName}
+              position={index + 2}
+            />
+          ))}
+        </Box>
+      ) : null}
+    </Box>
+  );
+}
+
+function GalleryImage({ image, beneficiaryName, position, featured = false }) {
+  return (
+    <Box
+      component="img"
+      src={image.detail_url}
+      alt={
+        image.alt_text?.trim() || `Fotografía ${position} de ${beneficiaryName}`
+      }
+      loading={featured ? 'eager' : 'lazy'}
+      fetchPriority={featured ? 'high' : 'auto'}
+      sx={{
+        width: '100%',
+        aspectRatio: featured ? '4 / 5' : '4 / 3',
+        maxHeight: featured ? 680 : 260,
+        objectFit: 'cover',
+        borderRadius: featured ? '8px 44px 8px 8px' : 2,
+        boxShadow: featured
+          ? '0 22px 60px rgba(32,50,46,.13)'
+          : '0 10px 28px rgba(32,50,46,.1)',
+      }}
+    />
+  );
+}

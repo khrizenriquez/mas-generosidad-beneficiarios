@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { Link as RouterLink, useParams } from 'react-router-dom';
-import { StoryImagePlaceholder } from '../components/story/StoryImagePlaceholder.jsx';
+import { StoryGallery } from '../components/story/StoryGallery.jsx';
 import { getPublicBeneficiary } from '../services/publicBeneficiaries.js';
 
 export default function StoryPage() {
@@ -52,33 +52,13 @@ export default function StoryPage() {
             alignItems: 'start',
           }}
         >
-          <Box
-            sx={{
-              borderRadius: 3,
-              overflow: 'hidden',
-              boxShadow: '0 22px 60px rgba(32,50,46,.13)',
-            }}
-          >
-            {data.images?.[0]?.detail_url ? (
-              <Box
-                component="img"
-                src={data.images[0].detail_url}
-                alt={
-                  data.images[0].alt_text || `Fotografía de ${data.full_name}`
-                }
-                sx={{ width: '100%', maxHeight: 680, objectFit: 'cover' }}
-              />
-            ) : (
-              <StoryImagePlaceholder />
-            )}
-          </Box>
+          <StoryGallery images={data.images} beneficiaryName={data.full_name} />
           <Box>
             <Stack
               direction="row"
               spacing={1}
               useFlexGap
-              flexWrap="wrap"
-              sx={{ mb: 2 }}
+              sx={{ mb: 2, flexWrap: 'wrap' }}
             >
               {data.age !== null ? <Chip label={`${data.age} años`} /> : null}
               {data.gender ? (
