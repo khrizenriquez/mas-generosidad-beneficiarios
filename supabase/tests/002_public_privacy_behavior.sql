@@ -190,6 +190,7 @@ select results_eq(
 );
 
 reset role;
+set local request.jwt.claim.sub = '';
 update public.beneficiaries set status = 'archived' where code = 'MG-901';
 set local role anon;
 

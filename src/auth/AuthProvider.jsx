@@ -42,9 +42,11 @@ export function AuthProvider({ children }) {
         await getSupabase().rpc('is_current_user_admin');
       if (authorizationError || allowed !== true) {
         await getSupabase().auth.signOut();
-        throw new Error(
+        const error = new Error(
           'Esta cuenta no está autorizada para administrar el sitio.',
         );
+        error.code = 'not_authorized';
+        throw error;
       }
       await resolveSession(data.session);
     },

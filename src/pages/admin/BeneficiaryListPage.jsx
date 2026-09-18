@@ -49,7 +49,12 @@ export default function BeneficiaryListPage() {
   const archive = useMutation({
     mutationFn: archiveBeneficiary,
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ['admin-beneficiaries'] }),
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['admin-beneficiaries'] }),
+        queryClient.invalidateQueries({ queryKey: ['admin-beneficiary'] }),
+        queryClient.invalidateQueries({ queryKey: ['public-beneficiaries'] }),
+        queryClient.invalidateQueries({ queryKey: ['public-beneficiary'] }),
+      ]),
   });
 
   function requestArchive(item) {

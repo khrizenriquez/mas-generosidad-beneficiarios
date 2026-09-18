@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../auth/useAuth.js';
 import { BrandMark } from '../../components/BrandMark.jsx';
 import { hasSupabaseConfig } from '../../config/env.js';
@@ -20,10 +20,12 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
 
-  if (isAdmin) return <Navigate to="/admin/beneficiarios" replace />;
+  if (isAdmin)
+    return (
+      <Navigate to={location.state?.from || '/admin/beneficiarios'} replace />
+    );
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -31,11 +33,14 @@ export default function LoginPage() {
     setError('');
     try {
       await signIn(email, password);
-      navigate(location.state?.from || '/admin/beneficiarios', {
-        replace: true,
-      });
     } catch (caught) {
-      setError(caught.message || 'No fue posible iniciar sesión.');
+      setError(
+        caught.code === 'invalid_credentials'
+          ? 'Correo o contraseña incorrectos. Revisa tus datos e intenta de nuevo.'
+          : caught.code === 'not_authorized'
+            ? caught.message
+            : 'No fue posible iniciar sesión. Revisa tu conexión e intenta de nuevo.',
+      );
     } finally {
       setSubmitting(false);
     }
@@ -43,6 +48,8 @@ export default function LoginPage() {
 
   return (
     <Container
+      component="main"
+      id="contenido"
       maxWidth="sm"
       sx={{ minHeight: '100vh', display: 'grid', placeItems: 'center', py: 4 }}
     >

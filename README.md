@@ -6,9 +6,35 @@ Catálogo público y editor administrativo de beneficiarios para [Más Generosid
 
 - Node 24 LTS
 - Un proyecto Supabase y, para publicar, una cuenta Vercel
-- Supabase CLI 2.117.0 y Docker solo si deseas ejecutar PostgreSQL y las pruebas RLS localmente
+- Podman para el MVP completo local; Supabase CLI 2.117.0 se instala con npm
 
 ## Desarrollo
+
+### MVP completo con Podman
+
+Requiere Node 24, npm y Podman con una máquina activa en macOS (`podman machine start`). La CLI de Supabase se instala con `npm ci`; no hace falta Docker Desktop ni Supabase global. En Linux activa el socket con `systemctl --user start podman.socket`. Para una máquina con otro nombre usa `PODMAN_MACHINE`; un `DOCKER_HOST` explícito tiene prioridad.
+
+```bash
+npm ci
+npm run local:start
+```
+
+Abre <http://127.0.0.1:5173>. El frontend se construye y sirve en Podman, junto a PostgreSQL, Auth, REST y Storage. La primera descarga puede tardar varios minutos. El catálogo comienza vacío: entra por `/admin/login` con la cuenta ficticia guardada en `private-import/local-environment.json`. Este archivo y `.env.podman.local` están ignorados por Git; nunca uses esas credenciales en la nube.
+
+`local:start` conserva datos existentes y actualiza el frontend. Usa `npm run local:build` después de cambiar código, o `npm run dev:local -- --port 5174` para recarga rápida con Vite en el host y el backend de Podman. `npm run local:stop` detiene únicamente este proyecto y conserva los volúmenes. No uses `supabase stop --no-backup` ni `db reset` si quieres conservar tus datos.
+
+```bash
+npm run verify
+npm run db:test
+npm run test:local
+npm run test:backup
+```
+
+`test:local` recorre móvil y escritorio con Auth, base y fotografías reales locales; solo usa identidades y perfiles ficticios. Deja los perfiles de prueba archivados, sin borrar trazabilidad. `test:backup` comprueba cifrado, descifrado y fotografías, y elimina únicamente su archivo de prueba. Para un respaldo conservable define `BACKUP_ENCRYPTION_PASSWORD` en tu terminal y ejecuta `npm run backup:local`.
+
+Podman puede informar `starting` en Kong/PostgREST aunque no tengan healthcheck definido. El harness comprueba Auth, RPC y Storage mediante HTTP antes de confirmar el arranque; no acepta un servicio inaccesible. Studio, analítica, correo y otros servicios ajenos al MVP no se inician.
+
+### Vista demo sin backend
 
 ```bash
 cp .env.example .env.local
@@ -40,7 +66,7 @@ Primero valida sin conectarte ni mostrar datos en consola:
 npm run import:beneficiaries -- --dry-run
 ```
 
-Después define `SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` solo en tu terminal local y ejecuta `npm run import:beneficiaries`. El proceso lee `docs/BASE DE DATOS MG ONG.docx`, importa 41 borradores por upsert, excluye MG042 y no crea JSON intermedio. Las fotos del ZIP se ignoran.
+Después define `SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` solo en tu terminal local y ejecuta `npm run import:beneficiaries`. El proceso lee `docs/BASE DE DATOS MG ONG.docx`, inserta 41 borradores, excluye MG042 y no crea JSON intermedio. Repetirlo conserva los códigos ya existentes y sus ediciones. Las fotos del ZIP se ignoran.
 
 ## Verificación
 
@@ -54,9 +80,9 @@ npm run test:e2e
 Para ejecutar las migraciones y políticas contra PostgreSQL real:
 
 ```bash
-supabase db start
+npm run local:start
 npm run db:test
-supabase stop
+npm run local:stop
 ```
 
 `npm run db:contract` ejecuta únicamente el chequeo estructural rápido incluido en `verify`; no reemplaza pgTAP. GitHub Actions instala la versión fijada de Supabase CLI, levanta una base desechable y ejecuta `db:test` en cada Pull Request sin secretos ni conexión al proyecto remoto.
@@ -76,6 +102,8 @@ El nivel gratuito no se considera una estrategia de backup. Define `SUPABASE_URL
 Si Supabase pausa el proyecto por inactividad, entra al panel, abre el proyecto y elige restaurarlo/reactivarlo; después confirma el catálogo y crea un backup manual. Las cuotas y políticas gratuitas pueden cambiar, así que revísalas antes de lanzamiento.
 
 ## Despliegue
+
+La entrega actual se valida localmente con Podman. La configuración y validación en Vercel/Supabase se realizarán en un PR posterior, según la estrategia acordada. Las instrucciones siguientes son una referencia; no implican que la nube esté desplegada.
 
 Importa `https://github.com/khrizenriquez/mas-generosidad-beneficiarios.git` en Vercel, usa el preset Vite, comando `npm run build` y salida `dist`. `vercel.json` conserva el routing SPA y envía `X-Robots-Tag: noindex, nofollow, noarchive` en todas las rutas. El dominio inicial esperado es `mas-generosidad-beneficiarios.vercel.app`.
 

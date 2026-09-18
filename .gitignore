@@ -13,6 +13,8 @@ coverage/
 .env.*
 !.env.example
 .vercel/
+supabase/.temp/
+supabase/.branches/
 .DS_Store
 
 # Datos personales y medios de la ONG: nunca deben entrar a Git.

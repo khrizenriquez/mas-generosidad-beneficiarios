@@ -165,6 +165,7 @@ async function main() {
 
   if (
     records.length !== 41 ||
+    new Set(records.map((record) => record.code)).size !== 41 ||
     records.some((record) => record.code === 'MG-042')
   ) {
     throw new Error(
@@ -210,9 +211,9 @@ async function main() {
   });
   const { error } = await supabase
     .from('beneficiaries')
-    .upsert(records, { onConflict: 'code' });
+    .upsert(records, { onConflict: 'code', ignoreDuplicates: true });
   if (error) throw error;
   console.log('Importación finalizada. No se creó ningún archivo intermedio.');
 }
 
-await main();
+if (import.meta.main) await main();

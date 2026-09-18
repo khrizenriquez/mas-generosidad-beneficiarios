@@ -25,14 +25,14 @@
 
 ## Decisión 3: CLI estable y acción fijada
 
-**Decision**: Instalar Supabase CLI 2.117.0 mediante `supabase/setup-cli` v3.0.0 fijado al SHA `46f7f98c7f948ad727d22c1e67fab04c223a0520`.
+**Decision**: Instalar Supabase CLI 2.117.0 como dependencia npm exacta con lockfile. La ampliación local aprobada reemplaza la instalación inicial mediante `supabase/setup-cli` para que el mismo ejecutable esté disponible tras `npm ci` tanto localmente como en CI.
 
-**Rationale**: 2.117.0 es la versión estable publicada al diseñar esta feature. Fijar versión de CLI y commit de la acción evita cambios silenciosos, mantiene reproducibilidad y permite actualizaciones revisadas por Dependabot.
+**Rationale**: 2.117.0 es la versión estable publicada al diseñar esta feature. Fijar la CLI evita cambios silenciosos, mantiene reproducibilidad y permite actualizaciones revisadas por Dependabot.
 
 **Alternatives considered**:
 
 - `version: latest`: rechazado porque vuelve no determinista el contrato.
-- Añadir la CLI como dependencia npm del frontend: funciona, pero aumenta la instalación de todos los jobs aunque solo el job de base la necesita.
+- Instalar una CLI global o con una acción separada: descartado al exigir un comando reproducible de arranque local tras `npm ci`.
 - Instalar con un script remoto: rechazado por riesgo de cadena de suministro y menor trazabilidad.
 
 ## Decisión 4: dos niveles de retroalimentación

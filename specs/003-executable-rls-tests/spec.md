@@ -1,12 +1,14 @@
 # Feature Specification: Contrato RLS ejecutable
 
-**Feature Branch**: `test/executable-rls-contract`
+**Feature Branch**: `fix/local-mvp`
 
 **Created**: 2026-09-15
 
 **Status**: Approved
 
 **Input**: El plan aprobado exige comprobar las políticas SQL/RLS, el contrato público y los límites de publicación con herramientas gratuitas y datos ficticios.
+
+**Entrega consolidada (2026-09-17)**: El usuario solicita completar todos los requisitos locales en una sola rama de fix y un único PR. El entorno local usa Podman y datos ficticios para validación funcional. La preparación y despliegue cloud quedan para otro PR, después de validar esta entrega local.
 
 ## User Scenarios & Testing
 
@@ -67,6 +69,18 @@ Como mantenedor, quiero que el contrato se ejecute automáticamente en cada Pull
 
 ## Requirements
 
+### User Story 4 - Trabajar localmente con Podman (Priority: P1)
+
+Por solicitud explícita del usuario, el MVP completo debe poder desarrollarse y verificarse con Podman: PostgreSQL, autenticación, Storage y frontend conectado, sin depender de un proyecto remoto.
+
+**Acceptance Scenarios**:
+
+1. Con Podman instalado y su máquina activa, los comandos documentados arrancan los servicios locales y conectan React a ellos.
+2. Una cuenta administrativa exclusivamente local puede crear, editar, publicar y archivar perfiles ficticios; el visitante consulta las mismas RPC y fotografías firmadas que se usarán en la nube.
+3. El contrato SQL se ejecuta contra PostgreSQL en Podman y los flujos administrativos y públicos se prueban contra Auth y Storage locales reales.
+4. Detener el entorno conserva sus datos; ningún comando local afecta proyectos remotos ni otros contenedores.
+5. La misma aplicación y migraciones se mantienen desplegables en Vercel y Supabase; las credenciales locales y las de nube no se mezclan.
+
 ### Functional Requirements
 
 - **FR-001**: El sistema MUST ejecutar todas las migraciones desde cero antes de evaluar el contrato de seguridad.
@@ -79,6 +93,8 @@ Como mantenedor, quiero que el contrato se ejecute automáticamente en cada Pull
 - **FR-008**: Cada Pull Request MUST ejecutar el contrato sin secretos ni conexiones a entornos remotos.
 - **FR-009**: El repositorio MUST conservar un chequeo estático rápido independiente para equipos que todavía no tengan disponible el entorno ejecutable.
 - **FR-010**: La documentación MUST explicar requisitos, comandos y resultados esperados tanto localmente como en CI.
+- **FR-011**: El harness MUST soportar Podman local con CLI fijada, configuración de conexión, cuenta ficticia de prueba y arranque/parada reproducibles.
+- **FR-012**: Las pruebas de integración MUST validar login, edición, publicación, hasta tres fotos WebP, acceso público firmado y archivado contra servicios locales reales.
 
 ## Success Criteria
 

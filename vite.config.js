@@ -8,7 +8,7 @@ export default defineConfig({
     sourcemap: true,
   },
   test: {
-    include: ['src/**/*.test.{js,jsx}'],
+    include: ['src/**/*.test.{js,jsx}', 'scripts/**/*.test.mjs'],
     environment: 'jsdom',
     setupFiles: './src/test/setup.js',
     coverage: { reporter: ['text', 'html'] },

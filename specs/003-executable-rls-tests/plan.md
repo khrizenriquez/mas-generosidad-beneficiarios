@@ -1,6 +1,6 @@
 # Implementation Plan: Contrato RLS ejecutable
 
-**Branch**: `test/executable-rls-contract` | **Date**: 2026-09-15 | **Spec**: [spec.md](spec.md)
+**Branch**: `fix/local-mvp` | **Date**: 2026-09-17 | **Spec**: [spec.md](spec.md)
 
 **Input**: Feature specification from `/specs/003-executable-rls-tests/spec.md`
 
@@ -12,7 +12,7 @@ Sustituir la confianza en búsquedas de texto SQL por un contrato pgTAP que apli
 
 **Language/Version**: SQL PostgreSQL 17 y JavaScript ESM sobre Node.js 24 LTS
 
-**Primary Dependencies**: pgTAP incluido por Supabase local; Supabase CLI 2.117.0; `supabase/setup-cli` v3.0.0 fijado por SHA en CI
+**Primary Dependencies**: pgTAP incluido por Supabase local; Supabase CLI 2.117.0 fijada como dependencia npm; Podman; Node 24.19.0 y Nginx 1.30.5 para el frontend contenedorizado
 
 **Storage**: PostgreSQL local desechable y esquema Storage local; sin acceso a Supabase remoto
 
@@ -78,3 +78,13 @@ supabase/
 ## Complexity Tracking
 
 No hay violaciones constitucionales ni excepciones de complejidad.
+
+## Ampliación aprobada: Podman local
+
+- Fijar Supabase CLI 2.117.0 como dependencia de desarrollo para compartir versión entre equipos y CI.
+- Un adaptador Node detecta el socket de la máquina Podman activa en macOS y permite `DOCKER_HOST` explícito; CI puede conservar su motor Docker disponible.
+- Arrancar los servicios necesarios de Supabase (base, Auth, REST, gateway y Storage) con Podman. La SPA se construye en un contenedor Node y se sirve en Nginx sobre Podman. Vite en modo `podman` queda como alternativa de edición con recarga rápida.
+- Generar configuración local ignorada y credenciales ficticias exclusivamente en loopback; no reemplazar `.env.local` ni copiar credenciales cloud.
+- Añadir pruebas de integración reales y una cuenta local idempotente. Los datos de prueba se identifican con códigos reservados y nunca leen el Word privado.
+- Conservar las migraciones y el build existentes para Vercel y Supabase; documentar por separado la validación local y la configuración necesaria para nube.
+- Consolidar todos los arreglos necesarios del MVP local en esta rama y un único PR. El PR de nube posterior no forma parte de esta entrega.
