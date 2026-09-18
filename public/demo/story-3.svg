@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="title description">
+  <title id="title">Ilustración demo de comunidad</title>
+  <desc id="description">Formas abstractas inspiradas en personas reunidas.</desc>
+  <rect width="800" height="1000" fill="#F8F2E7"/>
+  <path d="M0 190L800 70V510L0 630Z" fill="#A9D6CF"/>
+  <circle cx="400" cy="350" r="118" fill="#E8B44A"/>
+  <circle cx="190" cy="510" r="82" fill="#C96C4A"/>
+  <circle cx="610" cy="510" r="82" fill="#2E6A58"/>
+  <path d="M225 810C240 640 320 555 400 555C480 555 560 640 575 810" fill="#20322E"/>
+  <path d="M48 830C60 685 118 615 190 615C260 615 305 675 315 780" fill="#C96C4A"/>
+  <path d="M485 780C500 675 548 615 610 615C682 615 740 685 752 830" fill="#2E6A58"/>
+  <path d="M95 885H705" stroke="#E8B44A" stroke-width="28" stroke-linecap="round"/>
+</svg>

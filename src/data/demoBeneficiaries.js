@@ -11,7 +11,32 @@ export const demoBeneficiaries = [
     future_goal: 'Cuidar la salud de su comunidad',
     public_story:
       'Este texto es completamente ficticio y sirve únicamente para revisar el diseño antes de conectar Supabase.',
-    images: [],
+    images: [
+      {
+        id: 'demo-image-1',
+        thumbnail_url: '/demo/story-1.svg',
+        detail_url: '/demo/story-1.svg',
+        alt_text: 'Ilustración ficticia de una actividad creativa',
+        sort_order: 0,
+        is_primary: true,
+      },
+      {
+        id: 'demo-image-2',
+        thumbnail_url: '/demo/story-2.svg',
+        detail_url: '/demo/story-2.svg',
+        alt_text: 'Ilustración ficticia inspirada en el aprendizaje',
+        sort_order: 1,
+        is_primary: false,
+      },
+      {
+        id: 'demo-image-3',
+        thumbnail_url: '/demo/story-3.svg',
+        detail_url: '/demo/story-3.svg',
+        alt_text: 'Ilustración ficticia inspirada en la comunidad',
+        sort_order: 2,
+        is_primary: false,
+      },
+    ],
   },
   {
     id: 'demo-2',
