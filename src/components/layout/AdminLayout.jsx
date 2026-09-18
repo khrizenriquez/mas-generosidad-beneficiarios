@@ -23,7 +23,7 @@ export default function AdminLayout() {
         sx={{ borderBottom: '1px solid #DDD3C2' }}
       >
         <Container maxWidth="xl">
-          <Toolbar disableGutters sx={{ gap: 2 }}>
+          <Toolbar disableGutters sx={{ gap: 1.5, flexWrap: 'wrap', py: 1 }}>
             <BrandMark compact />
             <Typography
               variant="caption"
@@ -49,7 +49,12 @@ export default function AdminLayout() {
           </Toolbar>
         </Container>
       </AppBar>
-      <Container component="main" maxWidth="xl" sx={{ py: { xs: 3, md: 5 } }}>
+      <Container
+        component="main"
+        id="contenido"
+        maxWidth="xl"
+        sx={{ py: { xs: 3, md: 5 } }}
+      >
         <Outlet />
       </Container>
     </Box>

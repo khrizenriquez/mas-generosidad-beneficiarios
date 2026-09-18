@@ -77,7 +77,7 @@ export default function BeneficiaryFormPage() {
     handleSubmit,
     reset,
     setError,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm({
     defaultValues: defaults,
     resolver: zodResolver(beneficiaryFormSchema),
@@ -85,7 +85,15 @@ export default function BeneficiaryFormPage() {
 
   useEffect(() => {
     if (data)
-      reset({ ...defaults, ...data, date_of_birth: data.date_of_birth || '' });
+      reset(
+        Object.fromEntries(
+          Object.entries(defaults).map(([key, fallback]) => [
+            key,
+            data[key] ?? fallback,
+          ]),
+        ),
+        { keepDirtyValues: true },
+      );
   }, [data, reset]);
   useEffect(() => {
     if (!isEditing && nextCode.data)
@@ -96,8 +104,18 @@ export default function BeneficiaryFormPage() {
     mutationFn: ({ values, status }) =>
       saveBeneficiary({ ...values, status }, id),
     onSuccess: async (saved, variables) => {
+      reset({ ...variables.values, status: variables.status });
       await queryClient.invalidateQueries({
         queryKey: ['admin-beneficiaries'],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ['next-beneficiary-code'],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ['public-beneficiaries'],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ['public-beneficiary', variables.values.code],
       });
       setNotice(
         variables.status === 'published'
@@ -141,7 +159,15 @@ export default function BeneficiaryFormPage() {
   }
 
   if (isLoading) return <CircularProgress aria-label="Cargando perfil" />;
-  if (error) return <Alert severity="error">{error.message}</Alert>;
+  if (error)
+    return (
+      <Alert
+        severity="error"
+        action={<Button onClick={() => refetch()}>Reintentar</Button>}
+      >
+        {error.message}
+      </Alert>
+    );
 
   return (
     <>
@@ -205,6 +231,11 @@ export default function BeneficiaryFormPage() {
           <Alert severity="success" sx={{ mt: 3 }}>
             {notice}
           </Alert>
+        ) : null}
+        {Object.keys(dirtyFields).length > 0 ? (
+          <Typography color="text.secondary" sx={{ mt: 2 }}>
+            Tienes cambios sin guardar.
+          </Typography>
         ) : null}
         <Stack
           direction={{ xs: 'column', sm: 'row' }}

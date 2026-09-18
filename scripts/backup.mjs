@@ -3,9 +3,13 @@ import { gzipSync } from 'node:zlib';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { createClient } from '@supabase/supabase-js';
+import { localStatus } from './lib/local-supabase.mjs';
 
-const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const local = process.argv.includes('--local') ? await localStatus() : null;
+const supabaseUrl =
+  local?.API_URL || process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+const serviceRoleKey =
+  local?.SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 const password = process.env.BACKUP_ENCRYPTION_PASSWORD;
 if (!supabaseUrl || !serviceRoleKey || !password || password.length < 16) {
   throw new Error(

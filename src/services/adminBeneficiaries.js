@@ -5,9 +5,11 @@ async function withSignedAdminImages(beneficiary) {
   const supabase = getSupabase();
   const images = await Promise.all(
     (beneficiary.beneficiary_images ?? []).map(async (image) => {
-      const { data } = await supabase.storage
+      const { data, error } = await supabase.storage
         .from('beneficiary-media')
         .createSignedUrl(image.thumbnail_path, 3600);
+      if (error)
+        throw new Error('No fue posible cargar las fotografías. Reintenta.');
       return { ...image, thumbnail_url: data?.signedUrl ?? null };
     }),
   );
@@ -76,6 +78,7 @@ export async function uploadBeneficiaryImage({
   detail,
   altText,
   sortOrder,
+  isPrimary,
 }) {
   const supabase = getSupabase();
   const imageId = crypto.randomUUID();
@@ -105,7 +108,7 @@ export async function uploadBeneficiaryImage({
     detail_path: detailPath,
     alt_text: altText || null,
     sort_order: sortOrder,
-    is_primary: sortOrder === 0,
+    is_primary: isPrimary,
   });
   if (error) {
     await supabase.storage

@@ -44,16 +44,20 @@ export function PhotoManager({ beneficiaryId, images = [], onChanged }) {
           ...variants,
           altText: '',
           sortOrder: availableOrders[index],
+          isPrimary: !images.some((image) => image.is_primary) && index === 0,
         });
       }
-      await onChanged();
     } catch (caught) {
       setError(
         caught.message ||
           'No fue posible subir la fotografía. Puedes reintentar.',
       );
     } finally {
-      setBusy(false);
+      try {
+        await onChanged();
+      } finally {
+        setBusy(false);
+      }
     }
   }
 

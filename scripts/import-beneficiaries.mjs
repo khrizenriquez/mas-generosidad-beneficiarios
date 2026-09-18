@@ -165,6 +165,7 @@ async function main() {
 
   if (
     records.length !== 41 ||
+    new Set(records.map((record) => record.code)).size !== 41 ||
     records.some((record) => record.code === 'MG-042')
   ) {
     throw new Error(
@@ -210,9 +211,12 @@ async function main() {
   });
   const { error } = await supabase
     .from('beneficiaries')
-    .upsert(records, { onConflict: 'code' });
-  if (error) throw error;
+    .upsert(records, { onConflict: 'code', ignoreDuplicates: true });
+  if (error)
+    throw new Error(
+      'La base rechazó la importación. Revisa el formato y los permisos; se omitieron los detalles para proteger los datos privados.',
+    );
   console.log('Importación finalizada. No se creó ningún archivo intermedio.');
 }
 
-await main();
+if (import.meta.main) await main();

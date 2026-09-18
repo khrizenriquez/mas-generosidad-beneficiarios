@@ -16,6 +16,10 @@ async function signImages(rows) {
               .from('beneficiary-media')
               .createSignedUrl(item.detail_path, 3600),
           ]);
+          if (thumbnail.error || detail.error)
+            throw new Error(
+              'No fue posible cargar las fotografías. Reintenta.',
+            );
           return {
             ...item,
             thumbnail_url: thumbnail.data?.signedUrl ?? null,
