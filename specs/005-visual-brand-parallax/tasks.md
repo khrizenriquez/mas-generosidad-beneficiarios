@@ -71,7 +71,7 @@
 
 - [x] T013 Ejecutar `npm run verify`, `npm run test:e2e`, `npm run local:start` y `npm run test:local`; registrar únicamente resultados agregados, sin capturas, nombres ni rutas de datos locales en `specs/005-visual-brand-parallax/validation.md`.
 - [x] T014 Ejecutar `npm run privacy:check`, `git diff --check` y revisar que no hay cambios en `supabase/`, datos, fotos, secretos o configuración cloud.
-- [ ] T015 Actualizar checkboxes y `specs/005-visual-brand-parallax/validation.md`, preparar commits sin `Co-authored-by`, subir `feat/visual-brand-parallax` y abrir un Pull Request hacia `main` sin auto-merge.
+- [x] T015 Actualizar checkboxes y `specs/005-visual-brand-parallax/validation.md`, preparar commits sin `Co-authored-by`, subir `feat/visual-brand-parallax` y abrir un Pull Request hacia `main` sin auto-merge.
 
 ## Dependencies & Execution Order
 
