@@ -35,7 +35,7 @@ Como visitante, quiero un footer breve con los enlaces relevantes, para cerrar l
 
 **Acceptance Scenarios**:
 
-1. **Given** una persona llega al footer, **When** lo consulta, **Then** encuentra el enlace a Más Generosidad y “Made with love by Christofer Enríquez” enlazado a su sitio.
+1. **Given** una persona llega al footer, **When** lo consulta, **Then** encuentra el enlace a Más Generosidad y “Made with love by Christofer Enríquez ❤️” enlazado a su sitio.
 2. **Given** un viewport móvil, **When** el contenido no cabe en una fila, **Then** los enlaces se acomodan centrados sin solaparse.
 
 ---
@@ -69,7 +69,7 @@ Como visitante, quiero que las tarjetas revelen profundidad mientras avanzo por 
 - **FR-001**: La interfaz MUST centralizar una paleta derivada del logo con tokens semánticos para cian, azul, fondos, tinta, estados y contraste.
 - **FR-002**: La interfaz MUST sustituir los colores heredados fuera de la paleta por tokens del tema, incluidos fondo global, hero, tarjeta, placeholder, administración y footer.
 - **FR-003**: El footer MUST eliminar la marca compacta y el texto “Este espacio comparte historias autorizadas por la ONG y protege los datos privados de cada beneficiario.”
-- **FR-004**: El footer MUST mostrar “Made with love by Christofer Enríquez” enlazado a `https://khrizenriquez.github.io/khrizenriquez/` y conservar un enlace seguro a la ONG.
+- **FR-004**: El footer MUST mostrar “Made with love by Christofer Enríquez ❤️” enlazado a `https://khrizenriquez.github.io/khrizenriquez/` y conservar un enlace seguro a la ONG.
 - **FR-005**: Las tarjetas públicas MUST revelarse con parallax ligero basado en su entrada al viewport, sin librerías de animación nuevas.
 - **FR-006**: Las imágenes de tarjetas MUST escalar exactamente 20% en hover y foco visible, dentro de un contenedor recortado y sin cambiar el layout.
 - **FR-007**: La animación MUST respetar `prefers-reduced-motion: reduce` y desactivarse en ese caso.

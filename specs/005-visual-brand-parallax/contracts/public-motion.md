@@ -11,11 +11,11 @@
 
 ## Footer
 
-| Elemento             | Contrato                                                                                                                             |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| Enlace de autor      | Texto exacto `Made with love by Christofer Enríquez`; `href="https://khrizenriquez.github.io/khrizenriquez/"`; abre de forma segura. |
-| Enlace ONG           | Conserva `https://masgenerosidad.org/` y apertura segura.                                                                            |
-| Elementos eliminados | No contiene `BrandMark` ni el texto anterior de privacidad.                                                                          |
+| Elemento             | Contrato                                                                                                                                |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Enlace de autor      | Texto exacto `Made with love by Christofer Enríquez ❤️`; `href="https://khrizenriquez.github.io/khrizenriquez/"`; abre de forma segura. |
+| Enlace ONG           | Conserva `https://masgenerosidad.org/` y apertura segura.                                                                               |
+| Elementos eliminados | No contiene `BrandMark` ni el texto anterior de privacidad.                                                                             |
 
 ## Tarjeta pública
 

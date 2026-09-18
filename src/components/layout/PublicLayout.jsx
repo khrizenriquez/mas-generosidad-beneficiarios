@@ -73,7 +73,7 @@ export function PublicLayout() {
               rel="noreferrer"
               color="inherit"
             >
-              Made with love by Christofer Enríquez
+              Made with love by Christofer Enríquez ❤️
             </Link>
             <Box
               aria-hidden="true"

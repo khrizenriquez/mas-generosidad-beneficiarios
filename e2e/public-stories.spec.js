@@ -93,7 +93,7 @@ test('el footer muestra los enlaces limpios aprobados', async ({ page }) => {
 
   const footer = page.locator('footer');
   const authorLink = footer.getByRole('link', {
-    name: 'Made with love by Christofer Enríquez',
+    name: 'Made with love by Christofer Enríquez ❤️',
   });
 
   await expect(authorLink).toHaveAttribute(
