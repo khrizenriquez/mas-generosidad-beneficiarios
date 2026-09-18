@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(18);
+select plan(20);
 
 select has_table('public', 'beneficiaries', 'Existe beneficiaries');
 select has_table('public', 'beneficiary_images', 'Existe beneficiary_images');
@@ -63,23 +63,20 @@ select has_function(
   'Existe el detalle público seguro'
 );
 
-select results_eq(
-  $$select unnest(proargnames)::text
+select is(
+  (select to_jsonb(proargnames)
     from pg_proc
-    where oid = 'public.get_public_beneficiaries()'::regprocedure$$,
-  $$values
-    ('id'::text),
-    ('code'::text),
-    ('full_name'::text),
-    ('age'::text),
-    ('gender'::text),
-    ('school_grade'::text),
-    ('favorite_subject'::text),
-    ('hobby'::text),
-    ('future_goal'::text),
-    ('public_story'::text),
-    ('images'::text)$$,
-  'La RPC pública expone exactamente las columnas aprobadas'
+    where oid = 'public.get_public_beneficiaries()'::regprocedure),
+  '["id", "code", "full_name", "age", "gender", "school_grade", "favorite_subject", "hobby", "future_goal", "public_story", "images"]'::jsonb,
+  'La colección pública expone exactamente las columnas aprobadas'
+);
+
+select is(
+  (select to_jsonb(proargnames[2:])
+    from pg_proc
+    where oid = 'public.get_public_beneficiary(text)'::regprocedure),
+  '["id", "code", "full_name", "age", "gender", "school_grade", "favorite_subject", "hobby", "future_goal", "public_story", "images"]'::jsonb,
+  'El detalle público expone exactamente las columnas aprobadas'
 );
 
 select ok(

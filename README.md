@@ -21,7 +21,7 @@ Los datos demo son ficticios. Sin `VITE_USE_DEMO_DATA=true`, la app exige `VITE_
 ## Preparar Supabase
 
 1. Crea un proyecto gratuito y desactiva el registro público en Authentication.
-2. Vincula el proyecto con Supabase CLI y aplica `supabase/migrations/202609140001_initial_schema.sql` (`supabase db push`).
+2. Vincula el proyecto con Supabase CLI y aplica todas las migraciones de `supabase/migrations/` con `supabase db push`.
 3. En Authentication crea manualmente la primera cuenta con email y contraseña.
 4. Añádela a la allowlist desde SQL Editor:
 

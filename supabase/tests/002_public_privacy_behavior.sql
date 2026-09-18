@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(10);
+select plan(13);
 
 insert into public.beneficiaries (
   id,
@@ -174,6 +174,32 @@ select throws_ok(
   '42501',
   null,
   'Anon no puede eliminar beneficiarios'
+);
+
+reset role;
+
+set local role authenticated;
+set local request.jwt.claim.sub = '92000000-0000-4000-8000-000000000002';
+
+select results_eq(
+  $$select name::text from storage.objects order by name$$,
+  $$values
+    ('contract/published-detail.webp'::text),
+    ('contract/published-thumbnail.webp'::text)$$,
+  'Una cuenta autenticada no administrativa solo lee fotografías publicadas'
+);
+
+reset role;
+update public.beneficiaries set status = 'archived' where code = 'MG-901';
+set local role anon;
+
+select is_empty(
+  $$select code from public.get_public_beneficiaries()$$,
+  'Archivar retira inmediatamente el perfil de la colección pública'
+);
+select is_empty(
+  $$select name from storage.objects$$,
+  'Archivar impide nuevas lecturas autorizadas de sus fotografías'
 );
 
 reset role;

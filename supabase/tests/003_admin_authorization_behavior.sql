@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(15);
+select plan(18);
 
 insert into auth.users (id, email)
 values
@@ -15,6 +15,15 @@ values ('92000000-0000-4000-8000-000000000001');
 
 insert into public.beneficiaries (id, code, status)
 values ('93000000-0000-4000-8000-000000000001', 'MG-911', 'draft');
+
+insert into public.beneficiary_images (
+  beneficiary_id, thumbnail_path, detail_path, alt_text, sort_order, is_primary
+)
+values (
+  '93000000-0000-4000-8000-000000000001',
+  'contract/private-thumbnail.webp', 'contract/private-detail.webp',
+  'Imagen privada ficticia', 0, true
+);
 
 set local role authenticated;
 set local request.jwt.claim.sub = '92000000-0000-4000-8000-000000000002';
@@ -45,6 +54,28 @@ select throws_ok(
 select is_empty(
   $$update public.beneficiaries set full_name = 'Cambio prohibido' where code = 'MG-911' returning id$$,
   'Una cuenta no autorizada no puede modificar filas'
+);
+
+select is_empty(
+  $$select id from public.beneficiary_images$$,
+  'Una cuenta no autorizada no obtiene metadatos privados de imágenes'
+);
+
+select throws_ok(
+  $$insert into public.beneficiary_images (
+      beneficiary_id, thumbnail_path, detail_path, sort_order, is_primary
+    ) values (
+      '93000000-0000-4000-8000-000000000001',
+      'contract/forbidden-thumbnail.webp', 'contract/forbidden-detail.webp', 1, false
+    )$$,
+  '42501',
+  null,
+  'Una cuenta no autorizada no puede crear imágenes'
+);
+
+select is_empty(
+  $$update public.beneficiary_images set alt_text = 'Cambio prohibido' returning id$$,
+  'Una cuenta no autorizada no puede modificar imágenes'
 );
 
 set local request.jwt.claim.sub = '92000000-0000-4000-8000-000000000001';

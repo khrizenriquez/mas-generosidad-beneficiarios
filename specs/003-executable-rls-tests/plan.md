@@ -69,7 +69,8 @@ supabase/
 │   └── 202609150001_harden_media_access.sql
 └── tests/
     ├── 001_privacy_contract.sql
-    └── 002_rls_behavior.sql
+    ├── 002_public_privacy_behavior.sql
+    └── 003_admin_authorization_behavior.sql
 ```
 
 **Structure Decision**: Conservar la estructura Supabase existente. La migración incremental modifica privilegios y políticas sin reescribir la migración aplicada. Los nuevos archivos separan las pruebas de comportamiento con fixtures y roles de las aserciones estructurales actuales. Los scripts y CI solo orquestan esas pruebas; nunca duplican el esquema.
