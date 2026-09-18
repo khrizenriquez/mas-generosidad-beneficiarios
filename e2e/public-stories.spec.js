@@ -167,6 +167,10 @@ test('portada y detalle no tienen violaciones WCAG A/AA detectables', async ({
   await page
     .getByRole('heading', { name: 'Cada historia merece ser escuchada.' })
     .waitFor();
+  const firstCard = page.locator('article').first();
+  await firstCard.scrollIntoViewIfNeeded();
+  await expect(firstCard).toHaveAttribute('data-revealed', 'true');
+  await expect(firstCard).toHaveCSS('opacity', '1');
   const homeResults = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
     .analyze();
