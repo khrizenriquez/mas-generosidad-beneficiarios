@@ -1,30 +1,41 @@
 import { createTheme } from '@mui/material/styles';
 
-export const brand = {
-  paper: '#F8F2E7',
-  paperLight: '#FFFDF8',
-  ink: '#20322E',
-  leaf: '#2E6A58',
-  leafDark: '#19483A',
-  maize: '#E8B44A',
-  clay: '#C96C4A',
-  sky: '#A9D6CF',
-};
+export const brand = Object.freeze({
+  surface: '#F6F8FF',
+  surfaceElevated: '#FFFFFF',
+  ink: '#14203D',
+  muted: '#52617E',
+  blue: '#4B63D6',
+  blueDark: '#3045B8',
+  blueLight: '#E0E6FF',
+  cyan: '#13C8E0',
+  cyanDark: '#007D95',
+  cyanLight: '#E2F9FC',
+  divider: '#CBD5F5',
+});
 
 export const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: brand.leaf,
-      dark: brand.leafDark,
+      main: brand.blue,
+      dark: brand.blueDark,
+      light: brand.blueLight,
       contrastText: '#FFFFFF',
     },
-    secondary: { main: brand.clay, contrastText: '#FFFFFF' },
-    background: { default: brand.paper, paper: brand.paperLight },
-    text: { primary: brand.ink, secondary: '#566963' },
-    warning: { main: brand.maize },
+    secondary: {
+      main: brand.cyan,
+      dark: brand.cyanDark,
+      light: brand.cyanLight,
+      contrastText: brand.ink,
+    },
+    background: { default: brand.surface, paper: brand.surfaceElevated },
+    text: { primary: brand.ink, secondary: brand.muted },
+    divider: brand.divider,
+    info: { main: brand.blue, dark: brand.blueDark, light: brand.blueLight },
+    warning: { main: brand.cyan, dark: brand.cyanDark, light: brand.cyanLight },
   },
-  shape: { borderRadius: 12 },
+  shape: { borderRadius: 16 },
   typography: {
     fontFamily: 'Manrope, system-ui, sans-serif',
     h1: {

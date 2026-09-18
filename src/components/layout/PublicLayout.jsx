@@ -1,13 +1,5 @@
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
-import {
-  AppBar,
-  Box,
-  Button,
-  Container,
-  Link,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import { AppBar, Box, Button, Container, Link, Toolbar } from '@mui/material';
 import { Link as RouterLink, Outlet } from 'react-router-dom';
 import { BrandMark } from '../BrandMark.jsx';
 
@@ -20,7 +12,7 @@ export function PublicLayout() {
         position="static"
         elevation={0}
         color="transparent"
-        sx={{ borderBottom: '1px solid', borderColor: 'rgba(32,50,46,.12)' }}
+        sx={{ borderBottom: '1px solid', borderColor: 'divider' }}
       >
         <Container maxWidth="lg">
           <Toolbar
@@ -57,23 +49,41 @@ export function PublicLayout() {
 
       <Box
         component="footer"
-        sx={{ mt: 10, bgcolor: 'primary.dark', color: 'white', py: 5 }}
+        sx={{
+          mt: 10,
+          bgcolor: 'primary.dark',
+          color: 'white',
+          py: { xs: 4, md: 5 },
+        }}
       >
         <Container maxWidth="lg">
           <Box
             sx={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: 3,
+              gap: { xs: 2, sm: 3 },
               alignItems: 'center',
-              justifyContent: 'space-between',
+              justifyContent: 'center',
+              textAlign: 'center',
             }}
           >
-            <BrandMark compact color="white" />
-            <Typography variant="body2" sx={{ maxWidth: 480, opacity: 0.82 }}>
-              Este espacio comparte historias autorizadas por la ONG y protege
-              los datos privados de cada beneficiario.
-            </Typography>
+            <Link
+              href="https://khrizenriquez.github.io/khrizenriquez/"
+              target="_blank"
+              rel="noreferrer"
+              color="inherit"
+            >
+              Made with love by Christofer Enríquez ❤️
+            </Link>
+            <Box
+              aria-hidden="true"
+              sx={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                bgcolor: 'secondary.main',
+              }}
+            />
             <Link
               href={organizationUrl}
               target="_blank"

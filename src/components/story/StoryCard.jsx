@@ -9,24 +9,38 @@ import {
   Typography,
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { useRevealOnViewport } from '../../hooks/useRevealOnViewport.js';
 import { StoryImagePlaceholder } from './StoryImagePlaceholder.jsx';
 
 export function StoryCard({ beneficiary }) {
+  const { ref, isRevealed, reduceMotion } = useRevealOnViewport();
   const image =
     beneficiary.images?.find((item) => item.is_primary) ??
     beneficiary.images?.[0];
   return (
     <Card
       component="article"
+      ref={ref}
+      className="story-card"
+      data-revealed={isRevealed ? 'true' : 'false'}
+      data-reduced-motion={reduceMotion ? 'true' : 'false'}
       sx={{
         height: '100%',
         overflow: 'hidden',
-        border: '1px solid rgba(32,50,46,.08)',
-        boxShadow: '0 16px 44px rgba(32,50,46,.08)',
-        transition: 'transform 180ms ease, box-shadow 180ms ease',
+        border: '1px solid',
+        borderColor: 'divider',
+        boxShadow: '0 16px 44px rgba(48,69,184,.12)',
+        opacity: isRevealed || reduceMotion ? 1 : 0,
+        transform:
+          isRevealed || reduceMotion ? 'translateY(0)' : 'translateY(48px)',
+        transition: reduceMotion
+          ? 'none'
+          : 'opacity 620ms cubic-bezier(.2,.8,.2,1), transform 620ms cubic-bezier(.2,.8,.2,1), box-shadow 180ms ease',
         '&:hover': {
-          transform: 'translateY(-3px)',
-          boxShadow: '0 22px 52px rgba(32,50,46,.13)',
+          boxShadow: '0 22px 52px rgba(48,69,184,.2)',
+        },
+        '&:hover .story-card__image, &:focus-within .story-card__image': {
+          transform: reduceMotion ? 'none' : 'scale(1.2)',
         },
       }}
     >
@@ -37,7 +51,15 @@ export function StoryCard({ beneficiary }) {
             image={image.thumbnail_url}
             alt={image.alt_text || `Fotografía de ${beneficiary.full_name}`}
             loading="lazy"
-            sx={{ height: '100%', objectFit: 'cover' }}
+            className="story-card__image"
+            sx={{
+              height: '100%',
+              objectFit: 'cover',
+              transform: 'scale(1)',
+              transition: reduceMotion
+                ? 'none'
+                : 'transform 460ms cubic-bezier(.2,.8,.2,1)',
+            }}
           />
         ) : (
           <StoryImagePlaceholder compact />

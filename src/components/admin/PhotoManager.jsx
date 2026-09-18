@@ -104,7 +104,7 @@ export function PhotoManager({ beneficiaryId, images = [], onChanged }) {
               position: 'relative',
               borderRadius: 2,
               overflow: 'hidden',
-              bgcolor: '#E9E1D2',
+              bgcolor: 'secondary.light',
               aspectRatio: '4 / 3',
             }}
           >
@@ -124,7 +124,7 @@ export function PhotoManager({ beneficiaryId, images = [], onChanged }) {
                 position: 'absolute',
                 top: 8,
                 right: 8,
-                bgcolor: 'rgba(255,255,255,.92)',
+                bgcolor: 'background.paper',
                 '&:hover': { bgcolor: 'white' },
               }}
             >
