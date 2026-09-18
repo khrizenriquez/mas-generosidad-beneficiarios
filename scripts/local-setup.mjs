@@ -2,6 +2,7 @@ import { randomBytes } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createClient } from '@supabase/supabase-js';
 import { localStatus, safeError } from './lib/local-supabase.mjs';
+import { ensureLocalAccounts } from './lib/local-accounts.mjs';
 
 try {
   const status = await localStatus();
@@ -22,36 +23,8 @@ try {
       unauthorizedPassword: randomBytes(24).toString('base64url'),
     };
   }
-  const { data: existing, error: listError } =
-    await client.auth.admin.listUsers();
-  if (listError) throw listError;
-  for (const account of [
-    { email: credentials.email, password: credentials.password, admin: true },
-    {
-      email: credentials.unauthorizedEmail,
-      password: credentials.unauthorizedPassword,
-      admin: false,
-    },
-  ]) {
-    const found = existing.users.find((user) => user.email === account.email);
-    const { data, error } = found
-      ? await client.auth.admin.updateUserById(found.id, {
-          password: account.password,
-          email_confirm: true,
-        })
-      : await client.auth.admin.createUser({
-          email: account.email,
-          password: account.password,
-          email_confirm: true,
-        });
-    if (error) throw error;
-    if (account.admin) {
-      const { error: allowlistError } = await client
-        .from('admin_users')
-        .upsert({ user_id: data.user.id });
-      if (allowlistError) throw allowlistError;
-    }
-  }
+  console.log('Preparando cuentas ficticias locales…');
+  await ensureLocalAccounts(client, credentials);
   await mkdir('private-import', { recursive: true });
   await writeFile(
     'private-import/local-environment.json',

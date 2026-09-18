@@ -14,7 +14,7 @@ Fecha: 2026-09-18. Rama: `fix/local-mvp`. Datos de prueba exclusivamente fictici
 
 | Requisito                               | Evidencia                                                                                                                                                                                                  |
 | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Harness, privacidad y contexto Spec Kit | `npm run verify`: formato, lint, 15 unitarias, build, contexto, política Git, privacidad y contrato estático                                                                                               |
+| Harness, privacidad y contexto Spec Kit | `npm run verify`: formato, lint, 17 unitarias, build, contexto, política Git, privacidad y contrato estático                                                                                               |
 | Roles, RLS, columnas públicas y estados | `npm run db:test`: 51 aserciones pgTAP, tres suites, PASS sobre Podman                                                                                                                                     |
 | Login y administración móvil/escritorio | `npm run test:local`: cuatro escenarios integrales, PASS; contraseñas incorrectas, registro deshabilitado, allowlist, login por teclado, creación y edición de borrador, publicación y archivado           |
 | Fotografías                             | Integración local con subida real: conversión de PNG 2400×1800 a WebP de detalle 1600×1200, tres imágenes, reemplazo de principal y recuperación tras carga parcial; URLs firmadas devuelven archivos WebP |
@@ -27,7 +27,7 @@ Fecha: 2026-09-18. Rama: `fix/local-mvp`. Datos de prueba exclusivamente fictici
 
 ## Correcciones incluidas
 
-Revisión visual adicional del formulario administrativo en móvil y escritorio: sin desbordamiento horizontal y sin infracciones WCAG A/AA detectadas por Axe. Capturas locales en `test-results/qa-mobile-form.png` y `test-results/qa-desktop-form.png` (ignoradas por Git).
+Revisión visual adicional del formulario administrativo en móvil y escritorio: sin desbordamiento horizontal y sin infracciones WCAG A/AA detectadas por Axe. Las capturas de revisión son locales y no se versionan.
 
 - Las políticas Storage usan una función booleana con privilegios controlados; las tablas base siguen cerradas al público.
 - Se revoca explícitamente DELETE sobre beneficiarios al rol autenticado.
@@ -36,6 +36,7 @@ Revisión visual adicional del formulario administrativo en móvil y escritorio:
 - Reemplazar la foto principal mantiene una única principal; los fallos parciales refrescan las imágenes guardadas.
 - Publicar/archivar invalida las consultas correspondientes; el importador repetido conserva registros existentes.
 - El encabezado administrativo se adapta al móvil y se retira el desplazamiento animado global que interfería con botones al desplazarse.
+- Las pruebas reservan MG-800–MG-899 para no ocupar códigos del Word; los fallos de importación/persistencia no imprimen contenido privado.
 
 ## Cierre pendiente
 

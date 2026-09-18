@@ -59,7 +59,29 @@ test('ciclo completo con Auth, PostgreSQL y Storage reales', async ({
   ).toBe(true);
   await page.getByRole('link', { name: 'Nuevo perfil', exact: true }).click();
   await expect(page.getByLabel('Código MG')).toHaveValue(/^MG-\d{3}$/);
-  const code = await page.getByLabel('Código MG').inputValue();
+  const fixtureClient = anonymous();
+  const fixtureLogin = await fixtureClient.auth.signInWithPassword({
+    email: credentials.email,
+    password: credentials.password,
+  });
+  expect(fixtureLogin.error).toBeNull();
+  const reserved = await fixtureClient
+    .from('beneficiaries')
+    .select('code')
+    .gte('code', 'MG-800')
+    .lte('code', 'MG-899');
+  expect(reserved.error).toBeNull();
+  const used = new Set(reserved.data.map((row) => row.code));
+  const code = Array.from(
+    { length: 100 },
+    (_, index) => `MG-${800 + index}`,
+  ).find((candidate) => !used.has(candidate));
+  expect(
+    code,
+    'Debe quedar un código de prueba disponible en MG-800–MG-899',
+  ).toBeTruthy();
+  await fixtureClient.auth.signOut();
+  await page.getByLabel('Código MG').fill(code);
 
   await page.getByRole('button', { name: 'Guardar borrador' }).click();
   await expect(page).toHaveURL(/\/editar$/);

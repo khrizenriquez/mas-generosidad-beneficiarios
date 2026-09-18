@@ -46,9 +46,11 @@ try {
   await exec('npm', ['run', 'local:stop'], { maxBuffer: 20 * 1024 * 1024 });
   await exec('npm', ['run', 'local:start'], { maxBuffer: 20 * 1024 * 1024 });
   const after = await snapshot();
-  assert.deepEqual(
-    after,
-    before,
+  const digest = (value) =>
+    createHash('sha256').update(JSON.stringify(value)).digest('hex');
+  assert.equal(
+    digest(after),
+    digest(before),
     'El reinicio debe conservar filas y bytes de las fotos.',
   );
   const response = await fetch('http://127.0.0.1:5173/admin/login');

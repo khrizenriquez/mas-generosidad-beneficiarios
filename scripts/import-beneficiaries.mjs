@@ -212,7 +212,10 @@ async function main() {
   const { error } = await supabase
     .from('beneficiaries')
     .upsert(records, { onConflict: 'code', ignoreDuplicates: true });
-  if (error) throw error;
+  if (error)
+    throw new Error(
+      'La base rechazó la importación. Revisa el formato y los permisos; se omitieron los detalles para proteger los datos privados.',
+    );
   console.log('Importación finalizada. No se creó ningún archivo intermedio.');
 }
 

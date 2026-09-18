@@ -30,7 +30,7 @@ npm run test:local
 npm run test:backup
 ```
 
-`test:local` recorre móvil y escritorio con Auth, base y fotografías reales locales; solo usa identidades y perfiles ficticios. Deja los perfiles de prueba archivados, sin borrar trazabilidad. `test:backup` comprueba cifrado, descifrado y fotografías, y elimina únicamente su archivo de prueba. Para un respaldo conservable define `BACKUP_ENCRYPTION_PASSWORD` en tu terminal y ejecuta `npm run backup:local`.
+`test:local` recorre móvil y escritorio con Auth, base y fotografías reales locales; solo usa identidades y perfiles ficticios con códigos reservados MG-800–MG-899, separados del Word. Deja los perfiles de prueba archivados, sin borrar trazabilidad. `test:backup` comprueba cifrado, descifrado y fotografías, y elimina únicamente su archivo de prueba. Para un respaldo conservable define `BACKUP_ENCRYPTION_PASSWORD` en tu terminal y ejecuta `npm run backup:local`.
 
 Podman puede informar `starting` en Kong/PostgREST aunque no tengan healthcheck definido. El harness comprueba Auth, RPC y Storage mediante HTTP antes de confirmar el arranque; no acepta un servicio inaccesible. Studio, analítica, correo y otros servicios ajenos al MVP no se inician.
 
