@@ -38,9 +38,8 @@ Revisión visual adicional del formulario administrativo en móvil y escritorio:
 - El encabezado administrativo se adapta al móvil y se retira el desplazamiento animado global que interfería con botones al desplazarse.
 - Las pruebas reservan MG-800–MG-899 para no ocupar códigos del Word; los fallos de importación/persistencia no imprimen contenido privado.
 
-## Cierre pendiente
+## Cierre
 
-- Verificar los checks del PR consolidado en GitHub Actions, incluido el job Podman Linux.
-- Revisión y fusión exclusivamente por el propietario. El despliegue y la validación cloud pertenecen a otro PR.
+El commit `487f71d` del PR #7 terminó en verde el 18 de septiembre de 2026: `verify`, `e2e`, `secret-audit` y `local-podman`. Este último ejecutó el ciclo completo en Linux con el socket de Podman. La revisión y fusión permanecen exclusivamente a cargo del propietario. El despliegue y la validación cloud pertenecen a otro PR.
 
 Esta evidencia cubre los escenarios enumerados; no afirma ausencia absoluta de errores ni certificación formal de accesibilidad.
