@@ -27,6 +27,8 @@ Fecha: 2026-09-18. Rama: `fix/local-mvp`. Datos de prueba exclusivamente fictici
 
 ## Correcciones incluidas
 
+Revisión visual adicional del formulario administrativo en móvil y escritorio: sin desbordamiento horizontal y sin infracciones WCAG A/AA detectadas por Axe. Capturas locales en `test-results/qa-mobile-form.png` y `test-results/qa-desktop-form.png` (ignoradas por Git).
+
 - Las políticas Storage usan una función booleana con privilegios controlados; las tablas base siguen cerradas al público.
 - Se revoca explícitamente DELETE sobre beneficiarios al rol autenticado.
 - El formulario convierte los nulos de la base en campos vacíos y conserva cambios sin guardar al refrescar fotos.

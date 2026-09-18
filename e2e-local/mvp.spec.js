@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { randomBytes } from 'node:crypto';
 import { createClient } from '@supabase/supabase-js';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
@@ -27,7 +28,7 @@ test('rechaza cuentas válidas fuera de la allowlist y protege rutas', async ({
   await expect(page).toHaveURL(/\/admin\/login/);
   const signup = await anonymous().auth.signUp({
     email: 'registro-prohibido@example.test',
-    password: 'clave-ficticia-prohibida-123',
+    password: randomBytes(24).toString('base64url'),
   });
   expect(signup.error).not.toBeNull();
   expect(signup.data.user).toBeNull();
