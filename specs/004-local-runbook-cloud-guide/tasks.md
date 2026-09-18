@@ -68,7 +68,7 @@
 ## Phase 6: Polish & cross-cutting verification
 
 - [x] T011 Ejecutar `npm run context:check` y actualizar todos los checkboxes de `specs/004-local-runbook-cloud-guide/tasks.md` tras terminar las tareas.
-- [ ] T012 Preparar el commit sin trailer `Co-authored-by`, subir `docs/local-runbook-and-cloud-guide` y abrir un Pull Request sin auto-merge hacia `main`.
+- [x] T012 Preparar el commit sin trailer `Co-authored-by`, subir `docs/local-runbook-and-cloud-guide` y abrir un Pull Request sin auto-merge hacia `main`.
 
 ## Dependencies & Execution Order
 
