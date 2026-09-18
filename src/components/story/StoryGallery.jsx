@@ -67,8 +67,8 @@ function GalleryImage({ image, beneficiaryName, position, featured = false }) {
         objectFit: 'cover',
         borderRadius: featured ? '8px 44px 8px 8px' : 2,
         boxShadow: featured
-          ? '0 22px 60px rgba(32,50,46,.13)'
-          : '0 10px 28px rgba(32,50,46,.1)',
+          ? '0 22px 60px rgba(48,69,184,.16)'
+          : '0 10px 28px rgba(48,69,184,.11)',
       }}
     />
   );

@@ -11,7 +11,7 @@ export function BrandMark({ compact = false, color = 'inherit' }) {
           width: compact ? 32 : 38,
           height: compact ? 32 : 38,
           borderRadius: '50% 50% 42% 58%',
-          bgcolor: 'warning.main',
+          bgcolor: 'secondary.main',
           position: 'relative',
           transform: 'rotate(-8deg)',
           '&::after': {

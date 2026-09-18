@@ -197,7 +197,11 @@ export default function BeneficiaryFormPage() {
         component="form"
         noValidate
         elevation={0}
-        sx={{ p: { xs: 2, sm: 4 }, border: '1px solid #DDD3C2' }}
+        sx={{
+          p: { xs: 2, sm: 4 },
+          border: '1px solid',
+          borderColor: 'divider',
+        }}
       >
         <Stepper
           activeStep={activeStep}
@@ -240,7 +244,7 @@ export default function BeneficiaryFormPage() {
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           gap={2}
-          sx={{ mt: 4, pt: 3, borderTop: '1px solid #E2DACB' }}
+          sx={{ mt: 4, pt: 3, borderTop: '1px solid', borderColor: 'divider' }}
         >
           <Button
             onClick={() => setActiveStep((step) => Math.max(0, step - 1))}

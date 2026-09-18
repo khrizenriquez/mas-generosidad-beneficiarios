@@ -15,12 +15,12 @@ import { BrandMark } from '../BrandMark.jsx';
 export default function AdminLayout() {
   const { signOut } = useAuth();
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#F2EBDD' }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <AppBar
         position="sticky"
         color="inherit"
         elevation={0}
-        sx={{ borderBottom: '1px solid #DDD3C2' }}
+        sx={{ borderBottom: '1px solid', borderColor: 'divider' }}
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ gap: 1.5, flexWrap: 'wrap', py: 1 }}>

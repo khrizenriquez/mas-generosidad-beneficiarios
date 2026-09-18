@@ -13,7 +13,7 @@ export function StoryImagePlaceholder({ compact = false }) {
         p: 3,
         color: 'primary.dark',
         background:
-          'radial-gradient(circle at 20% 20%, rgba(232,180,74,.72) 0 10%, transparent 10.5%), radial-gradient(circle at 80% 70%, rgba(169,214,207,.8) 0 16%, transparent 16.5%), #E9E1D2',
+          'radial-gradient(circle at 20% 20%, rgba(19,200,224,.72) 0 10%, transparent 10.5%), radial-gradient(circle at 80% 70%, rgba(83,109,230,.28) 0 16%, transparent 16.5%), #E2F9FC',
       }}
     >
       <Box>

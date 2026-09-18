@@ -112,7 +112,7 @@ export default function BeneficiaryListPage() {
         <TableContainer
           component={Paper}
           elevation={0}
-          sx={{ border: '1px solid #DDD3C2' }}
+          sx={{ border: '1px solid', borderColor: 'divider' }}
         >
           <Table aria-label="Beneficiarios registrados">
             <TableHead>

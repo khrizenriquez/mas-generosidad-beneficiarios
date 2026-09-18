@@ -75,6 +75,91 @@ test('la página declara noindex y el enlace externo es seguro', async ({
   }
 });
 
+test('usa la identidad azul y cian en la portada', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.locator('body')).toHaveCSS(
+    'background-color',
+    'rgb(246, 248, 255)',
+  );
+  await expect(page.locator('article').first()).toHaveCSS(
+    'border-top-color',
+    'rgb(203, 213, 245)',
+  );
+});
+
+test('el footer muestra los enlaces limpios aprobados', async ({ page }) => {
+  await page.goto('/');
+
+  const footer = page.locator('footer');
+  const authorLink = footer.getByRole('link', {
+    name: 'Made with love by Christofer Enríquez',
+  });
+
+  await expect(authorLink).toHaveAttribute(
+    'href',
+    'https://khrizenriquez.github.io/khrizenriquez/',
+  );
+  await expect(authorLink).toHaveAttribute('rel', /noreferrer/);
+  await expect(
+    footer.getByRole('link', { name: 'masgenerosidad.org' }),
+  ).toHaveAttribute('href', 'https://masgenerosidad.org/');
+  await expect(
+    footer.getByText(
+      'Este espacio comparte historias autorizadas por la ONG y protege los datos privados de cada beneficiario.',
+    ),
+  ).toHaveCount(0);
+  await expect(
+    footer.getByText('Más Generosidad', { exact: true }),
+  ).toHaveCount(0);
+});
+
+test('las tarjetas se revelan al entrar y la fotografía amplía 20%', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const card = page.locator('article').first();
+  const image = card.locator('.story-card__image');
+  await card.scrollIntoViewIfNeeded();
+  await expect(card).toHaveAttribute('data-revealed', 'true');
+
+  await card.hover();
+  await expect(image).toHaveCSS('transform', 'matrix(1.2, 0, 0, 1.2, 0, 0)');
+
+  await card.getByRole('link', { name: 'Leer su historia' }).focus();
+  await expect(image).toHaveCSS('transform', 'matrix(1.2, 0, 0, 1.2, 0, 0)');
+});
+
+test('las tarjetas sin fotografía conservan el placeholder de marca', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const card = page
+    .locator('article')
+    .filter({ hasText: 'Perfil de muestra Dos' });
+  await card.scrollIntoViewIfNeeded();
+
+  await expect(card.getByText('Historia sin fotografía')).toBeVisible();
+  await expect(card.locator('.story-card__image')).toHaveCount(0);
+});
+
+test('las tarjetas respetan la preferencia de movimiento reducido', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const card = page.locator('article').first();
+  const image = card.locator('.story-card__image');
+
+  await expect(card).toHaveAttribute('data-reduced-motion', 'true');
+  await expect(card).toHaveCSS('transform', 'none');
+  await card.hover();
+  await expect(image).toHaveCSS('transform', 'none');
+});
+
 test('portada y detalle no tienen violaciones WCAG A/AA detectables', async ({
   page,
 }) => {

@@ -52,7 +52,8 @@ export default function HomePage() {
             width: 360,
             height: 360,
             borderRadius: '50%',
-            bgcolor: 'rgba(169,214,207,.45)',
+            bgcolor: 'secondary.light',
+            opacity: 0.78,
             right: { xs: -220, md: -80 },
             top: -180,
           }}
