@@ -1,5 +1,9 @@
 import { getSupabase } from '../lib/supabase.js';
 
+function normalizeGender(value) {
+  return value === 'Niño' || value === 'Niña' ? value : null;
+}
+
 async function withSignedAdminImages(beneficiary) {
   if (!beneficiary) return null;
   const supabase = getSupabase();
@@ -46,7 +50,7 @@ export async function saveBeneficiary(values, id) {
     code: values.code.trim().toUpperCase(),
     full_name: values.full_name?.trim() || null,
     date_of_birth: values.date_of_birth || null,
-    gender: values.gender?.trim() || null,
+    gender: normalizeGender(values.gender),
     school_grade: values.school_grade?.trim() || null,
     favorite_subject: values.favorite_subject?.trim() || null,
     hobby: values.hobby?.trim() || null,

@@ -6,6 +6,8 @@ const text = z
   .optional()
   .or(z.literal(''));
 
+const gender = z.enum(['Niño', 'Niña']).or(z.literal(''));
+
 export const beneficiaryFormSchema = z.object({
   code: z
     .string()
@@ -13,7 +15,7 @@ export const beneficiaryFormSchema = z.object({
     .regex(/^MG-\d{3}$/, 'Usa el formato MG-001.'),
   full_name: text,
   date_of_birth: z.string().optional().or(z.literal('')),
-  gender: text,
+  gender,
   school_grade: text,
   favorite_subject: text,
   hobby: text,

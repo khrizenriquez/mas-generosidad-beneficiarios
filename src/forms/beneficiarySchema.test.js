@@ -40,4 +40,24 @@ describe('beneficiary schemas', () => {
   it('acepta una publicación completa', () => {
     expect(publishedBeneficiarySchema.safeParse(complete).success).toBe(true);
   });
+
+  it.each(['Niño', 'Niña', ''])('acepta el género permitido %s', (gender) => {
+    expect(
+      beneficiaryFormSchema.safeParse({
+        ...complete,
+        gender,
+        status: 'draft',
+      }).success,
+    ).toBe(true);
+  });
+
+  it('rechaza un género fuera de las opciones aprobadas', () => {
+    expect(
+      beneficiaryFormSchema.safeParse({
+        ...complete,
+        gender: 'Otro',
+        status: 'draft',
+      }).success,
+    ).toBe(false);
+  });
 });

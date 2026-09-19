@@ -324,7 +324,6 @@ function renderStep(step, context) {
                 </MenuItem>
                 <MenuItem value="Niña">Niña</MenuItem>
                 <MenuItem value="Niño">Niño</MenuItem>
-                <MenuItem value="Otro">Otro</MenuItem>
               </Select>
             </FormControl>
           )}

@@ -72,7 +72,7 @@ Como responsable de la ONG, quiero consultar métricas agregadas de visitas para
 - **FR-003**: El sistema MUST usar únicamente analítica agregada y anónima, sin cookies de seguimiento, eventos personalizados ni perfiles persistentes de visitantes.
 - **FR-004**: El sistema MUST mantener el registro público deshabilitado y permitir administración solo a cuentas autenticadas incluidas explícitamente en la allowlist.
 - **FR-005**: El sistema MUST conservar exactamente 41 perfiles MG-001 a MG-041 y excluir MG-042.
-- **FR-006**: Después de la confirmación externa de la ONG, el sistema MUST poder preparar una demostración temporal autorizada: publicar los 41 perfiles, asignar `2019-08-19` solo como fecha administrativa temporal y asociar la misma ilustración neutral a cada perfil mediante el bucket privado.
+- **FR-006**: Después de la confirmación externa de la ONG, el sistema MUST poder preparar una demostración temporal autorizada: publicar los 41 perfiles, asignar `2019-08-19` solo como fecha administrativa temporal, completar campos públicos obligatorios vacíos con `Información pendiente de actualización` y asociar la misma ilustración neutral a cada perfil mediante el bucket privado.
 - **FR-007**: El sistema MUST impedir que personas visitantes accedan a fechas de nacimiento completas, notas privadas, borradores, archivados o fotografías no autorizadas.
 - **FR-008**: El sistema MUST mantener secretos, contraseñas, documentos fuente, fotografías originales y datos reales fuera de Git, del navegador y de la configuración pública de despliegue.
 - **FR-009**: El sistema MUST proporcionar instrucciones de recuperación y una comprobación de producción para autenticación, contenido, privacidad, analítica y errores de red.

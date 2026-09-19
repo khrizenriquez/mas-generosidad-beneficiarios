@@ -95,12 +95,12 @@ ilustración neutral común, sin exponer la fecha completa ni almacenar original
 publicados y una imagen principal por perfil; la API pública expone edad, no
 fecha de nacimiento, y no permite descargar los objetos sin URLs firmadas.
 
-- [ ] T025 [P] Añadir pruebas en `src/forms/beneficiarySchema.test.js` y `scripts/import-beneficiaries.test.mjs` para aceptar solo `Niño`, `Niña` o sin especificar, y normalizar datos de origen no permitidos a `null`.
-- [ ] T026 Añadir una migración nueva en `supabase/migrations/` y una prueba pgTAP que normalicen género histórico no permitido y rechacen persistir valores fuera de `Niño`, `Niña` o `NULL`.
-- [ ] T027 Actualizar `src/forms/beneficiarySchema.js`, `src/pages/admin/BeneficiaryFormPage.jsx`, `src/services/adminBeneficiaries.js` y `scripts/import-beneficiaries.mjs` para que `Otro` no aparezca ni pueda persistirse.
-- [ ] T028 [P] Crear y probar `scripts/publish-temporary-demo.mjs`: exigir confirmación explícita de entorno, recibir solo variantes WebP locales no rastreadas, cargarlas al bucket privado, crear una imagen principal por perfil y publicar el lote de forma idempotente con compensación de errores.
+- [x] T025 [P] Añadir pruebas en `src/forms/beneficiarySchema.test.js` y `scripts/import-beneficiaries.test.mjs` para aceptar solo `Niño`, `Niña` o sin especificar, y normalizar datos de origen no permitidos a `null`.
+- [x] T026 Añadir una migración nueva en `supabase/migrations/` y una prueba pgTAP que normalicen género histórico no permitido y rechacen persistir valores fuera de `Niño`, `Niña` o `NULL`.
+- [x] T027 Actualizar `src/forms/beneficiarySchema.js`, `src/pages/admin/BeneficiaryFormPage.jsx`, `src/services/adminBeneficiaries.js` y `scripts/import-beneficiaries.mjs` para que `Otro` no aparezca ni pueda persistirse.
+- [x] T028 [P] Crear y probar `scripts/publish-temporary-demo.mjs`: exigir confirmación explícita de entorno, recibir solo variantes WebP locales no rastreadas, cargarlas al bucket privado, crear una imagen principal por perfil y publicar el lote de forma idempotente con compensación de errores.
 - [ ] T029 Generar, inspeccionar y guardar transitoriamente una ilustración neutral sin personas, nombres ni texto; convertirla a dos derivados WebP y eliminar el original local después de completar la carga.
-- [ ] T030 Ejecutar T028 contra Supabase desde secretos locales ignorados, establecer la fecha administrativa temporal `2019-08-19`, verificar solo conteos de 41 publicaciones/41 imágenes y comprobar el contrato público sin fechas completas.
+- [ ] T030 Ejecutar T028 contra Supabase desde secretos locales ignorados, establecer la fecha administrativa temporal `2019-08-19`, completar solo campos obligatorios vacíos con el texto autorizado, verificar solo conteos de 41 publicaciones/41 imágenes y comprobar el contrato público sin fechas completas.
 - [ ] T031 Crear un respaldo manual cifrado posterior a T030 y documentar en `validation.md` únicamente existencia y resultado agregado, sin rutas, claves ni contenido.
 - [ ] T032 Ejecutar `npm run verify`, `npm run db:test`, `npm run test:local`, `npm run test:e2e`, `npm run privacy:check` y la comprobación de humo remoto; actualizar `validation.md` y marcar las tareas concluidas.
 

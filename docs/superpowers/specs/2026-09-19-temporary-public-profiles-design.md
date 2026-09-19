@@ -15,6 +15,10 @@ para publicar los perfiles y autorizó una misma imagen temporal para todos.
 - Establecer `2019-08-19` como fecha de nacimiento administrativa temporal para
   cada perfil. La fecha completa no formará parte de ninguna respuesta pública;
   PostgreSQL continuará exponiendo únicamente la edad calculada.
+- Completar únicamente los campos públicos obligatorios que estén vacíos con el
+  texto temporal `Información pendiente de actualización`. No se infieren ni se
+  redactan datos personales; cada valor queda visible y editable para que un
+  administrador lo sustituya.
 - Crear una sola ilustración neutral de marca: sin personas, rostros, nombres,
   texto ni información identificable; usará los colores azul y turquesa de Más
   Generosidad.
@@ -33,8 +37,9 @@ para publicar los perfiles y autorizó una misma imagen temporal para todos.
    original de trabajo cuando la carga haya terminado.
 3. Usar una credencial de servidor almacenada solo en `private-import/` para
    cargar ambas variantes y crear una imagen principal por cada perfil.
-4. Completar la fecha temporal y cambiar el estado de los 41 perfiles a
-   `published` en una operación comprobable.
+4. Completar la fecha temporal, aplicar el texto temporal solo a campos
+   obligatorios vacíos y cambiar el estado de los 41 perfiles a `published` en
+   una operación comprobable.
 5. Verificar únicamente conteos y límites: 41 publicaciones, ninguna fecha
    completa en RPCs públicas, una imagen por perfil y URLs firmadas disponibles
    solo para contenido publicado.
