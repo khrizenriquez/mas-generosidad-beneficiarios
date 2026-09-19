@@ -60,6 +60,25 @@ test('el acceso administrativo no ofrece registro público', async ({
   await expect(page.getByText(/registr/i)).toHaveCount(0);
 });
 
+test('resuelve rutas profundas al recargar sin exponer contenido administrativo', async ({
+  page,
+}) => {
+  await page.goto('/historias/DEMO-001');
+  await page.reload();
+  await expect(
+    page.getByRole('heading', { name: 'Perfil de muestra Uno' }),
+  ).toBeVisible();
+  await expect(page.getByText(/fecha de nacimiento/i)).toHaveCount(0);
+  await expect(page.getByText(/notas de importaci/i)).toHaveCount(0);
+
+  await page.goto('/admin/login');
+  await page.reload();
+  await expect(
+    page.getByRole('heading', { name: 'Área administrativa' }),
+  ).toBeVisible();
+  await expect(page.getByText(/registr/i)).toHaveCount(0);
+});
+
 test('la página declara noindex y el enlace externo es seguro', async ({
   page,
 }) => {

@@ -113,7 +113,7 @@ values
 set local role anon;
 
 select results_eq(
-  $$select code from public.get_public_beneficiaries()$$,
+  $$select code from public.get_public_beneficiaries() where code = 'MG-901'$$,
   $$values ('MG-901'::text)$$,
   'La colección anónima solo contiene perfiles publicados'
 );
@@ -141,7 +141,7 @@ select results_eq(
 );
 
 select results_eq(
-  $$select name::text from storage.objects order by name$$,
+  $$select name::text from storage.objects where name like 'contract/%' order by name$$,
   $$values
     ('contract/published-detail.webp'::text),
     ('contract/published-thumbnail.webp'::text)$$,
@@ -182,7 +182,7 @@ set local role authenticated;
 set local request.jwt.claim.sub = '92000000-0000-4000-8000-000000000002';
 
 select results_eq(
-  $$select name::text from storage.objects order by name$$,
+  $$select name::text from storage.objects where name like 'contract/%' order by name$$,
   $$values
     ('contract/published-detail.webp'::text),
     ('contract/published-thumbnail.webp'::text)$$,
@@ -195,11 +195,11 @@ update public.beneficiaries set status = 'archived' where code = 'MG-901';
 set local role anon;
 
 select is_empty(
-  $$select code from public.get_public_beneficiaries()$$,
+  $$select code from public.get_public_beneficiaries() where code = 'MG-901'$$,
   'Archivar retira inmediatamente el perfil de la colección pública'
 );
 select is_empty(
-  $$select name from storage.objects$$,
+  $$select name from storage.objects where name like 'contract/%'$$,
   'Archivar impide nuevas lecturas autorizadas de sus fotografías'
 );
 

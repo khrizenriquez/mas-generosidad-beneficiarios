@@ -4,11 +4,11 @@
 
 **Created**: 2026-09-18
 
-**Status**: Draft
+**Status**: Ready for review
 
 **Input**: Publicar el catálogo desde la rama principal, activar analítica anónima de visitantes y cargar el documento privado como 41 borradores sin exponer secretos, fotografías de demostración ni fechas ficticias.
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Consultar historias publicadas de forma segura (Priority: P1)
 
@@ -63,7 +63,7 @@ Como responsable de la ONG, quiero consultar métricas agregadas de visitas para
 - Si la analítica no está disponible, el catálogo y la administración siguen funcionando.
 - Si una rama de vista previa se publica, no sustituye la producción ni requiere secretos adicionales.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -78,14 +78,14 @@ Como responsable de la ONG, quiero consultar métricas agregadas de visitas para
 - **FR-009**: El sistema MUST proporcionar instrucciones de recuperación y una comprobación de producción para autenticación, contenido, privacidad, analítica y errores de red.
 - **FR-010**: El cambio MUST llegar mediante un único Pull Request revisable hacia `main`, sin despliegue manual que omita la revisión humana.
 
-### Key Entities *(include if feature involves data)*
+### Key Entities _(include if feature involves data)_
 
 - **Perfil importado**: Registro privado inicial proveniente del documento autorizado, identificado por código y pendiente de revisión antes de cualquier publicación.
 - **Cuenta administrativa**: Cuenta autenticada incluida explícitamente para gestionar perfiles; no contiene ni expone contraseñas en el producto.
 - **Métrica agregada de visita**: Conteo anónimo de alcance y navegación que no identifica ni perfila a una persona.
 - **Configuración de producción**: Valores públicos mínimos que permiten al catálogo comunicarse con el servicio de datos sin exponer secretos.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 
