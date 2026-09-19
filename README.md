@@ -16,6 +16,16 @@ Este repositorio contiene el MVP y su entorno local reproducible. No contiene no
 
 El consentimiento para publicar se gestiona fuera de la aplicación: la ONG debe revisarlo antes de cada publicación.
 
+## Vista previa con datos ficticios
+
+Las capturas siguientes se generan en modo demo y no contienen perfiles,
+fotografías, fechas ni credenciales reales. Sirven para revisar el catálogo y el
+acceso administrativo antes de configurar Supabase.
+
+| Catálogo público                                                                            | Acceso administrativo en móvil                                                                           |
+| ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| ![Tarjetas del catálogo con perfiles ficticios](docs/screenshots/catalogo-publico-demo.png) | ![Formulario móvil de acceso administrativo en modo demo](docs/screenshots/acceso-admin-demo-mobile.png) |
+
 ## Tecnologías
 
 Las versiones están bloqueadas en `package-lock.json`; esta tabla resume las dependencias relevantes de `package.json`.
@@ -26,7 +36,7 @@ Las versiones están bloqueadas en `package-lock.json`; esta tabla resume las de
 | Interfaz                    | React `19.3.0`, React Router `7.18.3`, Material UI Community `9.4.0`, Emotion y Roboto desde Google Fonts      |
 | Formularios y datos remotos | React Hook Form `7.88.0`, Zod `4.6.5`, TanStack Query `5.102.8`, Supabase JS `2.116.0`                         |
 | Backend local               | Supabase CLI `2.117.0`, PostgreSQL 17, Auth, REST y Storage ejecutados en Podman                               |
-| Imágenes                    | Canvas del navegador para miniatura y detalle WebP; nunca se conserva el original                              |
+| Imágenes                    | Canvas del navegador y Sharp `0.35.4` para derivados WebP; nunca se conserva el original                       |
 | Calidad                     | ESLint `10.10.0`, Prettier `3.9.6`, Vitest `5.0.0`, Testing Library, Playwright `1.63.0` y axe-core Playwright |
 | Producción futura           | SPA estática compatible con Vercel Hobby y Supabase Free; no hay despliegue configurado en esta rama           |
 
@@ -166,13 +176,18 @@ El resultado es un archivo AES-256-GCM en `backups/`, ignorado por Git. Copia el
 
 ## Despliegue futuro
 
-Esta rama no crea ni modifica proyectos de Supabase o Vercel. El runbook detallado de nube se mantiene deliberadamente **fuera de este repositorio** para no mezclar operación de producción, referencias de cuenta o secretos con Git. Su ejecución será objeto de un Pull Request posterior, después de la aprobación de la ONG.
-
-El destino previsto sigue siendo una SPA Vite en Vercel Hobby y Supabase Free. `vercel.json` conserva el enrutamiento SPA y las cabeceras `X-Robots-Tag: noindex, nofollow, noarchive`; el dominio temporal previsto es `mas-generosidad-beneficiarios.vercel.app`.
+El destino es una SPA Vite en Vercel Hobby y Supabase Free. `vercel.json`
+conserva el enrutamiento SPA y las cabeceras `X-Robots-Tag: noindex, nofollow,
+noarchive`; el dominio temporal es
+`mas-generosidad-beneficiarios.vercel.app`.
 
 Para publicar después del Pull Request aprobado, conecta el repositorio a Vercel y deja `main` como rama de producción; los Pull Requests deben ser previews. Usa `npm run build` y `dist`. En Production y Preview configura únicamente `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` y `VITE_USE_DEMO_DATA=false`. Las variables `VITE_*` viajan al navegador: nunca configures una service role, contraseña, Word, fotografía original, respaldo ni cualquier dato personal. Habilita Web Analytics en el panel de Vercel; el componente incluido no envía eventos personalizados, búsquedas, credenciales ni datos de formularios.
 
-Antes de publicar, en Supabase Auth desactiva el registro público y comprueba que cada cuenta administradora aparece en `admin_users`. Después del primer despliegue, ejecuta la prueba de humo de `specs/006-cloud-launch-analytics/quickstart.md`; la demostración temporal autorizada se ejecuta únicamente desde una terminal local controlada.
+Antes de publicar, en Supabase Auth desactiva el registro público y comprueba
+que cada cuenta administradora aparece en `admin_users`. Después de cada
+despliegue, ejecuta la prueba de humo de
+`specs/006-cloud-launch-analytics/quickstart.md`; la demostración temporal
+autorizada se ejecuta únicamente desde una terminal local controlada.
 
 ## Contribución
 
