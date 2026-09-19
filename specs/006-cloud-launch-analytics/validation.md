@@ -22,4 +22,16 @@
 
 - Configurar Vercel con las tres variables públicas permitidas para Production y Preview, conectar `main` como producción y habilitar Web Analytics.
 - Comprobar que Supabase Auth tiene registro público deshabilitado.
-- Con una clave de servidor temporal guardada solo en local, importar los 41 borradores, crear respaldo cifrado y ejecutar humo remoto.
+- Ejecutar humo de producción después del despliegue de `main` y comprobar métricas agregadas de Vercel.
+
+## Importación remota privada
+
+| Comprobación | Resultado | Evidencia agregada |
+| --- | --- | --- |
+| Importación única de documento | PASS | 41 perfiles importados; MG-042 excluido; 41 borradores, 0 publicados, 0 archivados y 0 imágenes. |
+
+## Pendiente de demostración temporal autorizada
+
+- Aplicar la migración de género y verificar que solo persistan `Niño`, `Niña` o sin especificar.
+- Generar una ilustración neutral, crear derivados WebP y publicar los 41 perfiles tras comprobar nuevamente los límites de privacidad.
+- Crear un respaldo local cifrado posterior a la publicación temporal y registrar únicamente su existencia.

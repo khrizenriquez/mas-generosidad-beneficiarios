@@ -6,7 +6,7 @@
 
 **Status**: Ready for review
 
-**Input**: Publicar el catálogo desde la rama principal, activar analítica anónima de visitantes y cargar el documento privado como 41 borradores sin exponer secretos, fotografías de demostración ni fechas ficticias.
+**Input**: Publicar el catálogo desde la rama principal, activar analítica anónima de visitantes, cargar el documento privado y publicar temporalmente los 41 perfiles autorizados sin exponer secretos ni fechas completas.
 
 ## User Scenarios & Testing _(mandatory)_
 
@@ -28,17 +28,17 @@ Como futuro donante, quiero abrir el catálogo público y navegar las historias 
 
 ### User Story 2 - Administrar contenido autorizado (Priority: P1)
 
-Como persona administradora autorizada, quiero iniciar sesión y gestionar borradores para revisar los perfiles antes de publicarlos.
+Como persona administradora autorizada, quiero iniciar sesión y gestionar los perfiles publicados para sustituir progresivamente los datos temporales y archivar cualquier perfil retirado.
 
 **Why this priority**: La ONG necesita mantener la revisión humana y el consentimiento previo a toda publicación.
 
-**Independent Test**: Un administrador autorizado puede iniciar sesión, consultar los 41 borradores importados y completar el flujo de edición; una cuenta ajena no puede entrar al área administrativa.
+**Independent Test**: Un administrador autorizado puede iniciar sesión, consultar los 41 perfiles autorizados y completar el flujo de edición; una cuenta ajena no puede entrar al área administrativa.
 
 **Acceptance Scenarios**:
 
 1. **Given** una cuenta incluida en la allowlist administrativa, **When** inicia sesión, **Then** puede acceder al área de administración.
 2. **Given** una cuenta autenticada que no está autorizada, **When** intenta abrir el área administrativa, **Then** queda rechazada sin poder modificar contenido.
-3. **Given** el documento privado disponible únicamente en una terminal controlada, **When** se importa una vez, **Then** se crean exactamente 41 borradores y ninguno se publica automáticamente.
+3. **Given** el documento privado y la autorización externa confirmada, **When** se prepara la demostración desde una terminal controlada, **Then** se conservan exactamente 41 perfiles publicados y ningún dato privado se imprime ni entra en Git.
 
 ---
 
@@ -71,18 +71,19 @@ Como responsable de la ONG, quiero consultar métricas agregadas de visitas para
 - **FR-002**: El sistema MUST conservar el acceso público por enlace, la exclusión de buscadores y las cabeceras de seguridad existentes.
 - **FR-003**: El sistema MUST usar únicamente analítica agregada y anónima, sin cookies de seguimiento, eventos personalizados ni perfiles persistentes de visitantes.
 - **FR-004**: El sistema MUST mantener el registro público deshabilitado y permitir administración solo a cuentas autenticadas incluidas explícitamente en la allowlist.
-- **FR-005**: El sistema MUST cargar exactamente 41 perfiles MG-001 a MG-041 como borradores privados y excluir MG-042.
-- **FR-006**: El sistema MUST omitir fotografías de demostración y fechas ficticias durante la carga inicial de producción.
+- **FR-005**: El sistema MUST conservar exactamente 41 perfiles MG-001 a MG-041 y excluir MG-042.
+- **FR-006**: Después de la confirmación externa de la ONG, el sistema MUST poder preparar una demostración temporal autorizada: publicar los 41 perfiles, asignar `2019-08-19` solo como fecha administrativa temporal y asociar la misma ilustración neutral a cada perfil mediante el bucket privado.
 - **FR-007**: El sistema MUST impedir que personas visitantes accedan a fechas de nacimiento completas, notas privadas, borradores, archivados o fotografías no autorizadas.
 - **FR-008**: El sistema MUST mantener secretos, contraseñas, documentos fuente, fotografías originales y datos reales fuera de Git, del navegador y de la configuración pública de despliegue.
 - **FR-009**: El sistema MUST proporcionar instrucciones de recuperación y una comprobación de producción para autenticación, contenido, privacidad, analítica y errores de red.
 - **FR-010**: El cambio MUST llegar mediante un único Pull Request revisable hacia `main`, sin despliegue manual que omita la revisión humana.
 - **FR-011**: La interfaz pública MUST cargar Roboto desde Google Fonts con las conexiones previas necesarias y usarla de manera consistente en textos, controles, encabezados y marca tipográfica.
 - **FR-012**: El footer MUST mostrar el crédito exacto `Made with ❤️ by Christofer Enríquez`, preservar sus dos enlaces seguros y organizarse en columna centrada en móvil y fila centrada desde el breakpoint pequeño.
+- **FR-013**: El formulario, importador y base de datos MUST aceptar únicamente `Niño`, `Niña` o sin especificar para género; los valores históricos no permitidos se normalizan a sin especificar sin exponerse públicamente.
 
 ### Key Entities _(include if feature involves data)_
 
-- **Perfil importado**: Registro privado inicial proveniente del documento autorizado, identificado por código y pendiente de revisión antes de cualquier publicación.
+- **Perfil temporalmente publicado**: Registro autorizado identificado por código, con una ilustración neutral común y una fecha administrativa temporal que un administrador puede sustituir.
 - **Cuenta administrativa**: Cuenta autenticada incluida explícitamente para gestionar perfiles; no contiene ni expone contraseñas en el producto.
 - **Métrica agregada de visita**: Conteo anónimo de alcance y navegación que no identifica ni perfila a una persona.
 - **Configuración de producción**: Valores públicos mínimos que permiten al catálogo comunicarse con el servicio de datos sin exponer secretos.
@@ -93,7 +94,7 @@ Como responsable de la ONG, quiero consultar métricas agregadas de visitas para
 
 - **SC-001**: Una persona visitante puede abrir la portada y una historia publicada desde el enlace de producción, en móvil y escritorio, sin errores de navegación.
 - **SC-002**: El 100% de los intentos anónimos verificados contra borradores, archivados, fechas completas, notas privadas y fotografías no autorizadas es rechazado o devuelve contenido vacío.
-- **SC-003**: La carga inicial crea exactamente 41 borradores, 0 publicaciones automáticas y 0 fotografías de demostración.
+- **SC-003**: La demostración autorizada conserva exactamente 41 perfiles publicados, una imagen derivada común por perfil y no expone ninguna fecha de nacimiento completa.
 - **SC-004**: El 100% de los perfiles que aparecen en búsqueda pública pertenece al estado publicado.
 - **SC-005**: El responsable puede consultar métricas agregadas sin que el repositorio, la aplicación ni la base de contenido persistan correos, contraseñas, términos de búsqueda o identificadores persistentes de visitantes.
 - **SC-006**: La batería de calidad, seguridad y navegación definida para el proyecto finaliza correctamente antes de abrir el Pull Request.
@@ -104,5 +105,5 @@ Como responsable de la ONG, quiero consultar métricas agregadas de visitas para
 - El dominio temporal existente seguirá siendo el destino de producción hasta que la ONG aporte un subdominio propio.
 - La configuración de cuentas, variables públicas y analítica se hará en las consolas de los proveedores por una persona autorizada, no dentro de Git.
 - El documento fuente y la clave temporal necesaria para importarlo permanecen solo en el equipo local autorizado.
-- La ONG revisará cada borrador, dispondrá del consentimiento externo necesario y añadirá fotografías y fechas correctas antes de publicar.
+- La ONG confirmó el consentimiento externo para esta demostración temporal y sustituirá, desde administración, las fechas y la ilustración común por los datos aprobados de cada perfil.
 - El lanzamiento no añade pagos, formularios de contacto, registro público, eventos de marketing ni analítica identificable.

@@ -30,14 +30,16 @@ El resultado esperado es una batería verde, sin secreto ni documento privado ra
 4. En Supabase Auth, comprobar que registro público está deshabilitado y que cada admin aparece en `admin_users`.
 5. Fusionar el PR; esperar el despliegue automático de `main` y abrir la URL de producción.
 
-## Importación y verificación posterior
+## Importación, demostración temporal y verificación posterior
 
 1. Desde una terminal local controlada, colocar el secreto temporal y ejecutar el importador existente contra el Word privado.
 2. Confirmar solo los totales: 41 borradores, MG-042 excluido, sin fotos y ninguna publicación automática.
-3. Crear un backup manual cifrado y guardarlo fuera del equipo de trabajo.
-4. En producción, probar recarga de `/`, una historia, `/admin/login`, login de una cuenta autorizada y rechazo de una no autorizada.
-5. Con una sesión anónima, verificar que no aparece una fecha completa, perfil borrador/archivado, nota privada ni imagen privada; comprobar el estado vacío público esperado mientras no existan publicaciones.
-6. Comprobar que el panel de Vercel muestra métricas agregadas sin eventos personalizados y que el sitio conserva `noindex`.
+3. Solo después de confirmar consentimiento externo, ejecutar la preparación temporal desde la terminal local: ilustración neutral, derivados WebP privados, fecha administrativa temporal y publicación de los 41 perfiles.
+4. Confirmar solo los totales: 41 publicados, una imagen por perfil, ninguna fecha completa en las respuestas públicas y ninguna exposición de objetos del bucket sin URL firmada.
+5. Crear un backup manual cifrado y guardarlo fuera del equipo de trabajo.
+6. En producción, probar recarga de `/`, una historia, `/admin/login`, login de una cuenta autorizada y rechazo de una no autorizada.
+7. Con una sesión anónima, verificar que no aparece una fecha completa, nota privada, perfil archivado ni imagen privada; comprobar la búsqueda y la galería de los perfiles publicados.
+8. Comprobar que el panel de Vercel muestra métricas agregadas sin eventos personalizados y que el sitio conserva `noindex`.
 
 ## Recuperación segura
 

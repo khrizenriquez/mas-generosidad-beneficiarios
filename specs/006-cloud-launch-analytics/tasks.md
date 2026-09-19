@@ -1,6 +1,6 @@
 # Tasks: Lanzamiento cloud y analítica anónima
 
-**Input**: Diseño de `specs/006-cloud-launch-analytics/`, `docs/superpowers/specs/2026-09-18-cloud-launch-analytics-design.md` y `docs/superpowers/specs/2026-09-19-roboto-footer-mobile-design.md`.
+**Input**: Diseño de `specs/006-cloud-launch-analytics/`, `docs/superpowers/specs/2026-09-18-cloud-launch-analytics-design.md`, `docs/superpowers/specs/2026-09-19-roboto-footer-mobile-design.md` y `docs/superpowers/specs/2026-09-19-temporary-public-profiles-design.md`.
 
 **Prerequisites**: `plan.md`, `spec.md`, `research.md`, `data-model.md`, `contracts/production-launch.md` y `quickstart.md`.
 
@@ -53,7 +53,7 @@
 
 - [x] T011 [P] [US2] Añadir pruebas de parser e idempotencia sin datos reales en `scripts/import-beneficiaries.test.mjs` para MG-001–MG-041, exclusión MG-042, borrador obligatorio, fecha incompleta pendiente y ausencia de fotos.
 - [x] T012 [US2] Actualizar `scripts/import-beneficiaries.mjs` y `README.md` para que la carga remota exija explícitamente una variable de servidor local, informe únicamente conteos y rechace usar modo demo o una variable `VITE_*` como credencial.
-- [ ] T013 [US2] Ejecutar la carga real una única vez desde un archivo local ignorado después de recibir una clave de servidor transitoria; verificar con una consulta de solo conteos 41 borradores, 0 publicaciones y 0 fotos, y registrar solo el resultado agregado en `specs/006-cloud-launch-analytics/validation.md`.
+- [x] T013 [US2] Ejecutar la carga real una única vez desde un archivo local ignorado después de recibir una clave de servidor transitoria; verificar con una consulta de solo conteos 41 borradores, 0 publicaciones y 0 fotos, y registrar solo el resultado agregado en `specs/006-cloud-launch-analytics/validation.md`.
 - [ ] T014 [US2] Crear un respaldo manual cifrado después de la carga mediante `scripts/backup.mjs` y documentar en `specs/006-cloud-launch-analytics/validation.md` únicamente su existencia local, sin ruta, nombre, clave ni contenido.
 
 **Checkpoint**: La ONG puede iniciar la revisión editorial desde `/admin` sin que el catálogo público exponga los borradores.
@@ -84,12 +84,33 @@
 - [ ] T020 Ejecutar el humo remoto descrito en `specs/006-cloud-launch-analytics/quickstart.md` después de que `main` se despliegue y actualizar `validation.md` con resultados agregados de rutas, RLS, Auth, imágenes y noindex.
 - [ ] T021 Marcar tareas completadas, actualizar `specs/006-cloud-launch-analytics/validation.md`, preparar commits sin `Co-authored-by`, subir `feat/cloud-launch-analytics` y abrir el único Pull Request hacia `main` sin auto-merge.
 
+---
+
+## Phase 7: Demostración pública temporal autorizada
+
+**Goal**: Publicar de forma reversible los 41 perfiles autorizados con una
+ilustración neutral común, sin exponer la fecha completa ni almacenar originales.
+
+**Independent Test**: Una consulta de solo conteos confirma 41 perfiles
+publicados y una imagen principal por perfil; la API pública expone edad, no
+fecha de nacimiento, y no permite descargar los objetos sin URLs firmadas.
+
+- [ ] T025 [P] Añadir pruebas en `src/forms/beneficiarySchema.test.js` y `scripts/import-beneficiaries.test.mjs` para aceptar solo `Niño`, `Niña` o sin especificar, y normalizar datos de origen no permitidos a `null`.
+- [ ] T026 Añadir una migración nueva en `supabase/migrations/` y una prueba pgTAP que normalicen género histórico no permitido y rechacen persistir valores fuera de `Niño`, `Niña` o `NULL`.
+- [ ] T027 Actualizar `src/forms/beneficiarySchema.js`, `src/pages/admin/BeneficiaryFormPage.jsx`, `src/services/adminBeneficiaries.js` y `scripts/import-beneficiaries.mjs` para que `Otro` no aparezca ni pueda persistirse.
+- [ ] T028 [P] Crear y probar `scripts/publish-temporary-demo.mjs`: exigir confirmación explícita de entorno, recibir solo variantes WebP locales no rastreadas, cargarlas al bucket privado, crear una imagen principal por perfil y publicar el lote de forma idempotente con compensación de errores.
+- [ ] T029 Generar, inspeccionar y guardar transitoriamente una ilustración neutral sin personas, nombres ni texto; convertirla a dos derivados WebP y eliminar el original local después de completar la carga.
+- [ ] T030 Ejecutar T028 contra Supabase desde secretos locales ignorados, establecer la fecha administrativa temporal `2019-08-19`, verificar solo conteos de 41 publicaciones/41 imágenes y comprobar el contrato público sin fechas completas.
+- [ ] T031 Crear un respaldo manual cifrado posterior a T030 y documentar en `validation.md` únicamente existencia y resultado agregado, sin rutas, claves ni contenido.
+- [ ] T032 Ejecutar `npm run verify`, `npm run db:test`, `npm run test:local`, `npm run test:e2e`, `npm run privacy:check` y la comprobación de humo remoto; actualizar `validation.md` y marcar las tareas concluidas.
+
 ## Dependencies & Execution Order
 
 - T001–T003 preparan documentación, dependencia y contexto.
 - T004–T007 son fundacionales y bloquean el trabajo visible de las historias.
 - T008–T010 preservan el contrato público y son el MVP técnico de lanzamiento.
 - T011 puede comenzar con T008; T012 depende de T011; T013–T014 requieren la configuración de Supabase y una clave local transitoria, por lo que son operaciones posteriores y no se simulan con datos reales en CI.
+- T025 y T026 preparan el contrato de género y bloquean T027. T028 depende de las pruebas y de la decisión de media; T029 prepara las variantes privadas; T030 depende de T026–T029 y de la confirmación externa de consentimiento; T031 depende de T030; T032 cierra la fase.
 - T015–T016 dependen de T004–T007; T017 requiere el despliegue resultante de fusionar el único PR.
 - T018–T021 cierran la entrega; T020 y T021 necesitan que la revisión humana haya permitido desplegar `main`.
 
@@ -107,3 +128,4 @@
 3. Reforzar importador y runbook sin introducir información real al repositorio.
 4. Ejecutar el harness local completo y entregar el único PR.
 5. Tras su merge, configurar Vercel y Auth, importar los borradores con credenciales exclusivamente locales y realizar humo remoto/analítica.
+6. Tras la confirmación de consentimiento, aplicar el contrato de género y ejecutar la demostración temporal reversible desde una terminal local controlada.
