@@ -60,6 +60,25 @@ test('el acceso administrativo no ofrece registro público', async ({
   await expect(page.getByText(/registr/i)).toHaveCount(0);
 });
 
+test('resuelve rutas profundas al recargar sin exponer contenido administrativo', async ({
+  page,
+}) => {
+  await page.goto('/historias/DEMO-001');
+  await page.reload();
+  await expect(
+    page.getByRole('heading', { name: 'Perfil de muestra Uno' }),
+  ).toBeVisible();
+  await expect(page.getByText(/fecha de nacimiento/i)).toHaveCount(0);
+  await expect(page.getByText(/notas de importaci/i)).toHaveCount(0);
+
+  await page.goto('/admin/login');
+  await page.reload();
+  await expect(
+    page.getByRole('heading', { name: 'Área administrativa' }),
+  ).toBeVisible();
+  await expect(page.getByText(/registr/i)).toHaveCount(0);
+});
+
 test('la página declara noindex y el enlace externo es seguro', async ({
   page,
 }) => {
@@ -91,9 +110,20 @@ test('usa la identidad azul y cian en la portada', async ({ page }) => {
 test('el footer muestra los enlaces limpios aprobados', async ({ page }) => {
   await page.goto('/');
 
+  await expect(
+    page.locator('link[rel="preconnect"][href="https://fonts.googleapis.com"]'),
+  ).toHaveCount(1);
+  await expect(
+    page.locator('link[rel="preconnect"][href="https://fonts.gstatic.com"]'),
+  ).toHaveAttribute('crossorigin', '');
+  await expect(
+    page.locator('link[href*="fonts.googleapis.com/css2?family=Roboto"]'),
+  ).toHaveCount(1);
+  await expect(page.locator('body')).toHaveCSS('font-family', /Roboto/);
+
   const footer = page.locator('footer');
   const authorLink = footer.getByRole('link', {
-    name: 'Made with love by Christofer Enríquez ❤️',
+    name: 'Made with ❤️ by Christofer Enríquez',
   });
 
   await expect(authorLink).toHaveAttribute(
@@ -112,6 +142,12 @@ test('el footer muestra los enlaces limpios aprobados', async ({ page }) => {
   await expect(
     footer.getByText('Más Generosidad', { exact: true }),
   ).toHaveCount(0);
+
+  const footerLinks = footer.getByTestId('footer-links');
+  await expect(footerLinks).toHaveCSS(
+    'flex-direction',
+    test.info().project.name === 'chromium-mobile' ? 'column' : 'row',
+  );
 });
 
 test('las tarjetas se revelan al entrar y la fotografía amplía 20%', async ({

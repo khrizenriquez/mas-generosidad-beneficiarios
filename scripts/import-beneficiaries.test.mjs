@@ -14,6 +14,8 @@ describe('importación privada con entradas exclusivamente ficticias', () => {
     expect(rows[0].code).toBe('MG-001');
     expect(rows.at(-1).code).toBe('MG-041');
     expect(rows.every((row) => row.status === 'draft')).toBe(true);
+    expect(rows.every((row) => !('images' in row))).toBe(true);
+    expect(rows.filter((row) => row.code === 'MG-042')).toHaveLength(0);
   });
 
   it('no infiere años ni convierte fechas inválidas', () => {

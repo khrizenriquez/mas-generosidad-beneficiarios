@@ -31,7 +31,6 @@ export function BrandMark({ compact = false, color = 'inherit' }) {
           component="span"
           sx={{
             display: 'block',
-            fontFamily: 'Fraunces',
             fontWeight: 700,
             lineHeight: 1,
           }}

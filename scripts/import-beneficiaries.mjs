@@ -198,11 +198,26 @@ async function main() {
 
   if (dryRun) return;
 
-  const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+  const supabaseUrl = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (process.env.VITE_USE_DEMO_DATA === 'true') {
+    throw new Error(
+      'La importación remota no se ejecuta con VITE_USE_DEMO_DATA=true.',
+    );
+  }
+  if (process.env.VITE_SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error(
+      'No uses VITE_SUPABASE_SERVICE_ROLE_KEY: la credencial debe permanecer solo en la terminal local.',
+    );
+  }
   if (!supabaseUrl || !serviceRoleKey) {
     throw new Error(
       'Define SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY para ejecutar la importación.',
+    );
+  }
+  if (serviceRoleKey.startsWith('sb_publishable_')) {
+    throw new Error(
+      'La clave publicable no puede ejecutar la importación; usa una credencial de servidor local.',
     );
   }
 

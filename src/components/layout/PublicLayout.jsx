@@ -58,8 +58,10 @@ export function PublicLayout() {
       >
         <Container maxWidth="lg">
           <Box
+            data-testid="footer-links"
             sx={{
               display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
               flexWrap: 'wrap',
               gap: { xs: 2, sm: 3 },
               alignItems: 'center',
@@ -73,11 +75,12 @@ export function PublicLayout() {
               rel="noreferrer"
               color="inherit"
             >
-              Made with love by Christofer Enríquez ❤️
+              Made with ❤️ by Christofer Enríquez
             </Link>
             <Box
               aria-hidden="true"
               sx={{
+                display: { xs: 'none', sm: 'block' },
                 width: 6,
                 height: 6,
                 borderRadius: '50%',

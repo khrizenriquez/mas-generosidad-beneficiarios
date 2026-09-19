@@ -142,13 +142,17 @@ El resultado es un archivo AES-256-GCM en `backups/`, ignorado por Git. Copia el
 - Un visitante nunca debe poder leer tablas base, borradores, archivados o imágenes privadas; RLS, privilegios, bucket privado y URLs firmadas son obligatorios.
 - No hay borrado definitivo desde la interfaz: retirar una historia significa archivarla.
 - Un usuario autenticado solo es administrador si aparece en `admin_users`.
-- No hay pagos, contacto por beneficiario, analítica, registro público ni IA dentro del producto.
+- No hay pagos, contacto por beneficiario, registro público ni IA dentro del producto. La única analítica permitida es Vercel Web Analytics agregada, sin eventos personalizados, cookies propias ni datos identificables de visitantes.
 
 ## Despliegue futuro
 
 Esta rama no crea ni modifica proyectos de Supabase o Vercel. El runbook detallado de nube se mantiene deliberadamente **fuera de este repositorio** para no mezclar operación de producción, referencias de cuenta o secretos con Git. Su ejecución será objeto de un Pull Request posterior, después de la aprobación de la ONG.
 
 El destino previsto sigue siendo una SPA Vite en Vercel Hobby y Supabase Free. `vercel.json` conserva el enrutamiento SPA y las cabeceras `X-Robots-Tag: noindex, nofollow, noarchive`; el dominio temporal previsto es `mas-generosidad-beneficiarios.vercel.app`.
+
+Para publicar después del Pull Request aprobado, conecta el repositorio a Vercel y deja `main` como rama de producción; los Pull Requests deben ser previews. Usa `npm run build` y `dist`. En Production y Preview configura únicamente `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` y `VITE_USE_DEMO_DATA=false`. Las variables `VITE_*` viajan al navegador: nunca configures una service role, contraseña, Word, fotografía original, respaldo ni cualquier dato personal. Habilita Web Analytics en el panel de Vercel; el componente incluido no envía eventos personalizados, búsquedas, credenciales ni datos de formularios.
+
+Antes de publicar, en Supabase Auth desactiva el registro público y comprueba que cada cuenta administradora aparece en `admin_users`. Después del primer despliegue, ejecuta la prueba de humo de `specs/006-cloud-launch-analytics/quickstart.md`; importa el Word solo desde una terminal local controlada y únicamente como 41 borradores privados.
 
 ## Contribución
 

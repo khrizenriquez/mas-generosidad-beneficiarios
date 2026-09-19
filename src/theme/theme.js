@@ -1,5 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 
+const robotoFontFamily = 'Roboto, system-ui, sans-serif';
+
 export const brand = Object.freeze({
   surface: '#F6F8FF',
   surfaceElevated: '#FFFFFF',
@@ -37,23 +39,23 @@ export const theme = createTheme({
   },
   shape: { borderRadius: 16 },
   typography: {
-    fontFamily: 'Manrope, system-ui, sans-serif',
+    fontFamily: robotoFontFamily,
     h1: {
-      fontFamily: 'Fraunces, Georgia, serif',
+      fontFamily: robotoFontFamily,
       fontWeight: 700,
       lineHeight: 1.05,
     },
     h2: {
-      fontFamily: 'Fraunces, Georgia, serif',
+      fontFamily: robotoFontFamily,
       fontWeight: 700,
       lineHeight: 1.1,
     },
     h3: {
-      fontFamily: 'Fraunces, Georgia, serif',
+      fontFamily: robotoFontFamily,
       fontWeight: 600,
       lineHeight: 1.15,
     },
-    h4: { fontFamily: 'Fraunces, Georgia, serif', fontWeight: 600 },
+    h4: { fontFamily: robotoFontFamily, fontWeight: 600 },
     button: { fontWeight: 700, textTransform: 'none' },
   },
   components: {
