@@ -8,7 +8,7 @@
 | Vercel         | Definir entorno de Production y Preview                   | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_USE_DEMO_DATA=false` | Service role, contraseña, Word, fotos, backups, valores con datos personales.                  |
 | Vercel         | Habilitar Web Analytics                                   | Componente oficial sin eventos personalizados                             | Cookies propias, perfiles persistentes, eventos con búsqueda, Auth o contenido de formularios. |
 | Supabase Auth  | Desactivar registro público                               | Email/password para cuentas creadas por administrador                     | Registro abierto o promoción automática de cualquier usuario a admin.                          |
-| Terminal local | Importar documento y crear backup                         | Archivo local ignorado, secreto temporal y respaldo cifrado               | Secretos en Git, logs con valores reales o ejecución desde navegador.                          |
+| Terminal local | Importar, preparar demo y crear backup                    | Archivo local ignorado, secreto temporal y respaldo cifrado               | Secretos en Git, logs con valores reales o ejecución desde navegador.                          |
 
 ## Contrato de build
 
@@ -26,6 +26,7 @@
 ## Contrato de importación y humo
 
 1. La carga privada informa solo totales: 41 perfiles, MG-042 excluido, sin valores personales impresos.
-2. El resultado remoto contiene 41 registros `draft`, 0 fotos y 0 registros publicados inmediatamente tras la carga.
-3. Una consulta anónima solo devuelve el contrato público y una consulta a tablas base, borradores, archivados o fotos no autorizadas queda denegada.
-4. Solo una persona autorizada ejecuta cambios de consola, configuración de acceso o publicación; toda operación externa se confirma inmediatamente antes de aplicarse.
+2. La operación temporal posterior exige una confirmación documentada de consentimiento, asigna una fecha privada temporal, carga solo derivados WebP de una ilustración neutral y deja 41 perfiles `published` con una imagen principal cada uno.
+3. Una consulta anónima solo devuelve el contrato público y una consulta a tablas base, fecha completa, borradores, archivados o fotos no autorizadas queda denegada.
+4. La publicación temporal no puede exceder tres imágenes por perfil, no almacena originales y permite sustitución o archivado por administración.
+5. Solo una persona autorizada ejecuta cambios de consola, configuración de acceso o publicación; toda operación externa se confirma inmediatamente antes de aplicarse.

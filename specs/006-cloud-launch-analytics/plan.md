@@ -6,7 +6,7 @@
 
 ## Summary
 
-Añadir el cliente oficial de analítica de Vercel a la SPA React sin eventos personalizados; conservar el despliegue estático, las reescrituras SPA y las cabeceras de privacidad existentes. Cargar Roboto desde Google Fonts para la interfaz pública y reforzar el footer móvil con el crédito aprobado. Documentar y comprobar el lanzamiento Git-to-Vercel, la configuración pública mínima, Auth sin registro público, la importación local idempotente de 41 borradores y la validación remota. No se modifica el esquema de Supabase, no se crea telemetría propia y no se versiona ni se carga un secreto a Vercel.
+Añadir el cliente oficial de analítica de Vercel a la SPA React sin eventos personalizados; conservar el despliegue estático, las reescrituras SPA y las cabeceras de privacidad existentes. Cargar Roboto desde Google Fonts para la interfaz pública y reforzar el footer móvil con el crédito aprobado. Documentar y comprobar el lanzamiento Git-to-Vercel, la configuración pública mínima, Auth sin registro público y la importación privada de 41 perfiles. Tras la confirmación externa de consentimiento, una operación local controlada generará una ilustración neutral común, la almacenará como derivados WebP privados, completará una fecha administrativa temporal, rellenará solo campos obligatorios vacíos con el texto aprobado y publicará los 41 perfiles. Se añade una migración para limitar género a `Niño`, `Niña` o sin especificar. No se crea telemetría propia y no se versiona ni se carga un secreto a Vercel.
 
 ## Technical Context
 
@@ -14,7 +14,7 @@ Añadir el cliente oficial de analítica de Vercel a la SPA React sin eventos pe
 
 **Primary Dependencies**: Material UI Community, React Router 7, TanStack Query 5, React Hook Form 7, Zod 4, Supabase JS 2 y `@vercel/analytics` 2.0.1 fijado en el lockfile; Roboto se carga desde el CSS oficial de Google Fonts sin una dependencia npm adicional.
 
-**Storage**: Supabase PostgreSQL y bucket privado ya migrados; no hay tabla, cookie ni almacén adicional para analítica.
+**Storage**: Supabase PostgreSQL y bucket privado; una migración adicional restringe `beneficiaries.gender`; no hay tabla, cookie ni almacén adicional para analítica.
 
 **Testing**: Vitest + Testing Library, Playwright móvil/escritorio y Podman/Supabase local para políticas; pruebas manuales de humo contra producción tras configuración externa.
 
@@ -24,19 +24,19 @@ Añadir el cliente oficial de analítica de Vercel a la SPA React sin eventos pe
 
 **Performance Goals**: La integración de analítica no bloquea el primer contenido ni la navegación; las conexiones previas de Roboto se declaran en el documento y la portada, footer y rutas profundas cargan sin error en móvil y escritorio.
 
-**Constraints**: Solo niveles gratuitos; JavaScript sin TypeScript; dos valores públicos de Supabase en Vercel; sin service role, contraseña, ID remoto, Word, fotos originales ni datos reales en Git, logs o bundle; sin eventos personalizados ni perfiles de visitantes.
+**Constraints**: Solo niveles gratuitos; JavaScript sin TypeScript; dos valores públicos de Supabase en Vercel; sin service role, contraseña, ID remoto, Word, fotos originales ni datos reales en Git, logs o bundle; sin eventos personalizados ni perfiles de visitantes. La fecha temporal se mantiene privada y la ilustración común no representa a una persona real.
 
-**Scale/Scope**: Un catálogo en español, 41 borradores iniciales, dos administradores ya autorizados, una URL de producción temporal y una única entrega vía Pull Request.
+**Scale/Scope**: Un catálogo en español, 41 perfiles temporalmente publicados, dos administradores ya autorizados, una URL de producción temporal y una única entrega vía Pull Request.
 
 ## Constitution Check
 
 | Principio                         | Evaluación                                                                                                      | Resultado |
 | --------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------- |
 | Privacidad antes que conveniencia | No se añade analítica propia, no se exportan datos reales y la prueba remota comprueba fronteras públicas.      | PASS      |
-| Publicación deliberada            | La importación crea 41 borradores y no publica ningún perfil.                                                   | PASS      |
+| Publicación deliberada            | La ONG confirmó consentimiento externo; una operación controlada publica 41 perfiles y conserva el archivado.   | PASS      |
 | Seguridad por capas               | RLS, bucket privado, URLs firmadas, Auth y allowlist se preservan; registro público se desactiva en la consola. | PASS      |
 | Presupuesto cero y portabilidad   | Vercel Hobby, Supabase Free y dependencia oficial sin servicios adicionales ni bloqueo de datos.                | PASS      |
-| Calidad verificable               | Se amplían pruebas unitarias/E2E y se ejecutan harness local, contrato DB y humo de producción.                 | PASS      |
+| Calidad verificable               | Se amplían pruebas de género, media, RLS y publicación; se ejecutan harness local y humo remoto.                | PASS      |
 | Accesibilidad y dignidad          | Analítica no altera el flujo ni envía búsquedas, credenciales o contenido sensible.                             | PASS      |
 | Integración con revisión humana   | Solo una rama y un PR hacia `main`; no hay push directo ni auto-merge.                                          | PASS      |
 
@@ -77,6 +77,7 @@ e2e/
 
 scripts/
 ├── import-beneficiaries.mjs          # carga local idempotente del Word
+├── publish-temporary-demo.mjs        # operación privada temporal autorizada
 ├── check-no-private-data.mjs         # auditoría de privacidad
 └── check-env.mjs                     # validación de entorno
 
@@ -85,7 +86,7 @@ vercel.json                          # reescrituras SPA y cabeceras
 README.md                            # runbook local y límites de nube
 ```
 
-**Structure Decision**: Se conserva la SPA existente. La analítica se monta una sola vez junto a la raíz React para no contaminar rutas, formularios o servicios con telemetría.
+**Structure Decision**: Se conserva la SPA existente. La analítica se monta una sola vez junto a la raíz React para no contaminar rutas, formularios o servicios con telemetría. La publicación temporal se ejecuta en una terminal controlada con una clave de servidor local y no amplía el bundle público.
 
 ## Complexity Tracking
 

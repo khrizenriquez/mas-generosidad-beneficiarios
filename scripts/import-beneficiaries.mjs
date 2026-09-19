@@ -80,7 +80,7 @@ function parseBlock(block) {
     code: `MG-${String(block.number).padStart(3, '0')}`,
     full_name: fields.full_name || null,
     date_of_birth: dateOfBirth,
-    gender: fields.gender || null,
+    gender: normalizeGender(fields.gender),
     school_grade: fields.school_grade || null,
     favorite_subject: fields.favorite_subject || null,
     hobby: fields.hobby || null,
@@ -155,6 +155,13 @@ function normalize(value) {
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .replace(/[¿?]/g, '');
+}
+
+function normalizeGender(value) {
+  const normalized = normalize(value || '');
+  if (/\b(?:nina|femenino)\b/.test(normalized)) return 'Niña';
+  if (/\b(?:nino|masculino)\b/.test(normalized)) return 'Niño';
+  return null;
 }
 
 async function main() {

@@ -37,4 +37,22 @@ describe('importación privada con entradas exclusivamente ficticias', () => {
     expect(rows[0].import_notes).toContain('4 de mayo');
     expect(rows[1].import_notes).toContain('31/02/2015');
   });
+
+  it('normaliza género a las opciones aprobadas sin conservar valores no permitidos', () => {
+    const rows = parseBeneficiaries(
+      [
+        'MG001',
+        'Nombre: Perfil ficticio uno',
+        'Género: Femenino',
+        'MG002',
+        'Nombre: Perfil ficticio dos',
+        'Género: Masculino',
+        'MG003',
+        'Nombre: Perfil ficticio tres',
+        'Género: Otro',
+      ].join('\n'),
+    );
+
+    expect(rows.map((row) => row.gender)).toEqual(['Niña', 'Niño', null]);
+  });
 });

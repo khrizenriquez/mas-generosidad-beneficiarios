@@ -44,7 +44,38 @@
 - **Alternatives considered**:
   - Importar en el navegador: descartado porque expondría el documento y privilegios de escritura.
   - Publicar durante importación: descartado porque no demuestra consentimiento ni revisión humana.
-  - Copiar valores al repositorio: descartado por la constitución de privacidad.
+- Copiar valores al repositorio: descartado por la constitución de privacidad.
+
+## Decisión: demostración temporal con ilustración neutral común
+
+- **Decisión**: Tras la confirmación de consentimiento externo de la ONG, crear
+  una ilustración no identificable con los colores de marca, derivarla a WebP y
+  asociar una copia de miniatura y detalle a cada uno de los 41 perfiles. Una
+  operación local separada asigna la fecha administrativa temporal `2019-08-19`
+  y publica los registros.
+- **Rationale**: Permite revisar la experiencia completa del catálogo sin usar
+  fotografías reales, conservar el almacenamiento privado y dar a los
+  administradores una ruta de sustitución por perfil.
+- **Alternatives considered**:
+  - Imagen externa compartida por URL: descartada porque debilita el control del
+    bucket privado y puede persistir fuera de la ONG.
+  - Sin imagen temporal: descartada porque no permite validar los espacios,
+    tarjetas y galería de la experiencia pública.
+  - Publicar desde el navegador: descartado porque requiere privilegios de
+    servidor y expone una operación masiva a la sesión cliente.
+
+## Decisión: restringir género en todas las capas
+
+- **Decisión**: Persistir únicamente `Niño`, `Niña` o `NULL`; el formulario
+  muestra `Sin especificar` para `NULL`, el importador normaliza variantes
+  inequívocas y la migración borra valores históricos no permitidos.
+- **Rationale**: Elimina la etiqueta "Otro", mantiene un contrato sencillo y
+  evita que un cliente alterado persista valores no aprobados.
+- **Alternatives considered**:
+  - Solo ocultar "Otro" en UI: descartado porque importaciones y clientes
+    directos podrían seguir persistiendo valores distintos.
+  - Guardar el texto “Sin especificar”: descartado porque `NULL` comunica mejor
+    la ausencia de dato y evita mostrar una etiqueta innecesaria públicamente.
 
 ## Decisión: control de acceso y lanzamiento por etapas
 

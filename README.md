@@ -23,7 +23,7 @@ Las versiones están bloqueadas en `package-lock.json`; esta tabla resume las de
 | Área                        | Tecnología                                                                                                     |
 | --------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | Runtime y empaquetado       | Node.js `>=24 <25`, npm, Vite `8.3.0`                                                                          |
-| Interfaz                    | React `19.3.0`, React Router `7.18.3`, Material UI Community `9.4.0`, Emotion, Manrope y Fraunces              |
+| Interfaz                    | React `19.3.0`, React Router `7.18.3`, Material UI Community `9.4.0`, Emotion y Roboto desde Google Fonts      |
 | Formularios y datos remotos | React Hook Form `7.88.0`, Zod `4.6.5`, TanStack Query `5.102.8`, Supabase JS `2.116.0`                         |
 | Backend local               | Supabase CLI `2.117.0`, PostgreSQL 17, Auth, REST y Storage ejecutados en Podman                               |
 | Imágenes                    | Canvas del navegador para miniatura y detalle WebP; nunca se conserva el original                              |
@@ -125,6 +125,26 @@ El resultado esperado son 41 borradores con códigos normalizados `MG-001` a `MG
 
 Solo después de una revisión humana, define `SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` en una terminal controlada para ejecutar `npm run import:beneficiaries`. Nunca pongas la clave de servicio en `.env` versionado, variables `VITE_*`, Vercel o el navegador.
 
+## Demostración temporal autorizada
+
+Después de confirmar externamente el consentimiento de la ONG y aplicar las
+migraciones aprobadas, una terminal local puede publicar la demostración con una
+ilustración neutral no identificable. Guarda el original solo dentro de
+`private-import/`; el script genera derivados WebP, los almacena en el bucket
+privado y elimina el original tras una operación correcta.
+
+```bash
+set -a
+source private-import/supabase-import.env
+set +a
+npm run publish:temporary-demo -- --source=private-import/ilustracion-temporal.png --confirm-authorized-temporary-publication
+```
+
+Esta operación exige exactamente MG-001 a MG-041, usa una imagen principal por
+perfil, conserva el límite de tres imágenes y completa solo los campos públicos
+obligatorios vacíos con `Información pendiente de actualización`. La fecha
+temporal nunca se devuelve públicamente: el catálogo solo muestra edad.
+
 ## Backups y reactivación local
 
 El plan gratuito no sustituye un respaldo. Para crear uno manual, define en tu terminal `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` y una frase de al menos 16 caracteres en `BACKUP_ENCRYPTION_PASSWORD`; luego ejecuta:
@@ -152,7 +172,7 @@ El destino previsto sigue siendo una SPA Vite en Vercel Hobby y Supabase Free. `
 
 Para publicar después del Pull Request aprobado, conecta el repositorio a Vercel y deja `main` como rama de producción; los Pull Requests deben ser previews. Usa `npm run build` y `dist`. En Production y Preview configura únicamente `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` y `VITE_USE_DEMO_DATA=false`. Las variables `VITE_*` viajan al navegador: nunca configures una service role, contraseña, Word, fotografía original, respaldo ni cualquier dato personal. Habilita Web Analytics en el panel de Vercel; el componente incluido no envía eventos personalizados, búsquedas, credenciales ni datos de formularios.
 
-Antes de publicar, en Supabase Auth desactiva el registro público y comprueba que cada cuenta administradora aparece en `admin_users`. Después del primer despliegue, ejecuta la prueba de humo de `specs/006-cloud-launch-analytics/quickstart.md`; importa el Word solo desde una terminal local controlada y únicamente como 41 borradores privados.
+Antes de publicar, en Supabase Auth desactiva el registro público y comprueba que cada cuenta administradora aparece en `admin_users`. Después del primer despliegue, ejecuta la prueba de humo de `specs/006-cloud-launch-analytics/quickstart.md`; la demostración temporal autorizada se ejecuta únicamente desde una terminal local controlada.
 
 ## Contribución
 
