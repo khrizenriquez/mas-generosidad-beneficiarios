@@ -12,6 +12,7 @@
 | `npm run test:persistence`                   | PASS      | Reinicio local conserva perfiles y derivados WebP; frontend y rutas responden.                                                       |
 | `npm audit --omit=dev`                       | PASS      | 0 vulnerabilidades reportadas después de fijar la dependencia de analítica.                                                          |
 | Privacidad y diff                            | PASS      | Sin secretos ni datos privados rastreados; diff sin errores de espacio.                                                              |
+| Roboto y footer móvil (2026-09-19)           | PASS      | `npm run verify` con Node 24 y 24 pruebas Playwright aisladas: Roboto declarada, crédito exacto, columna móvil y fila de escritorio. |
 
 ## Hallazgo de aislamiento corregido
 

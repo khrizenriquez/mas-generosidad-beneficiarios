@@ -77,6 +77,8 @@ Como responsable de la ONG, quiero consultar métricas agregadas de visitas para
 - **FR-008**: El sistema MUST mantener secretos, contraseñas, documentos fuente, fotografías originales y datos reales fuera de Git, del navegador y de la configuración pública de despliegue.
 - **FR-009**: El sistema MUST proporcionar instrucciones de recuperación y una comprobación de producción para autenticación, contenido, privacidad, analítica y errores de red.
 - **FR-010**: El cambio MUST llegar mediante un único Pull Request revisable hacia `main`, sin despliegue manual que omita la revisión humana.
+- **FR-011**: La interfaz pública MUST cargar Roboto desde Google Fonts con las conexiones previas necesarias y usarla de manera consistente en textos, controles, encabezados y marca tipográfica.
+- **FR-012**: El footer MUST mostrar el crédito exacto `Made with ❤️ by Christofer Enríquez`, preservar sus dos enlaces seguros y organizarse en columna centrada en móvil y fila centrada desde el breakpoint pequeño.
 
 ### Key Entities _(include if feature involves data)_
 
@@ -95,6 +97,7 @@ Como responsable de la ONG, quiero consultar métricas agregadas de visitas para
 - **SC-004**: El 100% de los perfiles que aparecen en búsqueda pública pertenece al estado publicado.
 - **SC-005**: El responsable puede consultar métricas agregadas sin que el repositorio, la aplicación ni la base de contenido persistan correos, contraseñas, términos de búsqueda o identificadores persistentes de visitantes.
 - **SC-006**: La batería de calidad, seguridad y navegación definida para el proyecto finaliza correctamente antes de abrir el Pull Request.
+- **SC-007**: En móvil y escritorio, Roboto queda declarada en el documento y el footer muestra sus enlaces completos, sin overflow, con navegación por teclado.
 
 ## Assumptions
 

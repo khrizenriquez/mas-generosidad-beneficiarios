@@ -1,6 +1,6 @@
 # Tasks: Lanzamiento cloud y analítica anónima
 
-**Input**: Diseño de `specs/006-cloud-launch-analytics/` y `docs/superpowers/specs/2026-09-18-cloud-launch-analytics-design.md`.
+**Input**: Diseño de `specs/006-cloud-launch-analytics/`, `docs/superpowers/specs/2026-09-18-cloud-launch-analytics-design.md` y `docs/superpowers/specs/2026-09-19-roboto-footer-mobile-design.md`.
 
 **Prerequisites**: `plan.md`, `spec.md`, `research.md`, `data-model.md`, `contracts/production-launch.md` y `quickstart.md`.
 
@@ -76,6 +76,9 @@
 
 ## Phase 6: Polish & cross-cutting verification
 
+- [x] T022 Añadir en `e2e/public-stories.spec.js` la expectativa de Roboto, el crédito final y la disposición del footer en los proyectos móvil y escritorio.
+- [x] T023 Cargar Roboto con `preconnect` en `index.html`, aplicar la familia en `src/theme/theme.js` y ajustar en `src/components/BrandMark.jsx` y `src/components/layout/PublicLayout.jsx` el crédito y breakpoints móviles aprobados.
+- [x] T024 Ejecutar `npm run verify` y `npm run test:e2e`, revisar `git diff --check` y actualizar el resultado agregado en `specs/006-cloud-launch-analytics/validation.md`.
 - [x] T018 Ejecutar `npm run verify`, `npm run db:test`, `npm run test:local`, `npm run test:e2e`, `npm run test:backup` y `npm run test:persistence`; registrar resultados agregados en `specs/006-cloud-launch-analytics/validation.md`.
 - [x] T019 Ejecutar `npm run privacy:check`, `git diff --check`, auditoría de dependencias y revisión de `package-lock.json`; comprobar que no se añadieron datos reales, servicio privilegiado, secretos ni valores de proveedores.
 - [ ] T020 Ejecutar el humo remoto descrito en `specs/006-cloud-launch-analytics/quickstart.md` después de que `main` se despliegue y actualizar `validation.md` con resultados agregados de rutas, RLS, Auth, imágenes y noindex.

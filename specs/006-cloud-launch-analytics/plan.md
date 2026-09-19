@@ -6,13 +6,13 @@
 
 ## Summary
 
-Añadir el cliente oficial de analítica de Vercel a la SPA React sin eventos personalizados; conservar el despliegue estático, las reescrituras SPA y las cabeceras de privacidad existentes. Documentar y comprobar el lanzamiento Git-to-Vercel, la configuración pública mínima, Auth sin registro público, la importación local idempotente de 41 borradores y la validación remota. No se modifica el esquema de Supabase, no se crea telemetría propia y no se versiona ni se carga un secreto a Vercel.
+Añadir el cliente oficial de analítica de Vercel a la SPA React sin eventos personalizados; conservar el despliegue estático, las reescrituras SPA y las cabeceras de privacidad existentes. Cargar Roboto desde Google Fonts para la interfaz pública y reforzar el footer móvil con el crédito aprobado. Documentar y comprobar el lanzamiento Git-to-Vercel, la configuración pública mínima, Auth sin registro público, la importación local idempotente de 41 borradores y la validación remota. No se modifica el esquema de Supabase, no se crea telemetría propia y no se versiona ni se carga un secreto a Vercel.
 
 ## Technical Context
 
 **Language/Version**: JavaScript ESM, Node 24 LTS; React 19.3 y Vite 8.3.
 
-**Primary Dependencies**: Material UI Community, React Router 7, TanStack Query 5, React Hook Form 7, Zod 4, Supabase JS 2 y `@vercel/analytics` 2.0.1 fijado en el lockfile.
+**Primary Dependencies**: Material UI Community, React Router 7, TanStack Query 5, React Hook Form 7, Zod 4, Supabase JS 2 y `@vercel/analytics` 2.0.1 fijado en el lockfile; Roboto se carga desde el CSS oficial de Google Fonts sin una dependencia npm adicional.
 
 **Storage**: Supabase PostgreSQL y bucket privado ya migrados; no hay tabla, cookie ni almacén adicional para analítica.
 
@@ -22,7 +22,7 @@ Añadir el cliente oficial de analítica de Vercel a la SPA React sin eventos pe
 
 **Project Type**: Aplicación web de una sola página con servicio de datos y autenticación gestionados.
 
-**Performance Goals**: La integración de analítica no bloquea el primer contenido ni la navegación; la portada y las rutas profundas cargan sin error en móvil y escritorio.
+**Performance Goals**: La integración de analítica no bloquea el primer contenido ni la navegación; las conexiones previas de Roboto se declaran en el documento y la portada, footer y rutas profundas cargan sin error en móvil y escritorio.
 
 **Constraints**: Solo niveles gratuitos; JavaScript sin TypeScript; dos valores públicos de Supabase en Vercel; sin service role, contraseña, ID remoto, Word, fotos originales ni datos reales en Git, logs o bundle; sin eventos personalizados ni perfiles de visitantes.
 
