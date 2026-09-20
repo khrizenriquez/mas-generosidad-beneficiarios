@@ -13,6 +13,7 @@ Este repositorio contiene el MVP y su entorno local reproducible. No contiene no
 - Fecha de nacimiento, notas privadas, estados no públicos y metadatos administrativos fuera del contrato anónimo.
 - Fotos en bucket privado y URLs firmadas únicamente para historias publicadas.
 - `noindex` en `robots.txt` y cabeceras para que el catálogo no se indexe intencionalmente.
+- Catálogo público bilingüe: español inicial e inglés seleccionable desde el encabezado; la elección solo se guarda en el navegador.
 
 El consentimiento para publicar se gestiona fuera de la aplicación: la ONG debe revisarlo antes de cada publicación.
 
@@ -93,6 +94,27 @@ VITE_USE_DEMO_DATA=true npm run dev
 ```
 
 Sin `VITE_USE_DEMO_DATA=true`, el navegador exige `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`. Estas dos variables son públicas por diseño; RLS es quien protege los datos. No uses una clave de servicio ni información privada en ninguna variable `VITE_*`.
+
+## Idiomas del catálogo público
+
+El catálogo público abre en español y ofrece `Español` e `English` en el selector
+superior derecho. La preferencia se guarda únicamente en `localStorage` del
+navegador; si el navegador lo bloquea, el cambio sigue funcionando durante la
+sesión y la próxima visita abre en español. La administración permanece solo en
+español y no muestra el selector.
+
+Los textos controlados por el catálogo viven en
+`src/i18n/locales/es.json` y `src/i18n/locales/en.json`. Para añadir un idioma:
+
+1. Crea un catálogo con todas las claves de `es.json`.
+2. Añade su identificador y nombre visible al módulo `src/i18n/catalog.js`.
+3. Revisa pluralización, foco, contraste y presentación móvil.
+4. Ejecuta `npm run verify`, `npm run test:e2e` y `npm run privacy:check`.
+
+Nunca traslades a esos JSON nombres, relatos, educación, intereses, aspiraciones,
+fotografías ni textos alternativos obtenidos de Supabase. Son contenido editorial
+aprobado por la ONG y se muestran literalmente; solo sus etiquetas de interfaz
+se localizan.
 
 ## Validación local
 

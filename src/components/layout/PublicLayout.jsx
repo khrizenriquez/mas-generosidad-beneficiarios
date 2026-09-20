@@ -1,13 +1,20 @@
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import { AppBar, Box, Button, Container, Link, Toolbar } from '@mui/material';
 import { Link as RouterLink, Outlet } from 'react-router-dom';
+import { useI18n } from '../../i18n/useI18n.js';
 import { BrandMark } from '../BrandMark.jsx';
+import { LanguageSelector } from './LanguageSelector.jsx';
 
 const organizationUrl = 'https://masgenerosidad.org/';
 
 export function PublicLayout() {
+  const { t } = useI18n();
+
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Link className="skip-link" href="#contenido">
+        {t('layout.skipToContent')}
+      </Link>
       <AppBar
         position="static"
         elevation={0}
@@ -24,11 +31,12 @@ export function PublicLayout() {
               to="/"
               underline="none"
               color="text.primary"
-              aria-label="Ir al inicio"
+              aria-label={t('layout.homeLink')}
             >
-              <BrandMark />
+              <BrandMark name={t('brand.name')} tagline={t('brand.tagline')} />
             </Link>
             <Box sx={{ flex: 1 }} />
+            <LanguageSelector />
             <Button
               component="a"
               href={organizationUrl}
@@ -37,7 +45,7 @@ export function PublicLayout() {
               endIcon={<OpenInNewRoundedIcon />}
               sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
             >
-              Conoce la ONG
+              {t('layout.organizationLink')}
             </Button>
           </Toolbar>
         </Container>
@@ -75,7 +83,7 @@ export function PublicLayout() {
               rel="noreferrer"
               color="inherit"
             >
-              Made with ❤️ by Christofer Enríquez
+              {t('layout.footerCredit')}
             </Link>
             <Box
               aria-hidden="true"
@@ -93,7 +101,7 @@ export function PublicLayout() {
               rel="noreferrer"
               color="inherit"
             >
-              masgenerosidad.org
+              {t('layout.organizationDomain')}
             </Link>
           </Box>
         </Container>

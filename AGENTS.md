@@ -46,5 +46,5 @@ Codex es la integración predeterminada. Usa los skills locales de `.agents/skil
 
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/006-cloud-launch-analytics/plan.md
+at specs/007-json-i18n-catalog/plan.md
 <!-- SPECKIT END -->

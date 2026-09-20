@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import { PublicLayout } from './components/layout/PublicLayout.jsx';
 import { AdminGuard } from './auth/AdminGuard.jsx';
+import { useI18n } from './i18n/useI18n.js';
 
 const HomePage = lazy(() => import('./pages/HomePage.jsx'));
 const StoryPage = lazy(() => import('./pages/StoryPage.jsx'));
@@ -47,11 +48,13 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
+  const { t } = useI18n();
+
   return (
     <Suspense
       fallback={
         <Box sx={{ minHeight: '100vh', display: 'grid', placeItems: 'center' }}>
-          <CircularProgress aria-label="Cargando" />
+          <CircularProgress aria-label={t('app.loading')} />
         </Box>
       }
     >

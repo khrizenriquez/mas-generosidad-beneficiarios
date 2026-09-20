@@ -12,13 +12,17 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { StoryGallery } from '../components/story/StoryGallery.jsx';
+import { env } from '../config/env.js';
+import { formatAge, translateGender } from '../i18n/catalog.js';
+import { useI18n } from '../i18n/useI18n.js';
 import { getPublicBeneficiary } from '../services/publicBeneficiaries.js';
 
 export default function StoryPage() {
+  const { locale, t } = useI18n();
   const { code } = useParams();
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['public-beneficiary', code],
-    queryFn: () => getPublicBeneficiary(code),
+    queryKey: ['public-beneficiary', code, env.useDemoData ? locale : 'remote'],
+    queryFn: () => getPublicBeneficiary(code, locale),
   });
 
   return (
@@ -29,19 +33,19 @@ export default function StoryPage() {
         startIcon={<ArrowBackRoundedIcon />}
         sx={{ mb: 4 }}
       >
-        Todas las historias
+        {t('story.allStories')}
       </Button>
       {isLoading ? <Skeleton variant="rounded" height={600} /> : null}
       {error ? (
         <Alert
           severity="error"
-          action={<button onClick={() => refetch()}>Reintentar</button>}
+          action={<button onClick={() => refetch()}>{t('home.retry')}</button>}
         >
-          {error.message}
+          {t(`errors.${error.message}`) || t('errors.unknown')}
         </Alert>
       ) : null}
       {!isLoading && !error && !data ? (
-        <Alert severity="info">Esta historia no está disponible.</Alert>
+        <Alert severity="info">{t('story.unavailable')}</Alert>
       ) : null}
       {data ? (
         <Box
@@ -60,9 +64,14 @@ export default function StoryPage() {
               useFlexGap
               sx={{ mb: 2, flexWrap: 'wrap' }}
             >
-              {data.age !== null ? <Chip label={`${data.age} años`} /> : null}
+              {data.age !== null ? (
+                <Chip label={formatAge(locale, data.age)} />
+              ) : null}
               {data.gender ? (
-                <Chip variant="outlined" label={data.gender} />
+                <Chip
+                  variant="outlined"
+                  label={translateGender(locale, data.gender)}
+                />
               ) : null}
               {data.school_grade ? (
                 <Chip variant="outlined" label={data.school_grade} />
@@ -83,7 +92,7 @@ export default function StoryPage() {
               }}
             >
               <Typography variant="overline" fontWeight={800}>
-                Su aspiración
+                {t('story.aspiration')}
               </Typography>
               <Typography
                 variant="h3"
@@ -93,7 +102,7 @@ export default function StoryPage() {
               </Typography>
             </Box>
             <Typography variant="h3" sx={{ mb: 2 }}>
-              Su historia
+              {t('story.history')}
             </Typography>
             <Typography
               sx={{
@@ -114,11 +123,13 @@ export default function StoryPage() {
             >
               {data.favorite_subject ? (
                 <Fact
-                  label="Asignatura favorita"
+                  label={t('story.favoriteSubject')}
                   value={data.favorite_subject}
                 />
               ) : null}
-              {data.hobby ? <Fact label="Le gusta" value={data.hobby} /> : null}
+              {data.hobby ? (
+                <Fact label={t('story.hobby')} value={data.hobby} />
+              ) : null}
             </Box>
           </Box>
         </Box>

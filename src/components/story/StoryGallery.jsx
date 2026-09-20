@@ -1,9 +1,11 @@
 import { Box } from '@mui/material';
+import { useI18n } from '../../i18n/useI18n.js';
 import { StoryImagePlaceholder } from './StoryImagePlaceholder.jsx';
 
 const emptyImages = [];
 
 export function StoryGallery({ images = emptyImages, beneficiaryName }) {
+  const { t } = useI18n();
   const galleryImages = images
     .filter((image) => Boolean(image.detail_url))
     .sort(
@@ -19,14 +21,16 @@ export function StoryGallery({ images = emptyImages, beneficiaryName }) {
   return (
     <Box
       component="section"
-      aria-label={`Galería de fotografías de ${beneficiaryName}`}
+      aria-label={t('gallery.title', { name: beneficiaryName })}
       sx={{ display: 'grid', gap: 1.5 }}
     >
       <GalleryImage
         image={primaryImage}
-        beneficiaryName={beneficiaryName}
-        position={1}
         featured
+        fallbackAlt={t('gallery.fallbackAlt', {
+          name: beneficiaryName,
+          position: 1,
+        })}
       />
       {supportingImages.length > 0 ? (
         <Box
@@ -40,8 +44,10 @@ export function StoryGallery({ images = emptyImages, beneficiaryName }) {
             <GalleryImage
               key={image.id}
               image={image}
-              beneficiaryName={beneficiaryName}
-              position={index + 2}
+              fallbackAlt={t('gallery.fallbackAlt', {
+                name: beneficiaryName,
+                position: index + 2,
+              })}
             />
           ))}
         </Box>
@@ -50,14 +56,12 @@ export function StoryGallery({ images = emptyImages, beneficiaryName }) {
   );
 }
 
-function GalleryImage({ image, beneficiaryName, position, featured = false }) {
+function GalleryImage({ image, fallbackAlt, featured = false }) {
   return (
     <Box
       component="img"
       src={image.detail_url}
-      alt={
-        image.alt_text?.trim() || `Fotografía ${position} de ${beneficiaryName}`
-      }
+      alt={image.alt_text?.trim() || fallbackAlt}
       loading={featured ? 'eager' : 'lazy'}
       fetchPriority={featured ? 'high' : 'auto'}
       sx={{

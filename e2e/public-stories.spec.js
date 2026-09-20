@@ -19,6 +19,38 @@ test('busca por nombre y abre una historia', async ({ page }) => {
   await expect(page.getByText(/fecha de nacimiento/i)).toHaveCount(0);
 });
 
+test('permite cambiar el catálogo público a inglés y conserva la preferencia', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const selector = page.getByRole('button', {
+    name: 'Idioma actual: Español',
+  });
+  await selector.click();
+  await page.getByRole('menuitem', { name: 'English' }).click();
+
+  await expect(
+    page.getByRole('heading', { name: 'Every story deserves to be heard.' }),
+  ).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page).toHaveTitle('Stories of Más Generosidad');
+
+  await page.getByRole('link', { name: 'Read their story' }).first().click();
+  await expect(
+    page.getByRole('heading', { name: 'Sample Profile One' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Their story', exact: true }),
+  ).toBeVisible();
+
+  await page.reload();
+  await expect(
+    page.getByRole('heading', { name: 'Sample Profile One' }),
+  ).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+});
+
 test('muestra las tres fotografías autorizadas en el detalle', async ({
   page,
 }) => {
@@ -58,6 +90,7 @@ test('el acceso administrativo no ofrece registro público', async ({
   ).toBeVisible();
   await expect(page.getByRole('button', { name: 'Ingresar' })).toBeDisabled();
   await expect(page.getByText(/registr/i)).toHaveCount(0);
+  await expect(page.locator('#language-selector')).toHaveCount(0);
 });
 
 test('resuelve rutas profundas al recargar sin exponer contenido administrativo', async ({

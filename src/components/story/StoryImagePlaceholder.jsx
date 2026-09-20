@@ -1,7 +1,10 @@
 import AutoStoriesRoundedIcon from '@mui/icons-material/AutoStoriesRounded';
 import { Box, Typography } from '@mui/material';
+import { useI18n } from '../../i18n/useI18n.js';
 
 export function StoryImagePlaceholder({ compact = false }) {
+  const { t } = useI18n();
+
   return (
     <Box
       sx={{
@@ -19,7 +22,7 @@ export function StoryImagePlaceholder({ compact = false }) {
       <Box>
         <AutoStoriesRoundedIcon sx={{ fontSize: compact ? 38 : 52, mb: 1 }} />
         <Typography variant="body2" fontWeight={700}>
-          Historia sin fotografía
+          {t('gallery.noPhoto')}
         </Typography>
       </Box>
     </Box>
