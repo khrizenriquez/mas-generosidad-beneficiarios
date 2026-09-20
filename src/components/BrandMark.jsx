@@ -1,6 +1,11 @@
 import { Box, Typography } from '@mui/material';
 
-export function BrandMark({ compact = false, color = 'inherit' }) {
+export function BrandMark({
+  compact = false,
+  color = 'inherit',
+  name = 'Más Generosidad',
+  tagline = 'historias que acercan',
+}) {
   return (
     <Box
       sx={{ display: 'inline-flex', alignItems: 'center', gap: 1.25, color }}
@@ -35,11 +40,11 @@ export function BrandMark({ compact = false, color = 'inherit' }) {
             lineHeight: 1,
           }}
         >
-          Más Generosidad
+          {name}
         </Typography>
         {compact ? null : (
           <Typography component="span" variant="caption" sx={{ opacity: 0.78 }}>
-            historias que acercan
+            {tagline}
           </Typography>
         )}
       </Box>

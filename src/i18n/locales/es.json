@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "title": "Historias de Más Generosidad",
+    "description": "Historias de beneficiarios de la ONG Más Generosidad."
+  },
+  "brand": {
+    "name": "Más Generosidad",
+    "tagline": "historias que acercan"
+  },
+  "layout": {
+    "skipToContent": "Saltar al contenido",
+    "homeLink": "Ir al inicio",
+    "organizationLink": "Conoce la ONG",
+    "organizationDomain": "masgenerosidad.org",
+    "footerCredit": "Made with ❤️ by Christofer Enríquez"
+  },
+  "language": {
+    "selectorLabel": "Seleccionar idioma",
+    "current": "Idioma actual: {language}",
+    "es": "Español",
+    "en": "English"
+  },
+  "home": {
+    "eyebrow": "Personas, sueños y comunidad",
+    "title": "Cada historia merece ser escuchada.",
+    "description": "Conoce a las personas que forman parte de Más Generosidad: lo que disfrutan, lo que aprenden y el futuro que imaginan.",
+    "searchLabel": "Buscar por nombre",
+    "loading": "Cargando historias…",
+    "resultCount": {
+      "one": "{count} historia encontrada",
+      "other": "{count} historias encontradas"
+    },
+    "emptyTitle": "Aún no hay una historia con ese nombre.",
+    "emptyDescription": "Prueba con otra forma de escribirlo.",
+    "retry": "Reintentar"
+  },
+  "story": {
+    "allStories": "Todas las historias",
+    "unavailable": "Esta historia no está disponible.",
+    "age": "{age} años",
+    "aspiration": "Su aspiración",
+    "history": "Su historia",
+    "favoriteSubject": "Asignatura favorita",
+    "hobby": "Le gusta",
+    "dreamsOf": "Sueña con",
+    "defaultGoal": "seguir aprendiendo",
+    "readStory": "Leer su historia"
+  },
+  "gallery": {
+    "title": "Galería de fotografías de {name}",
+    "fallbackAlt": "Fotografía {position} de {name}",
+    "noPhoto": "Historia sin fotografía"
+  },
+  "errors": {
+    "catalogUnavailable": "El catálogo aún no está conectado a Supabase.",
+    "mediaLoadFailed": "No fue posible cargar las fotografías. Reintenta.",
+    "requestFailed": "No fue posible cargar las historias. Reintenta.",
+    "unknown": "Ocurrió un problema al cargar el catálogo. Reintenta."
+  },
+  "notFound": {
+    "title": "No encontramos esta página.",
+    "backHome": "Volver al inicio"
+  },
+  "app": {
+    "loading": "Cargando"
+  },
+  "domain": {
+    "gender": {
+      "Niño": "Niño",
+      "Niña": "Niña"
+    }
+  },
+  "demoProfiles": [
+    {
+      "id": "demo-1",
+      "code": "DEMO-001",
+      "full_name": "Perfil de muestra Uno",
+      "age": 11,
+      "gender": "Niña",
+      "school_grade": "Quinto primaria",
+      "favorite_subject": "Ciencias naturales",
+      "hobby": "Dibujar y leer",
+      "future_goal": "Cuidar la salud de su comunidad",
+      "public_story": "Este texto es completamente ficticio y sirve únicamente para revisar el diseño antes de conectar Supabase.",
+      "images": [
+        {
+          "id": "demo-image-1",
+          "thumbnail_url": "/demo/story-1.svg",
+          "detail_url": "/demo/story-1.svg",
+          "alt_text": "Ilustración ficticia de una actividad creativa",
+          "sort_order": 0,
+          "is_primary": true
+        },
+        {
+          "id": "demo-image-2",
+          "thumbnail_url": "/demo/story-2.svg",
+          "detail_url": "/demo/story-2.svg",
+          "alt_text": "Ilustración ficticia inspirada en el aprendizaje",
+          "sort_order": 1,
+          "is_primary": false
+        },
+        {
+          "id": "demo-image-3",
+          "thumbnail_url": "/demo/story-3.svg",
+          "detail_url": "/demo/story-3.svg",
+          "alt_text": "Ilustración ficticia inspirada en la comunidad",
+          "sort_order": 2,
+          "is_primary": false
+        }
+      ]
+    },
+    {
+      "id": "demo-2",
+      "code": "DEMO-002",
+      "full_name": "Perfil de muestra Dos",
+      "age": 13,
+      "gender": null,
+      "school_grade": "Primero básico",
+      "favorite_subject": "Matemática",
+      "hobby": "Jugar fútbol",
+      "future_goal": "Construir espacios seguros para aprender",
+      "public_story": "Una segunda historia ficticia permite comprobar la búsqueda, los estados sin fotografía y la lectura en distintos tamaños de pantalla.",
+      "images": []
+    },
+    {
+      "id": "demo-3",
+      "code": "DEMO-003",
+      "full_name": "Perfil de muestra Tres",
+      "age": 9,
+      "gender": "Niño",
+      "school_grade": "Tercero primaria",
+      "favorite_subject": "Comunicación y lenguaje",
+      "hobby": "Inventar cuentos",
+      "future_goal": "Escribir libros para niñas y niños",
+      "public_story": "Los datos demo no corresponden a una persona real y nunca sustituyen la revisión de consentimiento de la ONG.",
+      "images": []
+    }
+  ]
+}

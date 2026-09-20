@@ -1,7 +1,10 @@
 import { Box, Button, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { useI18n } from '../i18n/useI18n.js';
 
 export default function NotFoundPage() {
+  const { t } = useI18n();
+
   return (
     <Box
       sx={{
@@ -17,10 +20,10 @@ export default function NotFoundPage() {
           404
         </Typography>
         <Typography variant="h4" sx={{ mb: 3 }}>
-          No encontramos esta página.
+          {t('notFound.title')}
         </Typography>
         <Button component={RouterLink} to="/" variant="contained">
-          Volver al inicio
+          {t('notFound.backHome')}
         </Button>
       </Box>
     </Box>

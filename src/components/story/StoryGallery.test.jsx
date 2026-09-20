@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+import { I18nProvider } from '../../i18n/I18nProvider.jsx';
 import { StoryGallery } from './StoryGallery.jsx';
 
 const images = [
@@ -28,7 +29,11 @@ const images = [
 
 describe('StoryGallery', () => {
   it('muestra las tres fotografías y destaca primero la principal', () => {
-    render(<StoryGallery images={images} beneficiaryName="Perfil de prueba" />);
+    render(
+      <I18nProvider>
+        <StoryGallery images={images} beneficiaryName="Perfil de prueba" />
+      </I18nProvider>,
+    );
 
     const renderedImages = screen.getAllByRole('img');
     expect(renderedImages).toHaveLength(3);
@@ -46,7 +51,11 @@ describe('StoryGallery', () => {
   });
 
   it('mantiene el estado digno cuando no hay fotografías disponibles', () => {
-    render(<StoryGallery images={[]} beneficiaryName="Perfil de prueba" />);
+    render(
+      <I18nProvider>
+        <StoryGallery images={[]} beneficiaryName="Perfil de prueba" />
+      </I18nProvider>,
+    );
 
     expect(screen.getByText('Historia sin fotografía')).toBeInTheDocument();
   });

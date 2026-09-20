@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "title": "Stories of Más Generosidad",
+    "description": "Stories of beneficiaries of the Más Generosidad NGO."
+  },
+  "brand": {
+    "name": "Más Generosidad",
+    "tagline": "stories that bring us closer"
+  },
+  "layout": {
+    "skipToContent": "Skip to content",
+    "homeLink": "Go to home",
+    "organizationLink": "Meet the NGO",
+    "organizationDomain": "masgenerosidad.org",
+    "footerCredit": "Made with ❤️ by Christofer Enríquez"
+  },
+  "language": {
+    "selectorLabel": "Choose language",
+    "current": "Current language: {language}",
+    "es": "Español",
+    "en": "English"
+  },
+  "home": {
+    "eyebrow": "People, dreams and community",
+    "title": "Every story deserves to be heard.",
+    "description": "Meet the people who are part of Más Generosidad: what they enjoy, what they learn and the future they imagine.",
+    "searchLabel": "Search by name",
+    "loading": "Loading stories…",
+    "resultCount": {
+      "one": "{count} story found",
+      "other": "{count} stories found"
+    },
+    "emptyTitle": "There is no story with that name yet.",
+    "emptyDescription": "Try another way of writing it.",
+    "retry": "Try again"
+  },
+  "story": {
+    "allStories": "All stories",
+    "unavailable": "This story is not available.",
+    "age": "{age} years old",
+    "aspiration": "Their aspiration",
+    "history": "Their story",
+    "favoriteSubject": "Favorite subject",
+    "hobby": "Enjoys",
+    "dreamsOf": "Dreams of",
+    "defaultGoal": "continuing to learn",
+    "readStory": "Read their story"
+  },
+  "gallery": {
+    "title": "Photo gallery of {name}",
+    "fallbackAlt": "Photo {position} of {name}",
+    "noPhoto": "Story without a photo"
+  },
+  "errors": {
+    "catalogUnavailable": "The catalog is not connected to Supabase yet.",
+    "mediaLoadFailed": "We could not load the photos. Please try again.",
+    "requestFailed": "We could not load the stories. Please try again.",
+    "unknown": "There was a problem loading the catalog. Please try again."
+  },
+  "notFound": {
+    "title": "We could not find this page.",
+    "backHome": "Back to home"
+  },
+  "app": {
+    "loading": "Loading"
+  },
+  "domain": {
+    "gender": {
+      "Niño": "Boy",
+      "Niña": "Girl"
+    }
+  },
+  "demoProfiles": [
+    {
+      "id": "demo-1",
+      "code": "DEMO-001",
+      "full_name": "Sample Profile One",
+      "age": 11,
+      "gender": "Niña",
+      "school_grade": "Fifth grade",
+      "favorite_subject": "Natural sciences",
+      "hobby": "Drawing and reading",
+      "future_goal": "Caring for the health of their community",
+      "public_story": "This text is completely fictional and only helps review the design before connecting Supabase.",
+      "images": [
+        {
+          "id": "demo-image-1",
+          "thumbnail_url": "/demo/story-1.svg",
+          "detail_url": "/demo/story-1.svg",
+          "alt_text": "Fictional illustration of a creative activity",
+          "sort_order": 0,
+          "is_primary": true
+        },
+        {
+          "id": "demo-image-2",
+          "thumbnail_url": "/demo/story-2.svg",
+          "detail_url": "/demo/story-2.svg",
+          "alt_text": "Fictional illustration inspired by learning",
+          "sort_order": 1,
+          "is_primary": false
+        },
+        {
+          "id": "demo-image-3",
+          "thumbnail_url": "/demo/story-3.svg",
+          "detail_url": "/demo/story-3.svg",
+          "alt_text": "Fictional illustration inspired by community",
+          "sort_order": 2,
+          "is_primary": false
+        }
+      ]
+    },
+    {
+      "id": "demo-2",
+      "code": "DEMO-002",
+      "full_name": "Sample Profile Two",
+      "age": 13,
+      "gender": null,
+      "school_grade": "First year of middle school",
+      "favorite_subject": "Mathematics",
+      "hobby": "Playing football",
+      "future_goal": "Building safe places to learn",
+      "public_story": "A second fictional story helps verify search, no-photo states and reading on different screen sizes.",
+      "images": []
+    },
+    {
+      "id": "demo-3",
+      "code": "DEMO-003",
+      "full_name": "Sample Profile Three",
+      "age": 9,
+      "gender": "Niño",
+      "school_grade": "Third grade",
+      "favorite_subject": "Language and communication",
+      "hobby": "Making up stories",
+      "future_goal": "Writing books for children",
+      "public_story": "Demo data does not belong to a real person and never replaces the NGO's consent review.",
+      "images": []
+    }
+  ]
+}

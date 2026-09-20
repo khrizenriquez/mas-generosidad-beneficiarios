@@ -10,9 +10,12 @@ import {
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useRevealOnViewport } from '../../hooks/useRevealOnViewport.js';
+import { formatAge } from '../../i18n/catalog.js';
+import { useI18n } from '../../i18n/useI18n.js';
 import { StoryImagePlaceholder } from './StoryImagePlaceholder.jsx';
 
 export function StoryCard({ beneficiary }) {
+  const { locale, t } = useI18n();
   const { ref, isRevealed, reduceMotion } = useRevealOnViewport();
   const image =
     beneficiary.images?.find((item) => item.is_primary) ??
@@ -49,7 +52,13 @@ export function StoryCard({ beneficiary }) {
           <CardMedia
             component="img"
             image={image.thumbnail_url}
-            alt={image.alt_text || `Fotografía de ${beneficiary.full_name}`}
+            alt={
+              image.alt_text ||
+              t('gallery.fallbackAlt', {
+                name: beneficiary.full_name,
+                position: 1,
+              })
+            }
             loading="lazy"
             className="story-card__image"
             sx={{
@@ -70,7 +79,7 @@ export function StoryCard({ beneficiary }) {
       >
         <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 }}>
           {beneficiary.age !== null ? (
-            <Chip size="small" label={`${beneficiary.age} años`} />
+            <Chip size="small" label={formatAge(locale, beneficiary.age)} />
           ) : null}
           {beneficiary.school_grade ? (
             <Chip
@@ -96,10 +105,10 @@ export function StoryCard({ beneficiary }) {
           }}
         >
           <Typography variant="overline" color="text.secondary">
-            Sueña con
+            {t('story.dreamsOf')}
           </Typography>
           <Typography fontWeight={700}>
-            {beneficiary.future_goal || 'seguir aprendiendo'}
+            {beneficiary.future_goal || t('story.defaultGoal')}
           </Typography>
         </Box>
         <Typography
@@ -120,7 +129,7 @@ export function StoryCard({ beneficiary }) {
           endIcon={<ArrowForwardRoundedIcon />}
           sx={{ mt: 'auto', alignSelf: 'flex-start' }}
         >
-          Leer su historia
+          {t('story.readStory')}
         </Button>
       </CardContent>
     </Card>

@@ -12,10 +12,13 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useDeferredValue, useMemo, useState } from 'react';
 import { StoryCard } from '../components/story/StoryCard.jsx';
+import { env } from '../config/env.js';
+import { useI18n } from '../i18n/useI18n.js';
 import { getPublicBeneficiaries } from '../services/publicBeneficiaries.js';
 import { normalizeForSearch } from '../utils/normalize.js';
 
 export default function HomePage() {
+  const { locale, t, tPlural } = useI18n();
   const [search, setSearch] = useState('');
   const deferredSearch = useDeferredValue(search);
   const {
@@ -24,8 +27,8 @@ export default function HomePage() {
     error,
     refetch,
   } = useQuery({
-    queryKey: ['public-beneficiaries'],
-    queryFn: getPublicBeneficiaries,
+    queryKey: ['public-beneficiaries', env.useDemoData ? locale : 'remote'],
+    queryFn: () => getPublicBeneficiaries(locale),
   });
   const filtered = useMemo(() => {
     const query = normalizeForSearch(deferredSearch);
@@ -65,7 +68,7 @@ export default function HomePage() {
             fontWeight={800}
             letterSpacing=".14em"
           >
-            Personas, sueños y comunidad
+            {t('home.eyebrow')}
           </Typography>
           <Typography
             variant="h1"
@@ -75,7 +78,7 @@ export default function HomePage() {
               fontSize: { xs: '2.7rem', sm: '4rem', md: '5.2rem' },
             }}
           >
-            Cada historia merece ser escuchada.
+            {t('home.title')}
           </Typography>
           <Typography
             sx={{
@@ -85,8 +88,7 @@ export default function HomePage() {
               color: 'text.secondary',
             }}
           >
-            Conoce a las personas que forman parte de Más Generosidad: lo que
-            disfrutan, lo que aprenden y el futuro que imaginan.
+            {t('home.description')}
           </Typography>
         </Container>
       </Box>
@@ -94,7 +96,7 @@ export default function HomePage() {
       <Container maxWidth="lg">
         <Box sx={{ maxWidth: 660, mb: 5 }}>
           <TextField
-            label="Buscar por nombre"
+            label={t('home.searchLabel')}
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             slotProps={{
@@ -116,18 +118,20 @@ export default function HomePage() {
             aria-live="polite"
           >
             {isLoading
-              ? 'Cargando historias…'
-              : `${filtered.length} ${filtered.length === 1 ? 'historia encontrada' : 'historias encontradas'}`}
+              ? t('home.loading')
+              : tPlural('home.resultCount', filtered.length)}
           </Typography>
         </Box>
 
         {error ? (
           <Alert
             severity="info"
-            action={<button onClick={() => refetch()}>Reintentar</button>}
+            action={
+              <button onClick={() => refetch()}>{t('home.retry')}</button>
+            }
             sx={{ mb: 4 }}
           >
-            {error.message}
+            {t(`errors.${error.message}`) || t('errors.unknown')}
           </Alert>
         ) : null}
 
@@ -147,11 +151,9 @@ export default function HomePage() {
 
         {!isLoading && !error && filtered.length === 0 ? (
           <Stack sx={{ py: 8, textAlign: 'center' }}>
-            <Typography variant="h3">
-              Aún no hay una historia con ese nombre.
-            </Typography>
+            <Typography variant="h3">{t('home.emptyTitle')}</Typography>
             <Typography color="text.secondary" sx={{ mt: 1 }}>
-              Prueba con otra forma de escribirlo.
+              {t('home.emptyDescription')}
             </Typography>
           </Stack>
         ) : null}
