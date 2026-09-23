@@ -9,11 +9,23 @@ const complete = {
   full_name: 'Perfil de prueba',
   date_of_birth: '2014-04-12',
   gender: '',
-  school_grade: 'Quinto primaria',
-  favorite_subject: 'Ciencias',
-  hobby: 'Leer',
-  future_goal: 'Enseñar',
-  public_story: 'Relato completamente ficticio para una prueba automatizada.',
+  localizations: {
+    es: {
+      school_grade: 'Quinto primaria',
+      favorite_subject: 'Ciencias',
+      hobby: 'Leer',
+      future_goal: 'Enseñar',
+      public_story:
+        'Relato completamente ficticio para una prueba automatizada.',
+    },
+    en: {
+      school_grade: '',
+      favorite_subject: '',
+      hobby: '',
+      future_goal: '',
+      public_story: '',
+    },
+  },
   import_notes: '',
   status: 'published',
 };
@@ -39,6 +51,18 @@ describe('beneficiary schemas', () => {
 
   it('acepta una publicación completa', () => {
     expect(publishedBeneficiarySchema.safeParse(complete).success).toBe(true);
+  });
+
+  it('rechaza una traducción inglesa iniciada pero incompleta al publicar', () => {
+    expect(
+      publishedBeneficiarySchema.safeParse({
+        ...complete,
+        localizations: {
+          ...complete.localizations,
+          en: { ...complete.localizations.en, hobby: 'Reading' },
+        },
+      }).success,
+    ).toBe(false);
   });
 
   it.each(['Niño', 'Niña', ''])('acepta el género permitido %s', (gender) => {

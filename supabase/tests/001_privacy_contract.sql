@@ -3,11 +3,13 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(20);
+select plan(25);
 
 select has_table('public', 'beneficiaries', 'Existe beneficiaries');
 select has_table('public', 'beneficiary_images', 'Existe beneficiary_images');
 select has_table('public', 'admin_users', 'Existe admin_users');
+select has_table('public', 'beneficiary_localizations', 'Existe beneficiary_localizations');
+select has_table('public', 'beneficiary_image_localizations', 'Existe beneficiary_image_localizations');
 
 select ok(
   (select relrowsecurity from pg_class where oid = 'public.beneficiaries'::regclass),
@@ -20,6 +22,10 @@ select ok(
 select ok(
   (select relrowsecurity from pg_class where oid = 'public.admin_users'::regclass),
   'RLS está habilitado en admin_users'
+);
+select ok(
+  (select relrowsecurity from pg_class where oid = 'public.beneficiary_localizations'::regclass),
+  'RLS está habilitado en beneficiary_localizations'
 );
 
 select policies_are(
@@ -67,7 +73,7 @@ select is(
   (select to_jsonb(proargnames)
     from pg_proc
     where oid = 'public.get_public_beneficiaries()'::regprocedure),
-  '["id", "code", "full_name", "age", "gender", "school_grade", "favorite_subject", "hobby", "future_goal", "public_story", "images"]'::jsonb,
+  '["id", "code", "full_name", "age", "gender", "localizations", "images"]'::jsonb,
   'La colección pública expone exactamente las columnas aprobadas'
 );
 
@@ -75,7 +81,7 @@ select is(
   (select to_jsonb(proargnames[2:])
     from pg_proc
     where oid = 'public.get_public_beneficiary(text)'::regprocedure),
-  '["id", "code", "full_name", "age", "gender", "school_grade", "favorite_subject", "hobby", "future_goal", "public_story", "images"]'::jsonb,
+  '["id", "code", "full_name", "age", "gender", "localizations", "images"]'::jsonb,
   'El detalle público expone exactamente las columnas aprobadas'
 );
 
@@ -86,6 +92,14 @@ select ok(
 select ok(
   has_function_privilege('anon', 'public.get_public_beneficiary(text)', 'EXECUTE'),
   'Anon puede ejecutar el detalle público'
+);
+select ok(
+  not has_table_privilege('anon', 'public.beneficiary_localizations', 'SELECT'),
+  'Anon no tiene SELECT directo en localizaciones'
+);
+select ok(
+  not has_table_privilege('anon', 'public.beneficiary_image_localizations', 'SELECT'),
+  'Anon no tiene SELECT directo en localizaciones de imagen'
 );
 
 select has_trigger(

@@ -111,10 +111,18 @@ Los textos controlados por el catálogo viven en
 3. Revisa pluralización, foco, contraste y presentación móvil.
 4. Ejecuta `npm run verify`, `npm run test:e2e` y `npm run privacy:check`.
 
-Nunca traslades a esos JSON nombres, relatos, educación, intereses, aspiraciones,
-fotografías ni textos alternativos obtenidos de Supabase. Son contenido editorial
-aprobado por la ONG y se muestran literalmente; solo sus etiquetas de interfaz
-se localizan.
+Los JSON solo contienen interfaz. El contenido editorial vive en Supabase:
+nombre, edad, género y fotografías son comunes; grado, asignatura, pasatiempo,
+aspiración, relato y texto alternativo se gestionan por idioma desde el editor
+administrativo.
+
+Para publicar, español debe estar completo. Inglés es opcional, pero si se
+inicia al crear o publicar un perfil debe completarse. Una traducción inglesa
+que se complete después no aparece públicamente hasta tener todos sus campos.
+Si alguien elige un idioma que aún no existe para una historia, ve un mensaje
+localizado de disponibilidad; el sitio nunca muestra el relato del otro idioma
+como sustituto. Ambas versiones públicas se reciben en una sola carga y el
+selector cambia entre ellas desde la memoria de la sesión.
 
 ## Validación local
 

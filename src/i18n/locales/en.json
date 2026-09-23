@@ -44,7 +44,9 @@
     "hobby": "Enjoys",
     "dreamsOf": "Dreams of",
     "defaultGoal": "continuing to learn",
-    "readStory": "Read their story"
+    "readStory": "Read their story",
+    "unavailableForLocale": "This story is not available in English yet.",
+    "unavailableOnCard": "This story is currently available only in another language."
   },
   "gallery": {
     "title": "Photo gallery of {name}",
@@ -123,6 +125,7 @@
       "images": []
     },
     {
+      "available": false,
       "id": "demo-3",
       "code": "DEMO-003",
       "full_name": "Sample Profile Three",

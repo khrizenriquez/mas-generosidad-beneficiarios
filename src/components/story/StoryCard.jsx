@@ -11,7 +11,12 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { useRevealOnViewport } from '../../hooks/useRevealOnViewport.js';
 import { formatAge } from '../../i18n/catalog.js';
+import {
+  getLocalizedImageAlt,
+  selectLocalization,
+} from '../../i18n/localization.js';
 import { useI18n } from '../../i18n/useI18n.js';
+import { StoryAvailabilityNotice } from './StoryAvailabilityNotice.jsx';
 import { StoryImagePlaceholder } from './StoryImagePlaceholder.jsx';
 
 export function StoryCard({ beneficiary }) {
@@ -20,6 +25,7 @@ export function StoryCard({ beneficiary }) {
   const image =
     beneficiary.images?.find((item) => item.is_primary) ??
     beneficiary.images?.[0];
+  const localization = selectLocalization(beneficiary, locale);
   return (
     <Card
       component="article"
@@ -53,7 +59,7 @@ export function StoryCard({ beneficiary }) {
             component="img"
             image={image.thumbnail_url}
             alt={
-              image.alt_text ||
+              getLocalizedImageAlt(image, locale) ||
               t('gallery.fallbackAlt', {
                 name: beneficiary.full_name,
                 position: 1,
@@ -81,11 +87,11 @@ export function StoryCard({ beneficiary }) {
           {beneficiary.age !== null ? (
             <Chip size="small" label={formatAge(locale, beneficiary.age)} />
           ) : null}
-          {beneficiary.school_grade ? (
+          {localization?.school_grade ? (
             <Chip
               size="small"
               variant="outlined"
-              label={beneficiary.school_grade}
+              label={localization.school_grade}
             />
           ) : null}
         </Box>
@@ -96,33 +102,41 @@ export function StoryCard({ beneficiary }) {
         >
           {beneficiary.full_name}
         </Typography>
-        <Box
-          sx={{
-            borderLeft: '4px solid',
-            borderColor: 'warning.main',
-            pl: 2,
-            mb: 2,
-          }}
-        >
-          <Typography variant="overline" color="text.secondary">
-            {t('story.dreamsOf')}
+        {localization ? (
+          <Box
+            sx={{
+              borderLeft: '4px solid',
+              borderColor: 'warning.main',
+              pl: 2,
+              mb: 2,
+            }}
+          >
+            <>
+              <Typography variant="overline" color="text.secondary">
+                {t('story.dreamsOf')}
+              </Typography>
+              <Typography fontWeight={700}>
+                {localization.future_goal}
+              </Typography>
+            </>
+          </Box>
+        ) : null}
+        {localization ? (
+          <Typography
+            color="text.secondary"
+            sx={{
+              mb: 2,
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
+            {localization.public_story}
           </Typography>
-          <Typography fontWeight={700}>
-            {beneficiary.future_goal || t('story.defaultGoal')}
-          </Typography>
-        </Box>
-        <Typography
-          color="text.secondary"
-          sx={{
-            mb: 2,
-            display: '-webkit-box',
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}
-        >
-          {beneficiary.public_story}
-        </Typography>
+        ) : (
+          <StoryAvailabilityNotice compact />
+        )}
         <Button
           component={RouterLink}
           to={`/historias/${beneficiary.code}`}

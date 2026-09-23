@@ -37,6 +37,14 @@ const assertions = [
     /function public\.can_read_beneficiary_media\(object_name text\)[\s\S]*?security definer/i,
   ],
   [
+    'localizaciones bilingües privadas',
+    /create table public\.beneficiary_localizations[\s\S]*?revoke all on public\.beneficiary_localizations, public\.beneficiary_image_localizations from anon/i,
+  ],
+  [
+    'contrato público bilingüe',
+    /localizations jsonb[\s\S]*?public\.has_complete_beneficiary_localization/i,
+  ],
+  [
     'sin borrado de beneficiarios',
     !/create policy\s+"[^"]*delete[^"]*"\s+on public\.beneficiaries/i.test(
       migration,

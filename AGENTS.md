@@ -1,7 +1,6 @@
 # AGENTS.md
 
 <!-- agent-context:start -->
-
 ## Propósito y alcance
 
 Este repositorio implementa **Historias de Más Generosidad**, un catálogo público y un editor administrativo de perfiles de beneficiarios. El MVP no incluye pagos, contacto por beneficiario, analítica, registro público ni IA en producción.
@@ -37,7 +36,6 @@ Este repositorio implementa **Historias de Más Generosidad**, un catálogo púb
 - Importa módulos pesados solo en la ruta que los usa. Evita efectos para estado derivado y paraleliza operaciones independientes.
 - Los errores dirigidos a usuarios se escriben en español y ofrecen una acción de recuperación cuando sea posible.
 - Las migraciones deben ser reproducibles; no cambies una migración ya aplicada, crea una nueva.
-
 <!-- agent-context:end -->
 
 Codex es la integración predeterminada. Usa los skills locales de `.agents/skills/` cuando correspondan.

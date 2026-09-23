@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(18);
+select plan(20);
 
 insert into auth.users (id, email)
 values
@@ -49,6 +49,11 @@ select throws_ok(
   '42501',
   null,
   'Una cuenta no autorizada no puede crear beneficiarios'
+);
+
+select is_empty(
+  $$select beneficiary_id from public.beneficiary_localizations$$,
+  'Una cuenta no autorizada no obtiene localizaciones privadas'
 );
 
 select is_empty(
@@ -117,17 +122,22 @@ select throws_ok(
 );
 
 select lives_ok(
+  $$insert into public.beneficiary_localizations (
+      beneficiary_id, locale, school_grade, favorite_subject, hobby, future_goal, public_story
+    ) values (
+      '93000000-0000-4000-8000-000000000002', 'es', 'Grado ficticio', 'Materia ficticia',
+      'Actividad ficticia', 'Meta ficticia', 'Relato ficticio completo para validar publicación.'
+    )$$,
+  'Una administradora puede guardar contenido localizado'
+);
+
+select lives_ok(
   $$update public.beneficiaries set
       full_name = 'Perfil completo ficticio',
       date_of_birth = '2015-01-01',
-      school_grade = 'Grado ficticio',
-      favorite_subject = 'Materia ficticia',
-      hobby = 'Actividad ficticia',
-      future_goal = 'Meta ficticia',
-      public_story = 'Relato ficticio completo para validar publicación.',
       status = 'published'
     where code = 'MG-912'$$,
-  'Una administradora puede publicar un perfil completo'
+  'Una administradora puede publicar un perfil con español completo'
 );
 
 select ok(

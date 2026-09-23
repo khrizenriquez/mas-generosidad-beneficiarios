@@ -36,19 +36,17 @@ async function signImages(rows) {
   );
 }
 
-export async function getPublicBeneficiaries(locale = 'es') {
-  if (env.useDemoData) return getDemoBeneficiaries(locale);
+export async function getPublicBeneficiaries() {
+  if (env.useDemoData) return getDemoBeneficiaries();
   if (!hasSupabaseConfig) throw new Error(publicErrorCodes.catalogUnavailable);
   const { data, error } = await getSupabase().rpc('get_public_beneficiaries');
   if (error) throw new Error(publicErrorCodes.requestFailed);
   return signImages(data ?? []);
 }
 
-export async function getPublicBeneficiary(code, locale = 'es') {
+export async function getPublicBeneficiary(code) {
   if (env.useDemoData) {
-    return (
-      getDemoBeneficiaries(locale).find((item) => item.code === code) ?? null
-    );
+    return getDemoBeneficiaries().find((item) => item.code === code) ?? null;
   }
   if (!hasSupabaseConfig) throw new Error(publicErrorCodes.catalogUnavailable);
   const { data, error } = await getSupabase().rpc('get_public_beneficiary', {

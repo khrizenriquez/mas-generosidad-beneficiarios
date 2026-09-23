@@ -14,10 +14,27 @@ async function withSignedAdminImages(beneficiary) {
         .createSignedUrl(image.thumbnail_path, 3600);
       if (error)
         throw new Error('No fue posible cargar las fotografías. Reintenta.');
-      return { ...image, thumbnail_url: data?.signedUrl ?? null };
+      return {
+        ...image,
+        alt_texts: toLocalizationMap(image.beneficiary_image_localizations),
+        beneficiary_image_localizations: undefined,
+        thumbnail_url: data?.signedUrl ?? null,
+      };
     }),
   );
-  return { ...beneficiary, images, beneficiary_images: undefined };
+  return {
+    ...beneficiary,
+    images,
+    beneficiary_images: undefined,
+    localizations: toLocalizationMap(beneficiary.beneficiary_localizations),
+    beneficiary_localizations: undefined,
+  };
+}
+
+function toLocalizationMap(rows = []) {
+  return Object.fromEntries(
+    rows.map(({ locale, ...value }) => [locale, value]),
+  );
 }
 
 export async function getAdminBeneficiaries() {
@@ -32,7 +49,9 @@ export async function getAdminBeneficiaries() {
 export async function getAdminBeneficiary(id) {
   const { data, error } = await getSupabase()
     .from('beneficiaries')
-    .select('*, beneficiary_images(*)')
+    .select(
+      '*, beneficiary_localizations(*), beneficiary_images(*, beneficiary_image_localizations(*))',
+    )
     .eq('id', id)
     .single();
   if (error) throw error;
@@ -51,21 +70,67 @@ export async function saveBeneficiary(values, id) {
     full_name: values.full_name?.trim() || null,
     date_of_birth: values.date_of_birth || null,
     gender: normalizeGender(values.gender),
-    school_grade: values.school_grade?.trim() || null,
-    favorite_subject: values.favorite_subject?.trim() || null,
-    hobby: values.hobby?.trim() || null,
-    future_goal: values.future_goal?.trim() || null,
-    public_story: values.public_story?.trim() || null,
     import_notes: values.import_notes?.trim() || null,
-    status: values.status,
   };
 
+  const supabase = getSupabase();
+  const requestedStatus = values.status;
+  let currentStatus = null;
+  if (id) {
+    const { data: existing, error: existingError } = await supabase
+      .from('beneficiaries')
+      .select('status')
+      .eq('id', id)
+      .single();
+    if (existingError) throw existingError;
+    currentStatus = existing.status;
+  }
+  const basePayload = {
+    ...payload,
+    ...(requestedStatus === 'published' && currentStatus === 'published'
+      ? {}
+      : {
+          status: requestedStatus === 'published' ? 'draft' : requestedStatus,
+        }),
+  };
   const query = id
-    ? getSupabase().from('beneficiaries').update(payload).eq('id', id)
-    : getSupabase().from('beneficiaries').insert(payload);
+    ? supabase.from('beneficiaries').update(basePayload).eq('id', id)
+    : supabase.from('beneficiaries').insert(basePayload);
   const { data, error } = await query.select('id').single();
   if (error) throw error;
+
+  const localizationRows = buildLocalizationRows(data.id, values.localizations);
+  const { error: localizationError } = await supabase
+    .from('beneficiary_localizations')
+    .upsert(localizationRows, { onConflict: 'beneficiary_id,locale' });
+  if (localizationError) throw localizationError;
+
+  if (requestedStatus === 'published' && currentStatus !== 'published') {
+    const { error: publishError } = await supabase
+      .from('beneficiaries')
+      .update({ status: 'published' })
+      .eq('id', data.id);
+    if (publishError) throw publishError;
+  }
   return data;
+}
+
+function normalizeLocalization(localization = {}) {
+  return {
+    school_grade: localization.school_grade?.trim() || null,
+    favorite_subject: localization.favorite_subject?.trim() || null,
+    hobby: localization.hobby?.trim() || null,
+    future_goal: localization.future_goal?.trim() || null,
+    public_story: localization.public_story?.trim() || null,
+  };
+}
+
+export function buildLocalizationRows(beneficiaryId, localizations = {}) {
+  return ['es', 'en'].map((locale) => ({
+    beneficiary_id: beneficiaryId,
+    locale,
+    ...normalizeLocalization(localizations[locale]),
+  }));
 }
 
 export async function archiveBeneficiary(id) {
@@ -80,7 +145,7 @@ export async function uploadBeneficiaryImage({
   beneficiaryId,
   thumbnail,
   detail,
-  altText,
+  altTexts,
   sortOrder,
   isPrimary,
 }) {
@@ -110,7 +175,6 @@ export async function uploadBeneficiaryImage({
     beneficiary_id: beneficiaryId,
     thumbnail_path: thumbnailPath,
     detail_path: detailPath,
-    alt_text: altText || null,
     sort_order: sortOrder,
     is_primary: isPrimary,
   });
@@ -120,6 +184,20 @@ export async function uploadBeneficiaryImage({
       .remove([thumbnailPath, detailPath]);
     throw error;
   }
+
+  await saveBeneficiaryImageAltTexts(imageId, altTexts);
+}
+
+export async function saveBeneficiaryImageAltTexts(imageId, altTexts = {}) {
+  const rows = ['es', 'en'].map((locale) => ({
+    image_id: imageId,
+    locale,
+    alt_text: altTexts[locale]?.trim() || null,
+  }));
+  const { error } = await getSupabase()
+    .from('beneficiary_image_localizations')
+    .upsert(rows, { onConflict: 'image_id,locale' });
+  if (error) throw error;
 }
 
 export async function removeBeneficiaryImage(image) {
