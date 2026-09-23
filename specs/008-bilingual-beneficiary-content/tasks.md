@@ -123,7 +123,8 @@ ocultan por una versión pendiente y la documentación refleja el flujo seguro.
 
 - [x] T031 Ejecutar `npm run db:test`, `npm run verify`, `npm run test:e2e`, `npm run privacy:check` y `git diff --check`; corregir cualquier fallo sin datos reales en `specs/008-bilingual-beneficiary-content/validation.md`.
 - [x] T032 Validar con Podman en móvil y escritorio formulario bilingüe, estado de versión ausente, foco y contraste; documentar la evidencia en `specs/008-bilingual-beneficiary-content/validation.md`.
-- [ ] T033 Actualizar checks de esta lista, ejecutar `npm run context:sync` y `npm run context:check`, crear commits sin `Co-authored-by`, subir `feat/bilingual-beneficiary-content` y abrir un único PR hacia `main` sin fusionarlo.
+- [x] T033 Actualizar checks de esta lista, ejecutar `npm run context:sync` y `npm run context:check`, crear commits sin `Co-authored-by`, subir `feat/bilingual-beneficiary-content` y abrir un único PR hacia `main` sin fusionarlo.
+- [x] T034 Corregir el generador de contexto para que `context:sync` preserve el formato Prettier de los tres archivos de instrucciones y no rompa CI.
 
 ## Dependencies & Execution Order
 

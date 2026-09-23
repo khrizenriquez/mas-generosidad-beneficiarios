@@ -12,7 +12,7 @@ for (const file of files) {
   const content = await readFile(url, 'utf8');
   const next = content.replace(
     /<!-- agent-context:start -->[\s\S]*?<!-- agent-context:end -->/,
-    `<!-- agent-context:start -->\n${canonical}\n<!-- agent-context:end -->`,
+    `<!-- agent-context:start -->\n\n${canonical}\n\n<!-- agent-context:end -->`,
   );
   await writeFile(url, next);
   console.log(`Sincronizado ${file}`);

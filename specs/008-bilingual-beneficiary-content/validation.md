@@ -30,4 +30,7 @@ Fecha: 2026-09-22
 
 - `npm run verify`, `npm run privacy:check` y `git diff --check` pasan antes
   del PR.
+- La sincronización de contexto conserva el formato de Prettier de `AGENTS.md`,
+  `CLAUDE.md` y las instrucciones de Copilot; se verificó con el mismo comando
+  que ejecuta CI.
 - Esta evidencia omite nombres, relatos, fechas, imágenes y credenciales reales.
