@@ -19,7 +19,7 @@ beforeEach(() => {
 });
 
 describe('StoryPage', () => {
-  it('localiza etiquetas sin cambiar el contenido editorial remoto', async () => {
+  it('muestra la versión editorial elegida junto con etiquetas localizadas', async () => {
     window.localStorage.setItem(localeStorageKey, 'en');
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
@@ -43,8 +43,36 @@ describe('StoryPage', () => {
     expect(screen.getByText('Girl')).toBeVisible();
     expect(screen.getByText('Favorite subject')).toBeVisible();
     expect(screen.getByText('Nombre editorial sin traducir')).toBeVisible();
-    expect(screen.getByText('Meta editorial sin traducir')).toBeVisible();
-    expect(screen.getByText('Relato editorial sin traducir.')).toBeVisible();
-    expect(screen.getByText('Asignatura editorial')).toBeVisible();
+    expect(screen.getByText('An untranslated editorial goal')).toBeVisible();
+    expect(screen.getByText('An untranslated editorial story.')).toBeVisible();
+    expect(screen.getByText('Editorial subject')).toBeVisible();
+  });
+
+  it('muestra un estado localizado cuando no existe la versión elegida', async () => {
+    window.localStorage.setItem(localeStorageKey, 'en');
+    getPublicBeneficiary.mockResolvedValue({
+      ...publicProfileFixture,
+      localizations: { es: publicProfileFixture.localizations.es },
+    });
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
+    render(
+      <I18nProvider>
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter initialEntries={['/historias/TEST-001']}>
+            <Routes>
+              <Route path="/historias/:code" element={<StoryPage />} />
+            </Routes>
+          </MemoryRouter>
+        </QueryClientProvider>
+      </I18nProvider>,
+    );
+
+    expect(
+      await screen.findByText('This story is not available in English yet.'),
+    ).toBeVisible();
+    expect(screen.queryByText('Relato editorial sin traducir.')).toBeNull();
   });
 });

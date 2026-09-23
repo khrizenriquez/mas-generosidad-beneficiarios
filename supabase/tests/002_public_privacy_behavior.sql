@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(13);
+select plan(15);
 
 insert into public.beneficiaries (
   id,
@@ -32,7 +32,7 @@ values
     'Meta ficticia',
     'Relato creado exclusivamente para probar el contrato público.',
     'Nota privada ficticia que nunca debe salir por la RPC.',
-    'published'
+    'draft'
   ),
   (
     '90000000-0000-4000-8000-000000000002',
@@ -62,6 +62,39 @@ values
     'Archivado ficticio.',
     'archived'
   );
+
+insert into public.beneficiary_localizations (
+  beneficiary_id,
+  locale,
+  school_grade,
+  favorite_subject,
+  hobby,
+  future_goal,
+  public_story
+)
+values
+  (
+    '90000000-0000-4000-8000-000000000001',
+    'es',
+    'Grado ficticio',
+    'Materia ficticia',
+    'Actividad ficticia',
+    'Meta ficticia',
+    'Relato creado exclusivamente para probar el contrato público.'
+  ),
+  (
+    '90000000-0000-4000-8000-000000000001',
+    'en',
+    'Fictional grade',
+    'Fictional subject',
+    'Fictional activity',
+    'Fictional goal',
+    'A fictional story used exclusively to test the public contract.'
+  );
+
+update public.beneficiaries
+set status = 'published'
+where code = 'MG-901';
 
 insert into public.beneficiary_images (
   id,
@@ -116,6 +149,19 @@ select results_eq(
   $$select code from public.get_public_beneficiaries() where code = 'MG-901'$$,
   $$values ('MG-901'::text)$$,
   'La colección anónima solo contiene perfiles publicados'
+);
+
+select results_eq(
+  $$select localizations -> 'en' ->> 'public_story' from public.get_public_beneficiary('MG-901')$$,
+  $$values ('A fictional story used exclusively to test the public contract.'::text)$$,
+  'La RPC incluye versiones editoriales completas autorizadas'
+);
+
+select throws_ok(
+  $$select * from public.beneficiary_localizations$$,
+  '42501',
+  null,
+  'Anon no puede leer la tabla base de localizaciones'
 );
 
 select results_eq(

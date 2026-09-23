@@ -12,8 +12,10 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { StoryGallery } from '../components/story/StoryGallery.jsx';
+import { StoryAvailabilityNotice } from '../components/story/StoryAvailabilityNotice.jsx';
 import { env } from '../config/env.js';
 import { formatAge, translateGender } from '../i18n/catalog.js';
+import { selectLocalization } from '../i18n/localization.js';
 import { useI18n } from '../i18n/useI18n.js';
 import { getPublicBeneficiary } from '../services/publicBeneficiaries.js';
 
@@ -21,9 +23,10 @@ export default function StoryPage() {
   const { locale, t } = useI18n();
   const { code } = useParams();
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['public-beneficiary', code, env.useDemoData ? locale : 'remote'],
-    queryFn: () => getPublicBeneficiary(code, locale),
+    queryKey: ['public-beneficiary', code, env.useDemoData ? 'demo' : 'remote'],
+    queryFn: () => getPublicBeneficiary(code),
   });
+  const localization = selectLocalization(data, locale);
 
   return (
     <Container maxWidth="lg" sx={{ pt: { xs: 4, md: 7 } }}>
@@ -73,8 +76,8 @@ export default function StoryPage() {
                   label={translateGender(locale, data.gender)}
                 />
               ) : null}
-              {data.school_grade ? (
-                <Chip variant="outlined" label={data.school_grade} />
+              {localization?.school_grade ? (
+                <Chip variant="outlined" label={localization.school_grade} />
               ) : null}
             </Stack>
             <Typography
@@ -83,54 +86,58 @@ export default function StoryPage() {
             >
               {data.full_name}
             </Typography>
-            <Box
-              sx={{
-                my: 4,
-                p: 3,
-                bgcolor: 'warning.main',
-                borderRadius: '4px 32px 4px 32px',
-              }}
-            >
-              <Typography variant="overline" fontWeight={800}>
-                {t('story.aspiration')}
-              </Typography>
-              <Typography
-                variant="h3"
-                sx={{ fontSize: { xs: '1.6rem', md: '2rem' } }}
-              >
-                {data.future_goal}
-              </Typography>
-            </Box>
-            <Typography variant="h3" sx={{ mb: 2 }}>
-              {t('story.history')}
-            </Typography>
-            <Typography
-              sx={{
-                whiteSpace: 'pre-line',
-                fontSize: '1.08rem',
-                lineHeight: 1.8,
-              }}
-            >
-              {data.public_story}
-            </Typography>
-            <Box
-              sx={{
-                mt: 5,
-                display: 'grid',
-                gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
-                gap: 2,
-              }}
-            >
-              {data.favorite_subject ? (
-                <Fact
-                  label={t('story.favoriteSubject')}
-                  value={data.favorite_subject}
-                />
-              ) : null}
-              {data.hobby ? (
-                <Fact label={t('story.hobby')} value={data.hobby} />
-              ) : null}
-            </Box>
+            {localization ? (
+              <>
+                <Box
+                  sx={{
+                    my: 4,
+                    p: 3,
+                    bgcolor: 'warning.main',
+                    borderRadius: '4px 32px 4px 32px',
+                  }}
+                >
+                  <Typography variant="overline" fontWeight={800}>
+                    {t('story.aspiration')}
+                  </Typography>
+                  <Typography
+                    variant="h3"
+                    sx={{ fontSize: { xs: '1.6rem', md: '2rem' } }}
+                  >
+                    {localization.future_goal}
+                  </Typography>
+                </Box>
+                <Typography variant="h3" sx={{ mb: 2 }}>
+                  {t('story.history')}
+                </Typography>
+                <Typography
+                  sx={{
+                    whiteSpace: 'pre-line',
+                    fontSize: '1.08rem',
+                    lineHeight: 1.8,
+                  }}
+                >
+                  {localization.public_story}
+                </Typography>
+                <Box
+                  sx={{
+                    mt: 5,
+                    display: 'grid',
+                    gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+                    gap: 2,
+                  }}
+                >
+                  <Fact
+                    label={t('story.favoriteSubject')}
+                    value={localization.favorite_subject}
+                  />
+                  <Fact label={t('story.hobby')} value={localization.hobby} />
+                </Box>
+              </>
+            ) : (
+              <Box sx={{ mt: 4 }}>
+                <StoryAvailabilityNotice />
+              </Box>
+            )}
           </Box>
         </Box>
       ) : null}

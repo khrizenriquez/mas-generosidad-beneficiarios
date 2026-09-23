@@ -107,10 +107,13 @@ test('ciclo completo con Auth, PostgreSQL y Storage reales', async ({
 
   await page.getByLabel('Fecha de nacimiento').fill('2015-01-01');
   await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
-  await page.getByLabel('Grado escolar').fill('Grado ficticio');
-  await page.getByLabel('Asignatura favorita').fill('Materia ficticia');
-  await page.getByLabel('Pasatiempo').fill('Actividad ficticia');
-  await page.getByLabel('Qué quiere ser o lograr').fill('Meta ficticia');
+  await page.getByLabel('Grado escolar').first().fill('Grado ficticio');
+  await page.getByLabel('Asignatura favorita').first().fill('Materia ficticia');
+  await page.getByLabel('Pasatiempo').first().fill('Actividad ficticia');
+  await page
+    .getByLabel('Qué quiere ser o lograr')
+    .first()
+    .fill('Meta ficticia');
   await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
   await page
     .getByLabel('Relato público revisado')
@@ -188,13 +191,12 @@ test('ciclo completo con Auth, PostgreSQL y Storage reales', async ({
       'full_name',
       'age',
       'gender',
-      'school_grade',
-      'favorite_subject',
-      'hobby',
-      'future_goal',
-      'public_story',
+      'localizations',
       'images',
     ].sort(),
+  );
+  expect(publicRow.localizations.es.public_story).toContain(
+    'Historia ficticia para validar',
   );
   expect(publicRow.images).toHaveLength(3);
   expect(publicRow.images.filter((image) => image.is_primary)).toHaveLength(1);

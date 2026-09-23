@@ -18,7 +18,7 @@ import { getPublicBeneficiaries } from '../services/publicBeneficiaries.js';
 import { normalizeForSearch } from '../utils/normalize.js';
 
 export default function HomePage() {
-  const { locale, t, tPlural } = useI18n();
+  const { t, tPlural } = useI18n();
   const [search, setSearch] = useState('');
   const deferredSearch = useDeferredValue(search);
   const {
@@ -27,8 +27,8 @@ export default function HomePage() {
     error,
     refetch,
   } = useQuery({
-    queryKey: ['public-beneficiaries', env.useDemoData ? locale : 'remote'],
-    queryFn: () => getPublicBeneficiaries(locale),
+    queryKey: ['public-beneficiaries', env.useDemoData ? 'demo' : 'remote'],
+    queryFn: getPublicBeneficiaries,
   });
   const filtered = useMemo(() => {
     const query = normalizeForSearch(deferredSearch);

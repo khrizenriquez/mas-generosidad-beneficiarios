@@ -1,11 +1,12 @@
 import { Box } from '@mui/material';
+import { getLocalizedImageAlt } from '../../i18n/localization.js';
 import { useI18n } from '../../i18n/useI18n.js';
 import { StoryImagePlaceholder } from './StoryImagePlaceholder.jsx';
 
 const emptyImages = [];
 
 export function StoryGallery({ images = emptyImages, beneficiaryName }) {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const galleryImages = images
     .filter((image) => Boolean(image.detail_url))
     .sort(
@@ -31,6 +32,7 @@ export function StoryGallery({ images = emptyImages, beneficiaryName }) {
           name: beneficiaryName,
           position: 1,
         })}
+        locale={locale}
       />
       {supportingImages.length > 0 ? (
         <Box
@@ -48,6 +50,7 @@ export function StoryGallery({ images = emptyImages, beneficiaryName }) {
                 name: beneficiaryName,
                 position: index + 2,
               })}
+              locale={locale}
             />
           ))}
         </Box>
@@ -56,12 +59,12 @@ export function StoryGallery({ images = emptyImages, beneficiaryName }) {
   );
 }
 
-function GalleryImage({ image, fallbackAlt, featured = false }) {
+function GalleryImage({ image, fallbackAlt, featured = false, locale }) {
   return (
     <Box
       component="img"
       src={image.detail_url}
-      alt={image.alt_text?.trim() || fallbackAlt}
+      alt={getLocalizedImageAlt(image, locale) || fallbackAlt}
       loading={featured ? 'eager' : 'lazy'}
       fetchPriority={featured ? 'high' : 'auto'}
       sx={{

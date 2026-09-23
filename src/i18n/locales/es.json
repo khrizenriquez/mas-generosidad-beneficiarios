@@ -44,7 +44,9 @@
     "hobby": "Le gusta",
     "dreamsOf": "Sueña con",
     "defaultGoal": "seguir aprendiendo",
-    "readStory": "Leer su historia"
+    "readStory": "Leer su historia",
+    "unavailableForLocale": "Esta historia aún no está disponible en español.",
+    "unavailableOnCard": "Historia disponible solo en otro idioma."
   },
   "gallery": {
     "title": "Galería de fotografías de {name}",

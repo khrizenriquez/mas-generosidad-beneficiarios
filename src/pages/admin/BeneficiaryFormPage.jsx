@@ -46,11 +46,22 @@ const defaults = {
   full_name: '',
   date_of_birth: '',
   gender: '',
-  school_grade: '',
-  favorite_subject: '',
-  hobby: '',
-  future_goal: '',
-  public_story: '',
+  localizations: {
+    es: {
+      school_grade: '',
+      favorite_subject: '',
+      hobby: '',
+      future_goal: '',
+      public_story: '',
+    },
+    en: {
+      school_grade: '',
+      favorite_subject: '',
+      hobby: '',
+      future_goal: '',
+      public_story: '',
+    },
+  },
   import_notes: '',
   status: 'draft',
 };
@@ -84,16 +95,7 @@ export default function BeneficiaryFormPage() {
   });
 
   useEffect(() => {
-    if (data)
-      reset(
-        Object.fromEntries(
-          Object.entries(defaults).map(([key, fallback]) => [
-            key,
-            data[key] ?? fallback,
-          ]),
-        ),
-        { keepDirtyValues: true },
-      );
+    if (data) reset(toFormValues(data), { keepDirtyValues: true });
   }, [data, reset]);
   useEffect(() => {
     if (!isEditing && nextCode.data)
@@ -137,18 +139,23 @@ export default function BeneficiaryFormPage() {
         });
         if (!result.success) {
           for (const issue of result.error.issues)
-            setError(issue.path[0], { message: issue.message });
-          const firstField = result.error.issues[0]?.path[0];
+            setError(issue.path.join('.'), { message: issue.message });
+          const firstField = result.error.issues[0]?.path.join('.');
           const fieldSteps = {
             code: 0,
             full_name: 0,
             date_of_birth: 0,
             gender: 0,
-            school_grade: 1,
-            favorite_subject: 1,
-            hobby: 1,
-            future_goal: 1,
-            public_story: 2,
+            'localizations.es.school_grade': 1,
+            'localizations.es.favorite_subject': 1,
+            'localizations.es.hobby': 1,
+            'localizations.es.future_goal': 1,
+            'localizations.en.school_grade': 1,
+            'localizations.en.favorite_subject': 1,
+            'localizations.en.hobby': 1,
+            'localizations.en.future_goal': 1,
+            'localizations.es.public_story': 2,
+            'localizations.en.public_story': 2,
           };
           setActiveStep(fieldSteps[firstField] ?? 0);
           return;
@@ -189,8 +196,8 @@ export default function BeneficiaryFormPage() {
             : 'Nuevo perfil'}
         </Typography>
         <Typography color="text.secondary">
-          Los borradores pueden estar incompletos. Publicar exige todos los
-          datos principales.
+          Los borradores pueden estar incompletos. Publicar exige español
+          completo; inglés es opcional, pero debe estar completo si lo inicias.
         </Typography>
       </Box>
       <Paper
@@ -332,57 +339,45 @@ function renderStep(step, context) {
     );
   if (step === 1)
     return (
-      <Section title="Educación e intereses">
-        <Field
+      <Stack gap={4}>
+        <LocalizationFields
           control={control}
-          errors={errors}
-          name="school_grade"
-          label="Grado escolar"
+          locale="es"
+          title="Español"
+          helper="Obligatorio para publicar."
         />
-        <Field
+        <LocalizationFields
           control={control}
-          errors={errors}
-          name="favorite_subject"
-          label="Asignatura favorita"
+          locale="en"
+          title="English"
+          helper="Opcional; si lo inicias, completa todos los campos antes de publicar."
         />
-        <Field
-          control={control}
-          errors={errors}
-          name="hobby"
-          label="Pasatiempo"
-        />
-        <Field
-          control={control}
-          errors={errors}
-          name="future_goal"
-          label="Qué quiere ser o lograr"
-          multiline
-          minRows={2}
-        />
-      </Section>
+      </Stack>
     );
   if (step === 2)
     return (
-      <Section title="Relato">
-        <Field
+      <Stack gap={4}>
+        <LocalizationStoryField
           control={control}
-          errors={errors}
-          name="public_story"
-          label="Relato público revisado"
-          multiline
-          minRows={8}
-          helper="No incluyas direcciones, teléfonos ni otros datos privados."
+          locale="es"
+          title="Relato en español"
         />
-        <Field
+        <LocalizationStoryField
           control={control}
-          errors={errors}
-          name="import_notes"
-          label="Notas privadas de importación"
-          multiline
-          minRows={4}
-          helper="Solo los administradores pueden leer este campo."
+          locale="en"
+          title="Story in English"
         />
-      </Section>
+        <Section title="Notas privadas">
+          <Field
+            control={control}
+            name="import_notes"
+            label="Notas privadas de importación"
+            multiline
+            minRows={4}
+            helper="Solo los administradores pueden leer este campo."
+          />
+        </Section>
+      </Stack>
     );
   if (step === 3)
     return isEditing ? (
@@ -408,9 +403,9 @@ function renderStep(step, context) {
         para mostrar nombre, historia y fotografías.
       </Alert>
       <Typography color="text.secondary">
-        Al publicar se verifican fecha de nacimiento completa, nombre, grado,
-        asignatura favorita, pasatiempo, aspiración y relato público. La fecha
-        completa nunca se entrega a visitantes.
+        Al publicar se verifican fecha de nacimiento completa, nombre y todos
+        los campos en español. Inglés es opcional, pero si se inicia debe estar
+        completo. La fecha completa nunca se entrega a visitantes.
       </Typography>
     </Box>
   );
@@ -435,20 +430,91 @@ function Section({ title, children }) {
   );
 }
 
-function Field({ control, errors, name, helper, ...props }) {
+function LocalizationFields({ control, locale, title, helper }) {
+  const prefix = `localizations.${locale}`;
+  return (
+    <Section title={title}>
+      <Typography color="text.secondary" sx={{ gridColumn: '1 / -1' }}>
+        {helper}
+      </Typography>
+      <Field
+        control={control}
+        name={`${prefix}.school_grade`}
+        label="Grado escolar"
+      />
+      <Field
+        control={control}
+        name={`${prefix}.favorite_subject`}
+        label="Asignatura favorita"
+      />
+      <Field control={control} name={`${prefix}.hobby`} label="Pasatiempo" />
+      <Field
+        control={control}
+        name={`${prefix}.future_goal`}
+        label="Qué quiere ser o lograr"
+        multiline
+        minRows={2}
+      />
+    </Section>
+  );
+}
+
+function LocalizationStoryField({ control, locale, title }) {
+  return (
+    <Section title={title}>
+      <Field
+        control={control}
+        name={`localizations.${locale}.public_story`}
+        label={
+          locale === 'es' ? 'Relato público revisado' : 'Reviewed public story'
+        }
+        multiline
+        minRows={8}
+        helper="No incluyas direcciones, teléfonos ni otros datos privados."
+      />
+    </Section>
+  );
+}
+
+function Field({ control, name, helper, ...props }) {
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <TextField
           {...field}
           {...props}
-          error={Boolean(errors[name])}
-          helperText={errors[name]?.message || helper}
+          error={Boolean(fieldState.error)}
+          helperText={fieldState.error?.message || helper}
           sx={{ gridColumn: props.multiline ? { md: '1 / -1' } : undefined }}
         />
       )}
     />
+  );
+}
+
+function toFormValues(data) {
+  return {
+    ...defaults,
+    ...Object.fromEntries(
+      Object.entries(defaults).map(([key, fallback]) => [
+        key,
+        data[key] ?? fallback,
+      ]),
+    ),
+    localizations: {
+      es: toFormLocalization(data.localizations?.es),
+      en: toFormLocalization(data.localizations?.en),
+    },
+  };
+}
+
+function toFormLocalization(localization = {}) {
+  return Object.fromEntries(
+    Object.entries(defaults.localizations.es).map(([field, fallback]) => [
+      field,
+      localization[field] ?? fallback,
+    ]),
   );
 }

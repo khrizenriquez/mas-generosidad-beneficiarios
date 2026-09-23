@@ -6,12 +6,14 @@ import {
   Button,
   CircularProgress,
   IconButton,
+  TextField,
   Typography,
 } from '@mui/material';
 import { useRef, useState } from 'react';
 import { processImage } from '../../utils/imageProcessing.js';
 import {
   removeBeneficiaryImage,
+  saveBeneficiaryImageAltTexts,
   uploadBeneficiaryImage,
 } from '../../services/adminBeneficiaries.js';
 
@@ -42,7 +44,7 @@ export function PhotoManager({ beneficiaryId, images = [], onChanged }) {
         await uploadBeneficiaryImage({
           beneficiaryId,
           ...variants,
-          altText: '',
+          altTexts: {},
           sortOrder: availableOrders[index],
           isPrimary: !images.some((image) => image.is_primary) && index === 0,
         });
@@ -70,6 +72,24 @@ export function PhotoManager({ beneficiaryId, images = [], onChanged }) {
       await onChanged();
     } catch (caught) {
       setError(caught.message || 'No fue posible eliminar la fotografía.');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleAltTextChange(image, locale, value) {
+    setBusy(true);
+    setError('');
+    try {
+      await saveBeneficiaryImageAltTexts(image.id, {
+        ...image.alt_texts,
+        [locale]: value,
+      });
+      await onChanged();
+    } catch (caught) {
+      setError(
+        caught.message || 'No fue posible guardar el texto alternativo.',
+      );
     } finally {
       setBusy(false);
     }
@@ -105,31 +125,53 @@ export function PhotoManager({ beneficiaryId, images = [], onChanged }) {
               borderRadius: 2,
               overflow: 'hidden',
               bgcolor: 'secondary.light',
-              aspectRatio: '4 / 3',
             }}
           >
-            {image.thumbnail_url ? (
-              <Box
-                component="img"
-                src={image.thumbnail_url}
-                alt={image.alt_text || `Fotografía ${index + 1}`}
-                sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            <Box sx={{ position: 'relative', aspectRatio: '4 / 3' }}>
+              {image.thumbnail_url ? (
+                <Box
+                  component="img"
+                  src={image.thumbnail_url}
+                  alt={image.alt_texts?.es || `Fotografía ${index + 1}`}
+                  sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              ) : null}
+              <IconButton
+                onClick={() => handleRemove(image)}
+                disabled={busy}
+                aria-label={`Eliminar fotografía ${index + 1}`}
+                sx={{
+                  position: 'absolute',
+                  top: 8,
+                  right: 8,
+                  bgcolor: 'background.paper',
+                  '&:hover': { bgcolor: 'white' },
+                }}
+              >
+                <DeleteOutlineRoundedIcon />
+              </IconButton>
+            </Box>
+            <Box sx={{ p: 1.5, bgcolor: 'background.paper' }}>
+              <TextField
+                defaultValue={image.alt_texts?.es ?? ''}
+                label="Texto alternativo (Español)"
+                onBlur={(event) =>
+                  handleAltTextChange(image, 'es', event.target.value)
+                }
+                disabled={busy}
+                size="small"
               />
-            ) : null}
-            <IconButton
-              onClick={() => handleRemove(image)}
-              disabled={busy}
-              aria-label={`Eliminar fotografía ${index + 1}`}
-              sx={{
-                position: 'absolute',
-                top: 8,
-                right: 8,
-                bgcolor: 'background.paper',
-                '&:hover': { bgcolor: 'white' },
-              }}
-            >
-              <DeleteOutlineRoundedIcon />
-            </IconButton>
+              <TextField
+                defaultValue={image.alt_texts?.en ?? ''}
+                label="Alt text (English)"
+                onBlur={(event) =>
+                  handleAltTextChange(image, 'en', event.target.value)
+                }
+                disabled={busy}
+                size="small"
+                sx={{ mt: 1 }}
+              />
+            </Box>
           </Box>
         ))}
       </Box>

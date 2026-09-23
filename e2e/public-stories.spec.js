@@ -38,7 +38,7 @@ test('permite cambiar el catálogo público a inglés y conserva la preferencia'
 
   await page.getByRole('link', { name: 'Read their story' }).first().click();
   await expect(
-    page.getByRole('heading', { name: 'Sample Profile One' }),
+    page.getByRole('heading', { name: 'Perfil de muestra Uno' }),
   ).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Their story', exact: true }),
@@ -46,9 +46,31 @@ test('permite cambiar el catálogo público a inglés y conserva la preferencia'
 
   await page.reload();
   await expect(
-    page.getByRole('heading', { name: 'Sample Profile One' }),
+    page.getByRole('heading', { name: 'Perfil de muestra Uno' }),
   ).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+});
+
+test('mantiene visible una tarjeta y muestra un estado localizado si falta inglés', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Idioma actual: Español' }).click();
+  await page.getByRole('menuitem', { name: 'English' }).click();
+
+  const unavailableCard = page
+    .locator('article')
+    .filter({ hasText: 'Perfil de muestra Tres' });
+  await expect(unavailableCard).toBeVisible();
+  await expect(
+    unavailableCard.getByText(
+      'This story is currently available only in another language.',
+    ),
+  ).toBeVisible();
+  await unavailableCard.getByRole('link', { name: 'Read their story' }).click();
+  await expect(
+    page.getByText('This story is not available in English yet.'),
+  ).toBeVisible();
 });
 
 test('muestra las tres fotografías autorizadas en el detalle', async ({

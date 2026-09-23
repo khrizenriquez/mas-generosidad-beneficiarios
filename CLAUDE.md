@@ -46,5 +46,5 @@ La integración de Claude se mantiene como skill para evitar duplicar comandos o
 
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/007-json-i18n-catalog/plan.md
+at specs/008-bilingual-beneficiary-content/plan.md
 <!-- SPECKIT END -->

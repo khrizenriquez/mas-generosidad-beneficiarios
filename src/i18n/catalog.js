@@ -51,8 +51,53 @@ export function translateGender(locale, gender) {
   return translated || gender;
 }
 
-export function getDemoBeneficiaries(locale) {
-  return getCatalog(locale).demoProfiles;
+export function getDemoBeneficiaries() {
+  const englishByCode = new Map(
+    catalogs.en.demoProfiles.map((profile) => [profile.code, profile]),
+  );
+
+  return catalogs.es.demoProfiles.map((spanishProfile) => {
+    const englishProfile = englishByCode.get(spanishProfile.code);
+    const englishAvailable = englishProfile?.available !== false;
+    return {
+      id: spanishProfile.id,
+      code: spanishProfile.code,
+      full_name: spanishProfile.full_name,
+      age: spanishProfile.age,
+      gender: spanishProfile.gender,
+      images: (spanishProfile.images ?? []).map((spanishImage) => {
+        const englishImage = englishProfile?.images?.find(
+          (image) => image.id === spanishImage.id,
+        );
+        return {
+          ...spanishImage,
+          alt_texts: {
+            es: spanishImage.alt_text,
+            ...(englishAvailable && englishImage?.alt_text
+              ? { en: englishImage.alt_text }
+              : {}),
+          },
+          alt_text: undefined,
+        };
+      }),
+      localizations: {
+        es: toDemoLocalization(spanishProfile),
+        ...(englishProfile && englishAvailable
+          ? { en: toDemoLocalization(englishProfile) }
+          : {}),
+      },
+    };
+  });
+}
+
+function toDemoLocalization(profile) {
+  return {
+    school_grade: profile.school_grade,
+    favorite_subject: profile.favorite_subject,
+    hobby: profile.hobby,
+    future_goal: profile.future_goal,
+    public_story: profile.public_story,
+  };
 }
 
 function getByPath(source, path) {
